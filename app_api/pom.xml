@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>fr.esgi</groupId>
+    <artifactId>app_pa</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>fr.esgi</groupId>
+  <artifactId>app_api</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>app_api</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>fr.esgi</groupId>
+      <artifactId>app_model</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>fr.esgi</groupId>
+      <artifactId>app_business</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>fr.esgi</groupId>
+      <artifactId>app_data</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>DEV</id>
+      <build>
+        <resources>
+          <resource>
+            <directory>app_api/src/main/java/resources/DEV</directory>
+          </resource>
+        </resources>
+      </build>
+    </profile>
+    <profile>
+      <id>PROD</id>
+      <build>
+        <resources>
+          <resource>
+            <directory>app_api/src/main/java/resources/PROD</directory>
+          </resource>
+        </resources>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>

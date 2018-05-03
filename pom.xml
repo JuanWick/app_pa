@@ -1,0 +1,129 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- =============================================================== -->
+  <!-- Informations du projet -->
+  <!-- =============================================================== -->
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.0.1.RELEASE</version>
+    <relativePath/>
+  </parent>
+
+  <!-- ===== Informations Maven ===== -->
+  <groupId>fr.esgi</groupId>
+  <artifactId>app_pa</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <!-- ===== Informations générales ===== -->
+  <name>app_pa</name>
+  <description>
+    Cette application à pour vocation de factoriser la gestion des dépendances
+  </description>
+  <url>http://maven.apache.org</url>
+
+  <!-- ===== Organisation ===== -->
+  <organization>
+    <name>ESGI</name>
+    <url>http://www.esgi.fr</url>
+  </organization>
+
+  <!-- =============================================================== -->
+  <!-- Properties -->
+  <!-- =============================================================== -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.8</java.version>
+  </properties>
+
+  <!-- =============================================================== -->
+  <!-- Modules -->
+  <!-- =============================================================== -->
+  <modules>
+    <module>app_api</module>
+    <module>app_business</module>
+    <module>app_data</module>
+    <module>app_model</module>
+  </modules>
+
+  <!-- =============================================================== -->
+  <!-- Gestion des dépendances -->
+  <!-- =============================================================== -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- ===== Modules ===== -->
+      <dependency>
+        <groupId>fr.esgi</groupId>
+        <artifactId>app_api</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.esgi</groupId>
+        <artifactId>app_business</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.esgi</groupId>
+        <artifactId>app_data</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>fr.esgi</groupId>
+        <artifactId>app_model</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <!-- ===== Bibliothèques tierces ===== -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>3.8.1</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.16.20</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.2.11</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-core</artifactId>
+        <version>2.2.11</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>2.2.11</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <repositories>
+    <repository>
+        <id>spring-libs-release</id>
+        <name>Spring Releases</name>
+        <url>https://repo.spring.io/libs-release</url>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+      </repository>
+    <repository>
+      <id>projectlombok.org</id>
+      <url>http://projectlombok.org/mavenrepo</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-releases</id>
+      <url>https://repo.spring.io/libs-release</url>
+    </pluginRepository>
+  </pluginRepositories>
+</project>

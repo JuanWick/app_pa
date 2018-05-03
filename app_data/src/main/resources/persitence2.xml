@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="connection.url">jdbc:postgresql://localhost:5432/pa_data</property>
+    <property name="connection.driver_class">org.postgresql.Driver</property>
+      <mapping class="fr.esgi.reporitories.carts.dao.RCartProductEntity"/>
+      <mapping class="fr.esgi.reporitories.loyalties.dao.RLoyaltyCardEntity"/>
+      <mapping class="fr.esgi.reporitories.products.dao.RProductCategoryEntity"/>
+      <mapping class="fr.esgi.reporitories.carts.dao.RSharedCartEntity"/>
+      <mapping class="fr.esgi.reporitories.stores.dao.RStoreProductEntity"/>
+      <mapping class="fr.esgi.reporitories.users.dao.RUserRoleEntity"/>
+      <mapping class="fr.esgi.reporitories.carts.dao.TCartEntity"/>
+      <mapping class="fr.esgi.reporitories.products.dao.TCategoryEntity"/>
+      <mapping class="fr.esgi.reporitories.products.dao.TProductEntity"/>
+      <mapping class="fr.esgi.reporitories.users.dao.TRoleEntity"/>
+      <mapping class="fr.esgi.reporitories.stores.dao.TStoreEntity"/>
+      <mapping class="fr.esgi.reporitories.users.dao.TUserEntity"/>
+      <mapping class="fr.esgi.reporitories.stores.dao.TStoreEntity"/>
+      <mapping class="fr.esgi.reporitories.users.dao.TUserEntity"/>
+    <mapping class="fr.esgi.reporitories.carts.dao.RCartProductEntity"/>
+    <mapping class="fr.esgi.reporitories.loyalties.dao.RLoyaltyCardEntity"/>
+    <mapping class="fr.esgi.reporitories.products.dao.RProductCategoryEntity"/>
+    <mapping class="fr.esgi.reporitories.carts.dao.RSharedCartEntity"/>
+    <mapping class="fr.esgi.reporitories.stores.dao.RStoreProductEntity"/>
+    <mapping class="fr.esgi.reporitories.users.dao.RUserRoleEntity"/>
+    <mapping class="fr.esgi.reporitories.carts.dao.TCartEntity"/>
+    <mapping class="fr.esgi.reporitories.products.dao.TCategoryEntity"/>
+    <mapping class="fr.esgi.reporitories.products.dao.TProductEntity"/>
+    <mapping class="fr.esgi.reporitories.users.dao.TRoleEntity"/>
+      <mapping class="entities.RLoyaltyCardEntity"/>
+      <mapping class="entities.RStoreProductEntity"/>
+      <mapping class="entities.TStoreEntity"/>
+      <mapping class="entities.TUserEntity"/>
+      <!-- <property name="connection.username"/> -->
+    <!-- <property name="connection.password"/> -->
+
+    <!-- DB schema will be updated if needed -->
+    <!-- <property name="hbm2ddl.auto">update</property> -->
+  </session-factory>
+</hibernate-configuration>
