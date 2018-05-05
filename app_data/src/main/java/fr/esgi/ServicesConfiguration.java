@@ -1,5 +1,8 @@
 package fr.esgi;
 
+import fr.esgi.reporitories.carts.adapter.CartAdapter;
+import fr.esgi.reporitories.carts.adapter.CartProductAdapter;
+import fr.esgi.reporitories.carts.adapter.SharedCartAdapter;
 import fr.esgi.reporitories.stores.adapter.StoreAdapter;
 import fr.esgi.reporitories.stores.services.HibernateStoreData;
 import fr.esgi.reporitories.stores.services.StoreData;
@@ -19,5 +22,20 @@ public class ServicesConfiguration {
     @Bean
     public UserAdapter UserAdapter(){
         return new UserAdapter();
+    }
+
+    @Bean
+    public CartAdapter CartAdapter(){
+        return new CartAdapter();
+    }
+
+    @Bean
+    public CartProductAdapter CartProductAdapter(){
+        return new CartProductAdapter();
+    }
+
+    @Bean
+    public SharedCartAdapter SharedCartAdapter(){
+        return new SharedCartAdapter();
     }
 }

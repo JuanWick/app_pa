@@ -8,6 +8,7 @@ import fr.esgi.reporitories.users.UserRepository;
 import fr.esgi.reporitories.users.adapter.UserAdapter;
 import fr.esgi.reporitories.users.dao.TUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -16,7 +17,8 @@ public class HibernateUserData implements UserData {
     @Autowired
     UserRepository userRepository;
 
-    UserAdapter userAdapter = new UserAdapter();
+    @Autowired
+    UserAdapter userAdapter;
 
     @Override
     public List<User> getAll() {
@@ -25,7 +27,12 @@ public class HibernateUserData implements UserData {
 
     @Override
     public User getById(int id) {
-        return userAdapter.adapt(userRepository.findById(id).get());
+        User user = null;
+        if(userRepository.findById(id).isPresent()){
+            TUserEntity  tUserEntity = userRepository.findById(id).get();
+            user = userAdapter.adapt(tUserEntity);
+        }
+        return user;
     }
 
     @Override

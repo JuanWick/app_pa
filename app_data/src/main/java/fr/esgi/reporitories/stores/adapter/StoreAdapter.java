@@ -3,8 +3,10 @@ package fr.esgi.reporitories.stores.adapter;
 import entities.Store;
 import fr.esgi.reporitories.stores.dao.TStoreEntity;
 import fr.esgi.reporitories.users.adapter.UserAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class StoreAdapter {
+    @Autowired
     UserAdapter userAdapter;
 
     public Store adapt(TStoreEntity storeEntity){

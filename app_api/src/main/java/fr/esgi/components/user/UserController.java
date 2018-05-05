@@ -1,10 +1,9 @@
 package fr.esgi.components.user;
 
-import entities.Store;
 import entities.User;
-import fr.esgi.reporitories.stores.services.StoreData;
+import fr.esgi.components.user.adapter.UserDtoAdapter;
+import fr.esgi.components.user.dto.UserDto;
 import fr.esgi.reporitories.users.services.UserData;
-import fr.esgi.services.stores.StoreService;
 import fr.esgi.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +12,36 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    UserService userService;
-    @Autowired
+    private final
     UserData userData;
 
+    private final
+    UserService userService;
+
+    private final
+    UserDtoAdapter userDtoAdapter;
+
+    @Autowired
+    public UserController(UserData userData, UserService userService, UserDtoAdapter userDtoAdapter) {
+        this.userData = userData;
+        this.userService = userService;
+        this.userDtoAdapter = userDtoAdapter;
+    }
+
+    /**
+     *  Permet de récupérer les informations d'un utilisateur par ID
+     * @param id de l'utilisateur
+     * @return UserDto
+     */
     @GetMapping("/{id}")
-    public User getById(@PathVariable(value="id") int id) {
-        return userService.getById(userData,id);
+    public UserDto getById(@PathVariable(value="id") int id) {
+        User user = userData.getById(id);
+        UserDto userDto = null;
+
+        if(null != user){
+            userDto =  userDtoAdapter.convertToDto(user);
+        }
+        return userDto;
     }
 
     /*
@@ -32,7 +53,6 @@ public class UserController {
    */
     @PostMapping("")
     public User addOrUpdate(@RequestBody final User user){
-        System.out.println("RECU : "+user.toString());
         return userData.save(user);
     }
 }
