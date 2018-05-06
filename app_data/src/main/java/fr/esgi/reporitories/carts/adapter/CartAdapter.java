@@ -24,7 +24,7 @@ public class CartAdapter {
     public Cart entityToModel(TCartEntity cartEntity, boolean all){
         Cart cart = new Cart();
         cart.setId(cartEntity.getId());
-        cart.setUser(userAdapter.entityToModel(cartEntity.getUser()));
+        cart.setUser(userAdapter.entityToModel(cartEntity.getUser(),false));
         if(all && null != cartEntity.getProducts()){
             List<Product> products = new ArrayList<>();
             for(TProductEntity product:cartEntity.getProducts()){
@@ -35,8 +35,7 @@ public class CartAdapter {
         if(all && null != cartEntity.getSharedUsers()){
             List<User> users = new ArrayList<>();
             for(TUserEntity user:cartEntity.getSharedUsers()){
-
-                users.add(userAdapter.entityToModel(user));
+                users.add(userAdapter.entityToModel(user, false));
             }
             cart.setSharedUsers(users);
         }
@@ -48,7 +47,7 @@ public class CartAdapter {
         if(null != cart.getId()){
             cartEntity.setId(cart.getId());
         }
-        cartEntity.setUser(userAdapter.modelToEntity(cart.getUser()));
+        cartEntity.setUser(userAdapter.modelToEntity(cart.getUser(), false));
         if(all && null != cart.getProducts()){
             List<TProductEntity> products = new ArrayList<>();
             for(Product product:cart.getProducts()){
@@ -59,7 +58,7 @@ public class CartAdapter {
         if(all && null != cart.getSharedUsers()){
             List<TUserEntity> users = new ArrayList<>();
             for(User user:cart.getSharedUsers()){
-                users.add(userAdapter.modelToEntity(user));
+                users.add(userAdapter.modelToEntity(user, false));
             }
             cartEntity.setSharedUsers(users);
         }

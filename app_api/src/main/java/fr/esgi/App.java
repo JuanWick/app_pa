@@ -1,6 +1,7 @@
 package fr.esgi;
 
         import fr.esgi.components.cart.adapter.CartDtoAdapter;
+        import fr.esgi.components.user.adapter.RoleDtoAdapter;
         import fr.esgi.components.user.adapter.UserDtoAdapter;
         import fr.esgi.reporitories.carts.services.CartData;
         import fr.esgi.reporitories.carts.services.HibernateCartData;
@@ -58,4 +59,7 @@ public class App
 
     @Bean
     public UserDtoAdapter UserDtoAdapter(){return new UserDtoAdapter();}
+
+    @Bean
+    public RoleDtoAdapter RoleDtoAdapter(){return new RoleDtoAdapter();}
 }

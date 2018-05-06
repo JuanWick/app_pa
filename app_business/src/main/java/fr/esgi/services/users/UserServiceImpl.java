@@ -1,9 +1,22 @@
 package fr.esgi.services.users;
 
+import entities.Role;
 import entities.User;
 import fr.esgi.reporitories.users.services.UserData;
 
+import java.util.List;
+
 public class UserServiceImpl implements UserService {
+
+    @Override
+    public Integer create(UserData userData, User user, Integer roleId) {
+        Role role = new Role();
+        role.setId(roleId);
+        user.getRoles().add(role);
+        user = userData.save(user);
+
+        return user.getId();
+    }
 
     @Override
     public User getById(UserData userData, int id) {
@@ -13,5 +26,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(UserData userData, User user) {
         return userData.save(user);
+    }
+
+    @Override
+    public List<Role> getRoles(UserData userData) {
+        return userData.getRoles();
     }
 }

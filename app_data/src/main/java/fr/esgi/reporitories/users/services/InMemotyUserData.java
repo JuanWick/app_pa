@@ -1,5 +1,6 @@
 package fr.esgi.reporitories.users.services;
 
+import entities.Role;
 import entities.User;
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class InMemotyUserData implements UserData{
     }
 
     @Override
-    public List<User> getAll() {
-        return users;
+    public Integer create(User user) {
+        return null;
     }
 
     @Override
@@ -38,6 +39,11 @@ public class InMemotyUserData implements UserData{
 
     @Override
     public User save(User user) {
+        return null;
+    }
+
+    @Override
+    public List<Role> getRoles() {
         return null;
     }
 

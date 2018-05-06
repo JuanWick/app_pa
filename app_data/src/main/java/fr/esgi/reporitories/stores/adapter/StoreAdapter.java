@@ -16,7 +16,7 @@ public class StoreAdapter {
         store.setCity(storeEntity.getCity());
         store.setCountry(storeEntity.getCountry());
         store.setName(storeEntity.getName());
-        store.setUser(userAdapter.entityToModel(storeEntity.getUser()));
+        store.setUser(userAdapter.entityToModel(storeEntity.getUser(), false));
         store.setZipcode(storeEntity.getZipcode());
 
         return store;
@@ -29,7 +29,7 @@ public class StoreAdapter {
         storeEntity.setCity(store.getCity());
         storeEntity.setCountry(store.getCountry());
         storeEntity.setName(store.getName());
-        storeEntity.setUser(userAdapter.modelToEntity(store.getUser()));
+        storeEntity.setUser(userAdapter.modelToEntity(store.getUser(), false));
         storeEntity.setZipcode(store.getZipcode());
         return storeEntity;
     }
