@@ -1,18 +1,21 @@
 package fr.esgi.reporitories.carts.dao;
 
+import fr.esgi.reporitories.products.dao.TProductEntity;
 import fr.esgi.reporitories.users.dao.TUserEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "t_cart", schema = "pa_data", catalog = "pa_data")
-public class TCartEntity {
+public class TCartEntity implements Serializable {
     private int id;
-    private Collection<RCartProductEntity> rCartProductsById;
-    private Collection<RSharedCartEntity> rSharedCartsById;
-    private TUserEntity tUserByUserId;
+    private Collection<TProductEntity> products;
+    private Collection<TUserEntity> sharedUsers;
+    private TUserEntity user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +26,41 @@ public class TCartEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "r_users_carts",
+            joinColumns = @JoinColumn(name = "cart_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"))
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    public Collection<TUserEntity> getSharedUsers() {
+        return sharedUsers;
+    }
+
+    public void setSharedUsers(Collection<TUserEntity> sharedUsers) {
+        this.sharedUsers = sharedUsers;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    public TUserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(TUserEntity user) {
+        this.user = user;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "r_Products_Carts",
+            joinColumns = @JoinColumn(name = "cart_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
+    public Collection<TProductEntity> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Collection<TProductEntity> products) {
+        this.products = products;
     }
 
     @Override
@@ -37,33 +75,5 @@ public class TCartEntity {
     public int hashCode() {
 
         return Objects.hash(id);
-    }
-
-    @OneToMany(mappedBy = "tCartByCartId")
-    public Collection<RCartProductEntity> getrCartProductsById() {
-        return rCartProductsById;
-    }
-
-    public void setrCartProductsById(Collection<RCartProductEntity> rCartProductsById) {
-        this.rCartProductsById = rCartProductsById;
-    }
-
-    @OneToMany(mappedBy = "tCartByCartId")
-    public Collection<RSharedCartEntity> getrSharedCartsById() {
-        return rSharedCartsById;
-    }
-
-    public void setrSharedCartsById(Collection<RSharedCartEntity> rSharedCartsById) {
-        this.rSharedCartsById = rSharedCartsById;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    public TUserEntity gettUserByUserId() {
-        return tUserByUserId;
-    }
-
-    public void settUserByUserId(TUserEntity tUserByUserId) {
-        this.tUserByUserId = tUserByUserId;
     }
 }

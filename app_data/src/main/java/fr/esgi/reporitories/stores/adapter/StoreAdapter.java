@@ -9,27 +9,27 @@ public class StoreAdapter {
     @Autowired
     UserAdapter userAdapter;
 
-    public Store adapt(TStoreEntity storeEntity){
+    public Store entityToModel(TStoreEntity storeEntity){
         Store store = new Store();
         store.setId(storeEntity.getId());
         store.setAddress(storeEntity.getAddress());
         store.setCity(storeEntity.getCity());
         store.setCountry(storeEntity.getCountry());
         store.setName(storeEntity.getName());
-        store.setUser(userAdapter.adapt(storeEntity.gettUserByUserId()));
+        store.setUser(userAdapter.entityToModel(storeEntity.getUser()));
         store.setZipcode(storeEntity.getZipcode());
 
         return store;
     }
 
-    public TStoreEntity convert(Store store){
+    public TStoreEntity modelToEntity(Store store){
         TStoreEntity storeEntity = new TStoreEntity();
         storeEntity.setId(store.getId());
         storeEntity.setAddress(store.getAddress());
         storeEntity.setCity(store.getCity());
         storeEntity.setCountry(store.getCountry());
         storeEntity.setName(store.getName());
-        storeEntity.settUserByUserId(userAdapter.convert(store.getUser()));
+        storeEntity.setUser(userAdapter.modelToEntity(store.getUser()));
         storeEntity.setZipcode(store.getZipcode());
         return storeEntity;
     }

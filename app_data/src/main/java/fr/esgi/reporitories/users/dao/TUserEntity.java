@@ -1,9 +1,8 @@
 package fr.esgi.reporitories.users.dao;
 
-import fr.esgi.reporitories.carts.dao.RSharedCartEntity;
 import fr.esgi.reporitories.carts.dao.TCartEntity;
-import fr.esgi.reporitories.loyalties.dao.RLoyaltyCardEntity;
 import fr.esgi.reporitories.stores.dao.TStoreEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -14,14 +13,15 @@ import java.util.Objects;
 public class TUserEntity {
     private int id;
     private String name;
-    private String firstname;
-    private Collection<RLoyaltyCardEntity> rLoyaltyCardsById;
-    private Collection<RSharedCartEntity> rSharedCartsById;
-    private Collection<RUserRoleEntity> rUserRolesById;
-    private Collection<TCartEntity> tCartsById;
-    private Collection<TStoreEntity> tStoresById;
+    private String firstName;
+    private Collection<TStoreEntity> loyaltyStores;
+    private Collection<TCartEntity> sharedCarts;
+    private Collection<TRoleEntity> roles;
+    private Collection<TCartEntity> carts;
+    private Collection<TStoreEntity> stores;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -42,13 +42,13 @@ public class TUserEntity {
     }
 
     @Basic
-    @Column(name = "firstname")
-    public String getFirstname() {
-        return firstname;
+    @Column(name = "firstName")
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     @Override
@@ -58,57 +58,66 @@ public class TUserEntity {
         TUserEntity that = (TUserEntity) o;
         return id == that.id &&
                 Objects.equals(name, that.name) &&
-                Objects.equals(firstname, that.firstname);
+                Objects.equals(firstName, that.firstName);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, firstname);
+        return Objects.hash(id, name, firstName);
     }
 
-    @OneToMany(mappedBy = "tUserByUserId")
-    public Collection<RLoyaltyCardEntity> getrLoyaltyCardsById() {
-        return rLoyaltyCardsById;
+    @ManyToMany
+    @JoinTable(name = "r_users_stores",
+            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "store_id",referencedColumnName = "id"))
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    public Collection<TStoreEntity> getLoyaltyStores() {
+        return loyaltyStores;
     }
 
-    public void setrLoyaltyCardsById(Collection<RLoyaltyCardEntity> rLoyaltyCardsById) {
-        this.rLoyaltyCardsById = rLoyaltyCardsById;
+    public void setLoyaltyStores(Collection<TStoreEntity> loyaltyStores) {
+        this.loyaltyStores = loyaltyStores;
     }
 
-    @OneToMany(mappedBy = "tUserByUserId")
-    public Collection<RSharedCartEntity> getrSharedCartsById() {
-        return rSharedCartsById;
+    @ManyToMany(mappedBy="sharedUsers")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    public Collection<TCartEntity> getSharedCarts() {
+        return sharedCarts;
     }
 
-    public void setrSharedCartsById(Collection<RSharedCartEntity> rSharedCartsById) {
-        this.rSharedCartsById = rSharedCartsById;
+    public void setSharedCarts(Collection<TCartEntity> sharedCarts) {
+        this.sharedCarts = sharedCarts;
     }
 
-    @OneToMany(mappedBy = "tUserByUserId")
-    public Collection<RUserRoleEntity> getrUserRolesById() {
-        return rUserRolesById;
+    @ManyToMany
+    @JoinTable(name = "r_users_roles",
+            joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    public Collection<TRoleEntity> getRoles() {
+        return roles;
     }
 
-    public void setrUserRolesById(Collection<RUserRoleEntity> rUserRolesById) {
-        this.rUserRolesById = rUserRolesById;
+    public void setRoles(Collection<TRoleEntity> roles) {
+        this.roles = roles;
     }
 
-    @OneToMany(mappedBy = "tUserByUserId")
-    public Collection<TCartEntity> gettCartsById() {
-        return tCartsById;
+    @OneToMany(mappedBy = "user")
+    public Collection<TCartEntity> getCarts() {
+        return carts;
     }
 
-    public void settCartsById(Collection<TCartEntity> tCartsById) {
-        this.tCartsById = tCartsById;
+    public void setCarts(Collection<TCartEntity> carts) {
+        this.carts = carts;
     }
 
-    @OneToMany(mappedBy = "tUserByUserId")
-    public Collection<TStoreEntity> gettStoresById() {
-        return tStoresById;
+    @OneToMany(mappedBy = "user")
+    public Collection<TStoreEntity> getStores() {
+        return stores;
     }
 
-    public void settStoresById(Collection<TStoreEntity> tStoresById) {
-        this.tStoresById = tStoresById;
+    public void setStores(Collection<TStoreEntity> stores) {
+        this.stores = stores;
     }
 }

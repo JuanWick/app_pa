@@ -1,7 +1,8 @@
 package fr.esgi.reporitories.stores.dao;
 
-import fr.esgi.reporitories.loyalties.dao.RLoyaltyCardEntity;
+import fr.esgi.reporitories.products.dao.TProductEntity;
 import fr.esgi.reporitories.users.dao.TUserEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -16,11 +17,12 @@ public class TStoreEntity {
     private String zipcode;
     private String city;
     private String country;
-    private Collection<RLoyaltyCardEntity> rLoyaltyCardsById;
-    private Collection<RStoreProductEntity> rStoreProductsById;
-    private TUserEntity tUserByUserId;
+    private Collection<TUserEntity> loyaltyUsers;
+    private Collection<TProductEntity> products;
+    private TUserEntity user;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -99,31 +101,36 @@ public class TStoreEntity {
         return Objects.hash(id, name, address, zipcode, city, country);
     }
 
-    @OneToMany(mappedBy = "tStoreByStoreId")
-    public Collection<RLoyaltyCardEntity> getrLoyaltyCardsById() {
-        return rLoyaltyCardsById;
+    @ManyToMany(mappedBy = "loyaltyStores")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    public Collection<TUserEntity> getLoyaltyUsers() {
+        return loyaltyUsers;
     }
 
-    public void setrLoyaltyCardsById(Collection<RLoyaltyCardEntity> rLoyaltyCardsById) {
-        this.rLoyaltyCardsById = rLoyaltyCardsById;
+    public void setLoyaltyUsers(Collection<TUserEntity> loyaltyUsers) {
+        this.loyaltyUsers = loyaltyUsers;
     }
 
-    @OneToMany(mappedBy = "tStoreByStoreId")
-    public Collection<RStoreProductEntity> getrStoreProductsById() {
-        return rStoreProductsById;
+    @ManyToMany
+    @JoinTable(name = "r_stores_products",
+            joinColumns = @JoinColumn(name = "store_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    public Collection<TProductEntity> getProducts() {
+        return products;
     }
 
-    public void setrStoreProductsById(Collection<RStoreProductEntity> rStoreProductsById) {
-        this.rStoreProductsById = rStoreProductsById;
+    public void setProducts(Collection<TProductEntity> products) {
+        this.products = products;
     }
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    public TUserEntity gettUserByUserId() {
-        return tUserByUserId;
+    public TUserEntity getUser() {
+        return user;
     }
 
-    public void settUserByUserId(TUserEntity tUserByUserId) {
-        this.tUserByUserId = tUserByUserId;
+    public void setUser(TUserEntity user) {
+        this.user = user;
     }
 }

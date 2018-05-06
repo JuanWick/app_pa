@@ -9,9 +9,10 @@ import java.util.Objects;
 public class TCategoryEntity {
     private int id;
     private String name;
-    private Collection<RProductCategoryEntity> rProductCategoriesById;
+    private Collection<TProductEntity> products;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -46,12 +47,12 @@ public class TCategoryEntity {
         return Objects.hash(id, name);
     }
 
-    @OneToMany(mappedBy = "tCategoryByCategoryId")
-    public Collection<RProductCategoryEntity> getrProductCategoriesById() {
-        return rProductCategoriesById;
+    @ManyToMany(mappedBy = "categories")
+    public Collection<TProductEntity> getProducts() {
+        return products;
     }
 
-    public void setrProductCategoriesById(Collection<RProductCategoryEntity> rProductCategoriesById) {
-        this.rProductCategoriesById = rProductCategoriesById;
+    public void setProducts(Collection<TProductEntity> products) {
+        this.products = products;
     }
 }

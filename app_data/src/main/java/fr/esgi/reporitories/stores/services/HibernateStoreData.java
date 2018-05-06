@@ -13,7 +13,7 @@ public class HibernateStoreData implements StoreData {
     @Autowired
     StoreRepository storeRepository;
 
-    StoreAdapter storeAdapter = new StoreAdapter();
+    private StoreAdapter storeAdapter = new StoreAdapter();
 
     @Override
     public List<Store> getAll() {
@@ -21,20 +21,24 @@ public class HibernateStoreData implements StoreData {
         List<Store> listStore = new ArrayList<>();
 
         for(TStoreEntity entity:list){
-            listStore.add(storeAdapter.adapt(entity));
+            listStore.add(storeAdapter.entityToModel(entity));
         }
         return listStore;
     }
 
     @Override
     public Store getById(int id) {
-        return storeAdapter.adapt(storeRepository.findById(id).get());
+        Store store = null;
+        if(storeRepository.findById(id).isPresent()){
+            store = storeAdapter.entityToModel(storeRepository.findById(id).get());
+        }
+        return store;
     }
 
     @Override
     public Store save(Store store) {
-        TStoreEntity storeEntity = storeRepository.save(storeAdapter.convert(store));
-        return storeAdapter.adapt(storeEntity);
+        TStoreEntity storeEntity = storeRepository.save(storeAdapter.modelToEntity(store));
+        return storeAdapter.entityToModel(storeEntity);
     }
 
     @Override

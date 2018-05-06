@@ -1,24 +1,28 @@
 package fr.esgi.reporitories.products.dao;
 
-import fr.esgi.reporitories.stores.dao.RStoreProductEntity;
-import fr.esgi.reporitories.carts.dao.RCartProductEntity;
+import fr.esgi.reporitories.carts.dao.TCartEntity;
+import fr.esgi.reporitories.stores.dao.TStoreEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "t_product", schema = "pa_data", catalog = "pa_data")
-public class TProductEntity {
+public class TProductEntity implements Serializable {
     private int id;
     private String name;
     private String info;
     private String barreCode;
-    private Collection<RCartProductEntity> rCartProductsById;
-    private Collection<RProductCategoryEntity> rProductCategoriesById;
-    private Collection<RStoreProductEntity> rStoreProductsById;
+    private Collection<TCartEntity> carts;
+    private Collection<TCategoryEntity> categories;
+    private Collection<TStoreEntity> stores;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -58,6 +62,37 @@ public class TProductEntity {
         this.barreCode = barreCode;
     }
 
+    @ManyToMany(mappedBy = "products")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    public Collection<TCartEntity> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Collection<TCartEntity> carts) {
+        this.carts = carts;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "r_products_categories",
+            joinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id",referencedColumnName = "id"))
+    public Collection<TCategoryEntity> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Collection<TCategoryEntity> categories) {
+        this.categories = categories;
+    }
+
+    @ManyToMany(mappedBy = "products")
+    public Collection<TStoreEntity> getStores() {
+        return stores;
+    }
+
+    public void setStores(Collection<TStoreEntity> stores) {
+        this.stores = stores;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,32 +108,5 @@ public class TProductEntity {
     public int hashCode() {
 
         return Objects.hash(id, name, info, barreCode);
-    }
-
-    @OneToMany(mappedBy = "tProductByProductId")
-    public Collection<RCartProductEntity> getrCartProductsById() {
-        return rCartProductsById;
-    }
-
-    public void setrCartProductsById(Collection<RCartProductEntity> rCartProductsById) {
-        this.rCartProductsById = rCartProductsById;
-    }
-
-    @OneToMany(mappedBy = "tProductByProductId")
-    public Collection<RProductCategoryEntity> getrProductCategoriesById() {
-        return rProductCategoriesById;
-    }
-
-    public void setrProductCategoriesById(Collection<RProductCategoryEntity> rProductCategoriesById) {
-        this.rProductCategoriesById = rProductCategoriesById;
-    }
-
-    @OneToMany(mappedBy = "tProductByProductId")
-    public Collection<RStoreProductEntity> getrStoreProductsById() {
-        return rStoreProductsById;
-    }
-
-    public void setrStoreProductsById(Collection<RStoreProductEntity> rStoreProductsById) {
-        this.rStoreProductsById = rStoreProductsById;
     }
 }

@@ -1,11 +1,10 @@
 package fr.esgi;
 
+import entities.Category;
 import fr.esgi.reporitories.carts.adapter.CartAdapter;
-import fr.esgi.reporitories.carts.adapter.CartProductAdapter;
-import fr.esgi.reporitories.carts.adapter.SharedCartAdapter;
+import fr.esgi.reporitories.products.adapter.CategoryAdapter;
+import fr.esgi.reporitories.products.adapter.ProductAdapter;
 import fr.esgi.reporitories.stores.adapter.StoreAdapter;
-import fr.esgi.reporitories.stores.services.HibernateStoreData;
-import fr.esgi.reporitories.stores.services.StoreData;
 import fr.esgi.reporitories.users.adapter.UserAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,12 +29,13 @@ public class ServicesConfiguration {
     }
 
     @Bean
-    public CartProductAdapter CartProductAdapter(){
-        return new CartProductAdapter();
+    public ProductAdapter ProductAdapter(){
+        return new ProductAdapter();
     }
 
     @Bean
-    public SharedCartAdapter SharedCartAdapter(){
-        return new SharedCartAdapter();
+    public CategoryAdapter CategoryAdapter(){
+        return new CategoryAdapter();
     }
+
 }

@@ -3,11 +3,15 @@ package fr.esgi.components.cart;
 import entities.Cart;
 import fr.esgi.components.cart.adapter.CartDtoAdapter;
 import fr.esgi.components.cart.dto.CartDto;
+import fr.esgi.components.cart.dto.CartProductsAddDto;
 import fr.esgi.reporitories.carts.services.CartData;
 import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.carts.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/carts")
@@ -53,5 +57,30 @@ public class CartController {
             cartDto =  cartDtoAdapter.convertToDto(cart);
         }
         return cartDto;
+    }
+
+    /**
+     * Permet l'ajout de produit à un panier
+     * @param cartProductsAddDto, liste des produits à ajouter au Panier
+     */
+    @PostMapping("/products")
+    public CartDto addProducts(@RequestBody final CartProductsAddDto cartProductsAddDto){
+        CartDto cartDto = null;
+        Cart cart = cartService.addProducts(cartData,cartProductsAddDto.getCartId(),cartProductsAddDto.getProductsId());
+
+        if(null != cart){
+            cartDto = cartDtoAdapter.convertToDto(cart);
+        }
+        return cartDto;
+    }
+
+    /**
+     * Permet la suppression d'un produit d'un panier
+     * @param cartId, id du panier
+     * @param productId, id du produit à supprimer
+     */
+    @DeleteMapping("/{cartId}/product/{productId}")
+    public void deleteProduct(@PathVariable(value="cartId") int cartId,@PathVariable(value="productId") int productId){
+        cartService.deleteProduct(cartData,cartId,productId);
     }
 }

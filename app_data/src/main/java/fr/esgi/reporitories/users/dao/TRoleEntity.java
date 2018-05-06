@@ -1,5 +1,7 @@
 package fr.esgi.reporitories.users.dao;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
@@ -9,9 +11,10 @@ import java.util.Objects;
 public class TRoleEntity {
     private int id;
     private String name;
-    private Collection<RUserRoleEntity> rUserRolesById;
+    private Collection<TUserEntity> usersById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int getId() {
         return id;
@@ -46,12 +49,13 @@ public class TRoleEntity {
         return Objects.hash(id, name);
     }
 
-    @OneToMany(mappedBy = "tRoleByRoleId")
-    public Collection<RUserRoleEntity> getrUserRolesById() {
-        return rUserRolesById;
+    @ManyToMany(mappedBy = "roles")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    public Collection<TUserEntity> getUsersById() {
+        return usersById;
     }
 
-    public void setrUserRolesById(Collection<RUserRoleEntity> rUserRolesById) {
-        this.rUserRolesById = rUserRolesById;
+    public void setUsersById(Collection<TUserEntity> usersById) {
+        this.usersById = usersById;
     }
 }

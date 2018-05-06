@@ -13,6 +13,7 @@ package fr.esgi;
         import fr.esgi.services.carts.CartServiceImpl;
         import fr.esgi.services.stores.StoreService;
         import fr.esgi.services.stores.StoreServiceImpl;
+        import fr.esgi.services.stores.StoreServiceImpl;
         import fr.esgi.services.users.UserService;
         import fr.esgi.services.users.UserServiceImpl;
         import org.springframework.boot.SpringApplication;
