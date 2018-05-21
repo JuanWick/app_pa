@@ -1,15 +1,11 @@
-package entities;
+package fr.esgi.components.store.dto;
 
+import fr.esgi.components.user.dto.UserDto;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.List;
 
 @Data
-@Builder
-public class Store {
+public class StoreDto {
     private Integer id;
     private String name;
     private String address;
@@ -18,7 +14,6 @@ public class Store {
     private String country;
     private Double latitude;
     private Double longitude;
-    private User user;
-    private List<Product> products;
-    private List<User> users;
+    private UserDto user;
+
 }

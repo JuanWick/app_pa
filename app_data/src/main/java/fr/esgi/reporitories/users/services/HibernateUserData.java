@@ -4,8 +4,8 @@ import entities.Role;
 import entities.User;
 import fr.esgi.reporitories.users.RoleRepository;
 import fr.esgi.reporitories.users.UserRepository;
-import fr.esgi.reporitories.users.adapter.RoleAdapter;
-import fr.esgi.reporitories.users.adapter.UserAdapter;
+import fr.esgi.reporitories.users.adapter.RoleDataAdapter;
+import fr.esgi.reporitories.users.adapter.UserDataAdapter;
 import fr.esgi.reporitories.users.dao.TRoleEntity;
 import fr.esgi.reporitories.users.dao.TUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,14 @@ public class HibernateUserData implements UserData {
     RoleRepository roleRepository;
 
     @Autowired
-    UserAdapter userAdapter;
+    UserDataAdapter userDataAdapter;
 
     @Autowired
-    RoleAdapter roleAdapter;
+    RoleDataAdapter roleDataAdapter;
 
     @Override
     public Integer create(User user) {
-        TUserEntity userEntity = userRepository.save(userAdapter.modelToEntity(user, true));
+        TUserEntity userEntity = userRepository.save(userDataAdapter.modelToEntity(user, true));
         return userEntity.getId();
     }
 
@@ -38,15 +38,15 @@ public class HibernateUserData implements UserData {
         User user = null;
         if(userRepository.findById(id).isPresent()){
             TUserEntity  tUserEntity = userRepository.findById(id).get();
-            user = userAdapter.entityToModel(tUserEntity, true);
+            user = userDataAdapter.entityToModel(tUserEntity, true);
         }
         return user;
     }
 
     @Override
     public User save(User user) {
-        TUserEntity userEntity = userRepository.save(userAdapter.modelToEntity(user, true));
-        return userAdapter.entityToModel(userEntity, true);
+        TUserEntity userEntity = userRepository.save(userDataAdapter.modelToEntity(user, true));
+        return userDataAdapter.entityToModel(userEntity, true);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class HibernateUserData implements UserData {
         List<TRoleEntity> roleEntities = (List<TRoleEntity>) roleRepository.findAll();
 
         for(TRoleEntity roleEntity : roleEntities){
-            Role role = roleAdapter.entityToModel(roleEntity);
+            Role role = roleDataAdapter.entityToModel(roleEntity);
             roles.add(role);
         }
 
@@ -69,6 +69,12 @@ public class HibernateUserData implements UserData {
 
     @Override
     public void delete(int id) {
+        if(userRepository.findById(id).isPresent()){
+            TUserEntity userEntity = userRepository.findById(id).get();
 
+            if(null != userEntity){
+            userRepository.delete(userEntity);
+            }
+        }
     }
 }

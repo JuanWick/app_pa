@@ -1,7 +1,6 @@
 package fr.esgi.components.cart.dto;
 
-import entities.Product;
-import entities.User;
+import fr.esgi.components.product.dto.ProductDto;
 import lombok.Data;
 
 import java.util.List;

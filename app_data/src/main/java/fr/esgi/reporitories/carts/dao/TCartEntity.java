@@ -43,6 +43,7 @@ public class TCartEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public TUserEntity getUser() {
         return user;
     }
@@ -55,6 +56,7 @@ public class TCartEntity implements Serializable {
     @JoinTable(name = "r_Products_Carts",
             joinColumns = @JoinColumn(name = "cart_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public Collection<TProductEntity> getProducts() {
         return products;
     }

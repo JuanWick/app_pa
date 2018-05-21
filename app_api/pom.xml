@@ -8,7 +8,6 @@
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>fr.esgi</groupId>
   <artifactId>app_api</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -43,31 +42,13 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>3.17</version>
+    </dependency>
 
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>DEV</id>
-      <build>
-        <resources>
-          <resource>
-            <directory>app_api/src/main/java/resources/DEV</directory>
-          </resource>
-        </resources>
-      </build>
-    </profile>
-    <profile>
-      <id>PROD</id>
-      <build>
-        <resources>
-          <resource>
-            <directory>app_api/src/main/java/resources/PROD</directory>
-          </resource>
-        </resources>
-      </build>
-    </profile>
-  </profiles>
 
   <build>
     <plugins>

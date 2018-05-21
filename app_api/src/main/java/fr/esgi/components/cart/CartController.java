@@ -1,17 +1,13 @@
 package fr.esgi.components.cart;
 
 import entities.Cart;
-import fr.esgi.components.cart.adapter.CartDtoAdapter;
+import fr.esgi.components.cart.adapter.CartApiAdapter;
 import fr.esgi.components.cart.dto.CartDto;
 import fr.esgi.components.cart.dto.CartProductsAddDto;
 import fr.esgi.reporitories.carts.services.CartData;
-import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.carts.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/carts")
@@ -24,39 +20,48 @@ public class CartController {
     CartService cartService;
 
     private final
-    CartDtoAdapter cartDtoAdapter;
+    CartApiAdapter cartApiAdapter;
 
     @Autowired
-    public CartController(CartData cartData, CartService cartService, CartDtoAdapter cartDtoAdapter) {
+    public CartController(CartData cartData, CartService cartService, CartApiAdapter cartApiAdapter) {
         this.cartData = cartData;
         this.cartService = cartService;
-        this.cartDtoAdapter = cartDtoAdapter;
+        this.cartApiAdapter = cartApiAdapter;
     }
 
     /**
      * Création d'un panier à partir de l'ID de l'utilisateur passé en paramètre.
-     * @param id de l'utilisateur
+     * @param cartId de l'utilisateur
      * @return ID du panier crée
      */
-    @PostMapping("/{id}")
-    public Integer createCart(@PathVariable(value="id") int id){
-        return cartService.createCart(cartData,id).getId();
+    @PostMapping("/{cartId}")
+    public Integer create(@PathVariable(value="cartId") int cartId){
+        return cartService.createCart(cartData,cartId).getId();
     }
 
     /**
      * Récupération d'un panier à partir de son ID
-     * @param id du panier
+     * @param cartId du panier
      * @return ID de l'utilisateur possédant le panier et liste des ID des produits
      */
-    @GetMapping("/{id}")
-    public CartDto getById(@PathVariable(value="id") int id) {
-        Cart cart = cartData.getById(id);
+    @GetMapping("/{cartId}")
+    public CartDto getById(@PathVariable(value="cartId") int cartId) {
+        Cart cart = cartData.getById(cartId);
         CartDto cartDto = null;
 
         if(null != cart){
-            cartDto =  cartDtoAdapter.convertToDto(cart);
+            cartDto =  cartApiAdapter.convertToDto(cart);
         }
         return cartDto;
+    }
+
+    /**
+     * Permet la suppression d'un panier
+     * @param cartId, id du panier
+     */
+    @DeleteMapping("/{cartId}")
+    public void delete(@PathVariable(value="cartId") int cartId){
+        cartService.delete(cartData,cartId);
     }
 
     /**
@@ -69,7 +74,7 @@ public class CartController {
         Cart cart = cartService.addProducts(cartData,cartProductsAddDto.getCartId(),cartProductsAddDto.getProductsId());
 
         if(null != cart){
-            cartDto = cartDtoAdapter.convertToDto(cart);
+            cartDto = cartApiAdapter.convertToDto(cart);
         }
         return cartDto;
     }

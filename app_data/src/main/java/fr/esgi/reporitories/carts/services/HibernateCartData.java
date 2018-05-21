@@ -2,7 +2,7 @@ package fr.esgi.reporitories.carts.services;
 
 import entities.Cart;
 import fr.esgi.reporitories.carts.CartRepository;
-import fr.esgi.reporitories.carts.adapter.CartAdapter;
+import fr.esgi.reporitories.carts.adapter.CartDataAdapter;
 import fr.esgi.reporitories.carts.dao.TCartEntity;
 import fr.esgi.reporitories.products.dao.TProductEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ public class HibernateCartData implements CartData {
     @Autowired
     private CartRepository cartRepository;
     @Autowired
-    private CartAdapter cartAdapter;
+    private CartDataAdapter cartDataAdapter;
 
     public HibernateCartData() {}
 
@@ -23,16 +23,24 @@ public class HibernateCartData implements CartData {
         Cart cart = null;
         if(cartRepository.findById(id).isPresent()){
             TCartEntity  tCartEntity = cartRepository.findById(id).get();
-            cart = cartAdapter.entityToModel(tCartEntity, true);
+            cart = cartDataAdapter.entityToModel(tCartEntity, true);
         }
         return cart;
     }
 
     @Override
     public Cart save(Cart cart) {
-        TCartEntity cartEntity = cartAdapter.modelToEntity(cart, true);
+        TCartEntity cartEntity = cartDataAdapter.modelToEntity(cart, true);
         cartRepository.save(cartEntity);
-        return cartAdapter.entityToModel(cartEntity, true);
+        return cartDataAdapter.entityToModel(cartEntity, true);
+    }
+
+    @Override
+    public void delete(int id) {
+        if(cartRepository.findById(id).isPresent()){
+            TCartEntity cartEntity = cartRepository.findById(id).get();
+            cartRepository.delete(cartEntity);
+        }
     }
 
     @Override

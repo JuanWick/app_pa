@@ -5,7 +5,7 @@ import entities.User;
 import fr.esgi.components.user.dto.RoleDto;
 import fr.esgi.components.user.dto.UserDto;
 
-public class RoleDtoAdapter {
+public class RoleApiAdapter {
     public Role convertToModel (RoleDto roleDto){
         Role role = new Role();
         role.setId(roleDto.getId());

@@ -32,4 +32,9 @@ public class UserServiceImpl implements UserService {
     public List<Role> getRoles(UserData userData) {
         return userData.getRoles();
     }
+
+    @Override
+    public void delete(UserData userData, int id) {
+        userData.delete(id);
+    }
 }

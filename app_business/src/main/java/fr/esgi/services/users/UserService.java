@@ -13,4 +13,5 @@ public interface UserService {
     User getById(UserData userData, int id);
     User save(UserData userData, User user);
     List<Role> getRoles(UserData userData);
+    void delete(UserData userData, int id);
 }

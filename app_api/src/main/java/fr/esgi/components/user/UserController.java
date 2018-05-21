@@ -2,8 +2,8 @@ package fr.esgi.components.user;
 
 import entities.Role;
 import entities.User;
-import fr.esgi.components.user.adapter.RoleDtoAdapter;
-import fr.esgi.components.user.adapter.UserDtoAdapter;
+import fr.esgi.components.user.adapter.RoleApiAdapter;
+import fr.esgi.components.user.adapter.UserApiAdapter;
 import fr.esgi.components.user.dto.RoleDto;
 import fr.esgi.components.user.dto.UserDto;
 import fr.esgi.reporitories.users.services.UserData;
@@ -25,17 +25,28 @@ public class UserController {
     UserService userService;
 
     private final
-    UserDtoAdapter userDtoAdapter;
+    UserApiAdapter userApiAdapter;
 
     private final
-    RoleDtoAdapter roleDtoAdapter;
+    RoleApiAdapter roleApiAdapter;
 
     @Autowired
-    public UserController(UserData userData, UserService userService, UserDtoAdapter userDtoAdapter, RoleDtoAdapter roleDtoAdapter) {
+    public UserController(UserData userData, UserService userService, UserApiAdapter userApiAdapter, RoleApiAdapter roleApiAdapter) {
         this.userData = userData;
         this.userService = userService;
-        this.userDtoAdapter = userDtoAdapter;
-        this.roleDtoAdapter = roleDtoAdapter;
+        this.userApiAdapter = userApiAdapter;
+        this.roleApiAdapter = roleApiAdapter;
+    }
+
+    /**
+     * Permet la création d'un utilisateur
+     * @param userDto Dto représentant un utilisateur
+     * @return UserDto
+     */
+    @PostMapping("")
+    public UserDto saveOrUpdate(@RequestBody final UserDto userDto){
+        User user = userApiAdapter.convertToModel(userDto);
+        return userApiAdapter.convertToDto(userData.save(user));
     }
 
     /**
@@ -49,9 +60,18 @@ public class UserController {
         UserDto userDto = null;
 
         if(null != user){
-            userDto =  userDtoAdapter.convertToDto(user);
+            userDto =  userApiAdapter.convertToDto(user);
         }
         return userDto;
+    }
+
+    /**
+     * Permet la suppression d'un utilisateur
+     * @param userId, id de l'utilisateur
+     */
+    @DeleteMapping("/{userId}")
+    public void delete(@PathVariable(value="userId") int userId){
+        userService.delete(userData,userId);
     }
 
     /**
@@ -63,7 +83,7 @@ public class UserController {
         List<Role> roles = userData.getRoles();
         List<RoleDto> roleDtos = new ArrayList<>();
         for(Role role : roles ){
-            RoleDto roleDto = roleDtoAdapter.convertToDto(role);
+            RoleDto roleDto = roleApiAdapter.convertToDto(role);
             roleDtos.add(roleDto);
         }
         return roleDtos;
@@ -90,17 +110,6 @@ public class UserController {
     }
 
     /**
-     * Permet la création d'un utilisateur
-     * @param userDto Dto représentant un utilisateur
-     * @return UserDto
-     */
-    @PostMapping("")
-    public UserDto create(@RequestBody final UserDto userDto){
-        User user = userDtoAdapter.convertToModel(userDto);
-        return userDtoAdapter.convertToDto(userData.save(user));
-    }
-
-    /**
      * Permet l'assignation d'un role à l'utilisateur
      * @param userId id de l'utilisateur
      * @param roleId id du role à ajouter à l'utilisateur
@@ -120,4 +129,5 @@ public class UserController {
         }
         userData.save(user);
     }
+
 }

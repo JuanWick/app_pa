@@ -4,13 +4,13 @@ import entities.Cart;
 import entities.Product;
 import entities.User;
 import fr.esgi.components.cart.dto.CartDto;
-import fr.esgi.components.cart.dto.ProductDto;
+import fr.esgi.components.product.dto.ProductDto;
 import fr.esgi.components.cart.dto.SharedDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartDtoAdapter {
+public class CartApiAdapter {
 
     public Cart convertToModel (CartDto cartDto){
         Cart cart = new Cart();
@@ -22,8 +22,7 @@ public class CartDtoAdapter {
         List<Product> products = new ArrayList<>();
         if(null != cartDto.getProducts()){
             for(ProductDto productDto: cartDto.getProducts()){
-                Product product = new Product();
-                product.setId(productDto.getProductId());
+                Product product = Product.builder().id(productDto.getProductId()).build();
                 products.add(product);
             }
         }
@@ -49,8 +48,7 @@ public class CartDtoAdapter {
         List<ProductDto> productsDto = new ArrayList<>();
         if(null != cart.getProducts()){
             for(Product product:cart.getProducts()){
-                ProductDto productDto = new ProductDto();
-                productDto.setProductId(product.getId());
+                ProductDto productDto = ProductDto.builder().productId(product.getId()).build();
                 productsDto.add(productDto);
             }
         }

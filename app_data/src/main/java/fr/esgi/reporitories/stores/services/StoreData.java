@@ -1,14 +1,14 @@
 package fr.esgi.reporitories.stores.services;
 
+import entities.Product;
 import entities.Store;
 
 import java.util.List;
 
 public interface StoreData {
-    List<Store> getAll();
     Store getById(int id);
-    Store save(Store place);
-    Store update(Store place);
+    Store saveOrUpdate(Store store);
+    void deleteProduct(Integer storeId,Integer productId);
+    List<Product> getProducts(int storeId);
     void delete(int id);
-    Store getByShortName(String shortName);
 }

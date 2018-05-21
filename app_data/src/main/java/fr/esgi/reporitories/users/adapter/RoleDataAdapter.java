@@ -5,7 +5,7 @@ import entities.User;
 import fr.esgi.reporitories.users.dao.TRoleEntity;
 import fr.esgi.reporitories.users.dao.TUserEntity;
 
-public class RoleAdapter {
+public class RoleDataAdapter {
     public Role entityToModel(TRoleEntity roleEntity){
         Role role = new Role();
         role.setId(roleEntity.getId());

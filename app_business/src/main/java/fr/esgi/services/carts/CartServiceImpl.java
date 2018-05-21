@@ -26,6 +26,11 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public void delete(CartData cartData, Integer cartId) {
+        cartData.delete(cartId);
+    }
+
+    @Override
     public Cart addProducts(CartData cartData, Integer cartId, List<Integer> productsId) {
         Cart cart = cartData.getById(cartId);
 
@@ -33,8 +38,7 @@ public class CartServiceImpl implements CartService {
             ArrayList newProducts = new ArrayList();
 
             for(Integer id:productsId){
-                Product product = new Product();
-                product.setId(id);
+                Product product = Product.builder().id(id).build();
 
                 newProducts.add(product);
             }

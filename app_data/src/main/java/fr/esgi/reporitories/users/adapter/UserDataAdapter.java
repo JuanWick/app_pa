@@ -1,26 +1,29 @@
 package fr.esgi.reporitories.users.adapter;
 
 import entities.Cart;
-import entities.Product;
 import entities.Role;
 import entities.User;
-import fr.esgi.reporitories.carts.adapter.CartAdapter;
+import fr.esgi.reporitories.carts.adapter.CartDataAdapter;
 import fr.esgi.reporitories.carts.dao.TCartEntity;
-import fr.esgi.reporitories.products.dao.TProductEntity;
 import fr.esgi.reporitories.users.dao.TRoleEntity;
 import fr.esgi.reporitories.users.dao.TUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserAdapter {
+@Component
+public class UserDataAdapter {
 
     @Autowired
-    CartAdapter cartAdapter;
+    CartDataAdapter cartDataAdapter;
 
     @Autowired
-    RoleAdapter roleAdapter;
+    RoleDataAdapter roleDataAdapter;
+
+    public UserDataAdapter() {
+    }
 
     public User entityToModel(TUserEntity userEntity, boolean all){
         User user = new User();
@@ -31,7 +34,7 @@ public class UserAdapter {
         if(all && null != userEntity.getCarts()){
             List<Cart> carts = new ArrayList<>();
             for(TCartEntity cart:userEntity.getCarts()){
-                carts.add(cartAdapter.entityToModel(cart, false));
+                carts.add(cartDataAdapter.entityToModel(cart, false));
             }
             user.setCarts(carts);
         }
@@ -39,7 +42,7 @@ public class UserAdapter {
         if(all && null != userEntity.getRoles()){
             List<Role> roles = new ArrayList<>();
             for(TRoleEntity role:userEntity.getRoles()){
-                roles.add(roleAdapter.entityToModel(role));
+                roles.add(roleDataAdapter.entityToModel(role));
             }
             user.setRoles(roles);
         }
@@ -57,7 +60,7 @@ public class UserAdapter {
         if(all && null != user.getCarts()){
             List<TCartEntity> carts = new ArrayList<>();
             for(Cart cart:user.getCarts()){
-                carts.add(cartAdapter.modelToEntity(cart, false));
+                carts.add(cartDataAdapter.modelToEntity(cart, false));
             }
             userEntity.setCarts(carts);
         }
@@ -65,7 +68,7 @@ public class UserAdapter {
         if(all && null != user.getRoles()){
             List<TRoleEntity> roles = new ArrayList<>();
             for(Role role:user.getRoles()){
-                roles.add(roleAdapter.modelToEntity(role));
+                roles.add(roleDataAdapter.modelToEntity(role));
             }
             userEntity.setRoles(roles);
         }

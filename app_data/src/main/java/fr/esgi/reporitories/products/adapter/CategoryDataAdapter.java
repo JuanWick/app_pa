@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryAdapter {
+public class CategoryDataAdapter {
 
     @Autowired
-    ProductAdapter productAdapter;
+    ProductDataAdapter productDataAdapter;
 
     Category entityToModel(TCategoryEntity categoryEntity){
         Category category = new Category();
@@ -21,7 +21,7 @@ public class CategoryAdapter {
         if(null != categoryEntity.getProducts()){
             List<Product> products = new ArrayList<>();
             for(TProductEntity productEntity:categoryEntity.getProducts()){
-                Product product = productAdapter.entityToModel(productEntity, false);
+                Product product = productDataAdapter.entityToModel(productEntity, false);
                 products.add(product);
             }
             category.setProducts(products);
@@ -36,7 +36,7 @@ public class CategoryAdapter {
         if(null != category.getProducts()){
             ArrayList<TProductEntity> products = new ArrayList<>();
             for(Product product:category.getProducts()){
-                TProductEntity productEntity = productAdapter.modelToEntity(product, false);
+                TProductEntity productEntity = productDataAdapter.modelToEntity(product, false);
                 products.add(productEntity);
             }
             categoryEntity.setProducts(products);

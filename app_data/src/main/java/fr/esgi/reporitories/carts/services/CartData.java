@@ -9,5 +9,6 @@ import java.util.List;
 public interface CartData {
     Cart getById(int id);
     Cart save(Cart cart);
+    void delete(int id);
     void deleteProduct(Integer cartId, Integer productId);
 }
