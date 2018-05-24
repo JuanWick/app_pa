@@ -5,6 +5,7 @@ import fr.esgi.components.cart.adapter.CartApiAdapter;
 import fr.esgi.components.cart.dto.CartDto;
 import fr.esgi.components.cart.dto.CartProductsAddDto;
 import fr.esgi.reporitories.carts.services.CartData;
+import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.carts.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,26 +18,30 @@ public class CartController {
     CartData cartData;
 
     private final
+    UserData userData;
+
+    private final
     CartService cartService;
 
     private final
     CartApiAdapter cartApiAdapter;
 
     @Autowired
-    public CartController(CartData cartData, CartService cartService, CartApiAdapter cartApiAdapter) {
+    public CartController(CartData cartData, UserData userData, CartService cartService, CartApiAdapter cartApiAdapter) {
         this.cartData = cartData;
+        this.userData = userData;
         this.cartService = cartService;
         this.cartApiAdapter = cartApiAdapter;
     }
 
     /**
      * Création d'un panier à partir de l'ID de l'utilisateur passé en paramètre.
-     * @param cartId de l'utilisateur
+     * @param userId de l'utilisateur
      * @return ID du panier crée
      */
-    @PostMapping("/{cartId}")
-    public Integer create(@PathVariable(value="cartId") int cartId){
-        return cartService.createCart(cartData,cartId).getId();
+    @PostMapping("/{userId}")
+    public Integer create(@PathVariable(value="userId") int userId){
+        return cartService.createCart(userData,cartData,userId).getId();
     }
 
     /**
@@ -68,10 +73,10 @@ public class CartController {
      * Permet l'ajout de produit à un panier
      * @param cartProductsAddDto, liste des produits à ajouter au Panier
      */
-    @PostMapping("/products")
-    public CartDto addProducts(@RequestBody final CartProductsAddDto cartProductsAddDto){
+    @PostMapping("/{cartId}/products")
+    public CartDto addProducts(@PathVariable(value="cartId") int cartId,@RequestBody final CartProductsAddDto cartProductsAddDto){
         CartDto cartDto = null;
-        Cart cart = cartService.addProducts(cartData,cartProductsAddDto.getCartId(),cartProductsAddDto.getProductsId());
+        Cart cart = cartService.addProducts(cartData,cartId,cartProductsAddDto.getProductsId());
 
         if(null != cart){
             cartDto = cartApiAdapter.convertToDto(cart);
@@ -84,7 +89,7 @@ public class CartController {
      * @param cartId, id du panier
      * @param productId, id du produit à supprimer
      */
-    @DeleteMapping("/{cartId}/product/{productId}")
+    @DeleteMapping("/{cartId}/products/{productId}")
     public void deleteProduct(@PathVariable(value="cartId") int cartId,@PathVariable(value="productId") int productId){
         cartService.deleteProduct(cartData,cartId,productId);
     }

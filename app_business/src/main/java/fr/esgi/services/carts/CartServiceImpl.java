@@ -4,6 +4,7 @@ import entities.Cart;
 import entities.Product;
 import entities.User;
 import fr.esgi.reporitories.carts.services.CartData;
+import fr.esgi.reporitories.users.services.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,20 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart createCart(CartData cartData, Integer userId) {
-        User user = new User();
-        user.setId(userId);
+    public Cart createCart(UserData userData, CartData cartData, Integer userId) {
+        User user = userData.getById(userId);
 
-        Cart cart = new Cart();
-        cart.setUser(user);
-        return cartData.save(cart);
+        if(null != user){
+            Cart cart = new Cart();
+            cart.setUser(user);
+            cartData.save(cart);
+            return cart;
+        } else {
+            return null; //TODO gérer l'excepetion
+        }
+
+
+
     }
 
     @Override

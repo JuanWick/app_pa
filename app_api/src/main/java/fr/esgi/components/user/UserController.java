@@ -97,7 +97,7 @@ public class UserController {
     public List<Integer> getRolesByUserId(@PathVariable(value = "userId") int userId) {
         User user = userData.getById(userId);
         List<Role> roles;
-        if(null != user.getRoles()){
+        if(null != user && null != user.getRoles()){ //TODO renvoyer erreur si l'utilisateur existe pas
             roles = user.getRoles();
         } else {
             roles = new ArrayList<>();
@@ -118,16 +118,18 @@ public class UserController {
     public void assignRole(@PathVariable(value="userId") int userId, @PathVariable(value="roleId") int roleId){
         User user = userData.getById(userId);
 
-        Role role = new Role();
-        role.setId(roleId);
-        if(null != user.getRoles()){
-            user.getRoles().add(role);
-        } else {
-            ArrayList<Role> roles = new ArrayList<>();
-            roles.add(role);
-            user.setRoles(roles);
+        if( null != user){ //TODO renvoyer erreur si l'utilisateur existe pas
+            Role role = new Role();
+            role.setId(roleId);
+            if(null != user.getRoles()){
+                user.getRoles().add(role);
+            } else {
+                ArrayList<Role> roles = new ArrayList<>();
+                roles.add(role);
+                user.setRoles(roles);
+            }
+            userData.save(user);
         }
-        userData.save(user);
     }
 
 }

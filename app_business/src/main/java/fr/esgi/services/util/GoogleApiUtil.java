@@ -16,7 +16,7 @@ public class GoogleApiUtil {
 
         try {
             Properties prop = new Properties();
-            String propFileName = "googleApi.properties";
+            String propFileName = "conf.properties";
 
             inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
 

@@ -65,6 +65,8 @@ public class StoreServiceImpl implements StoreService {
             }
             store.setProducts(products);
             storeData.saveOrUpdate(store);
+        } else {
+            //TODO renvoyer une erreur
         }
     }
 

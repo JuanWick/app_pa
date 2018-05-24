@@ -77,7 +77,13 @@ public class StoreController {
      */
     @GetMapping("/{storeId}")
     public StoreDto getById(@PathVariable(value="storeId") int storeId) {
-        return storeApiAdapter.convertToDto(storeData.getById(storeId));
+        Store store = storeData.getById(storeId);
+        if(null != store){
+            return storeApiAdapter.convertToDto(store);
+        } else {
+            return null;//TODO si pas de store
+        }
+
     }
 
     /**

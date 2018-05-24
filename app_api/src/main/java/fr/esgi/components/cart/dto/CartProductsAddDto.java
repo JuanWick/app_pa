@@ -6,6 +6,5 @@ import java.util.List;
 
 @Data
 public class CartProductsAddDto {
-    private Integer cartId;
     private List<Integer> productsId;
 }

@@ -27,9 +27,11 @@ package fr.esgi;
         import org.springframework.context.annotation.Configuration;
         import org.springframework.context.annotation.PropertySource;
         import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+        import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @Configuration
+@EnableSwagger2
 public class ApiConfiguration
 {
     public static void main( String[] args )
@@ -81,11 +83,4 @@ public class ApiConfiguration
     @Bean
     public ProductApiAdapter ProductApiAdapter(){return new ProductApiAdapter();}
 
-    @Bean(name = "messageSource")
-    public ReloadableResourceBundleMessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageBundle = new ReloadableResourceBundleMessageSource();
-        messageBundle.setBasename("classpath:messages/messages");
-        messageBundle.setDefaultEncoding("UTF-8");
-        return messageBundle;
-    }
 }
