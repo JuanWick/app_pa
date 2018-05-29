@@ -14,7 +14,7 @@
   <!-- ===== Informations Maven ===== -->
   <groupId>fr.esgi</groupId>
   <artifactId>app_pa</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <version>0.5</version>
   <packaging>pom</packaging>
 
   <!-- ===== Informations générales ===== -->
