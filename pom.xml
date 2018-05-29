@@ -14,7 +14,7 @@
   <!-- ===== Informations Maven ===== -->
   <groupId>fr.esgi</groupId>
   <artifactId>app_pa</artifactId>
-  <version>0.5</version>
+  <version>0.5-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <!-- ===== Informations générales ===== -->
@@ -131,12 +131,14 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>
+          <configuration>
+              <tag>HEAD</tag>
+          </configuration>
       </plugin>
     </plugins>
   </build>
 
   <scm>
     <developerConnection>scm:git:https://github.com/JuanWick/app_pa.git</developerConnection>
-    <tag>HEAD</tag>
   </scm>
 </project>
