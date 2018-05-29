@@ -136,7 +136,7 @@
   </build>
 
   <scm>
-    <developerConnection>scm:https://github.com/JuanWick/app_pa.git</developerConnection>
-    <tag>0.5</tag>
+    <connection>scm:git:https://github.com/JuanWick/app_pa.git</connection>
+    <tag>HEAD</tag>
   </scm>
 </project>
