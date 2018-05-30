@@ -17,6 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
      <docker.image.prefix>juanwick</docker.image.prefix>
+    <docker.image.sufix>${gitHash}</docker.image.sufix>
   </properties>
 
   <dependencies>
