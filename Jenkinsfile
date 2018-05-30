@@ -1,19 +1,18 @@
 pipeline {
     agent any
     options {
-        buildDiscarder(logRotator(numToKeepStr: '5'))
+        buildDiscarder(logRotator(numToKeepStr: '2'))
     }
     stages {
         stage('clean') {
             steps {
                 sh 'mvn clean'
+                sh 'mvn release:clean'
             }
         }
         stage('release') {
             steps {
-                sh 'mvn release:clean'
-                sh 'mvn release:prepare'
-                sh 'mvn release:perform'
+                sh 'mvn release:prepare perform'
             }
         }
         stage('docker build') {
