@@ -4,19 +4,24 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     stages {
-        stage('package') {
+        stage('clean') {
             steps {
-                sh 'mvn package'
+                sh 'mvn clean'
             }
         }
-        stage('docker build') {
-             environment {
+        stage('package') {
+            environment {
                 COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
             }
             steps {
+                sh 'mvn package -DgitHash=${COMMIT_TAG}'
+            }
+        }
+        stage('docker build') {
+            steps {
                 dir('/var/lib/jenkins/workspace/app_pa/app_api') {
                     sh pwd
-                    sh 'mvn dockerfile:build -t ${COMMIT_TAG}'
+                    sh 'mvn dockerfile:build'
                 }
             }
         }
