@@ -14,6 +14,13 @@ pipeline {
                 sh 'mvn package'
             }
         }
+        stage('release') {
+            steps {
+                sh 'mvn release:clean'
+                sh 'mvn release:prepare'
+                sh 'mvn release:perform'
+            }
+        }
         stage('docker build') {
             environment {
                 COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
