@@ -9,5 +9,11 @@ pipeline {
                 sh 'mvn package'
             }
         }
+        stage('api docker') {
+            steps {
+                sh 'cd app_api'
+                sh 'mvn dockerfile:build'
+            }
+        }
     }
 }
