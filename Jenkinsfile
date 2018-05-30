@@ -10,6 +10,12 @@ pipeline {
 //                sh 'mvn release:clean'
             }
         }
+        stage('package') {
+            steps {
+                sh 'echo("package")'
+                sh 'mvn package'
+            }
+        }
 //        stage('release') {
 //            steps {
 //                sh 'echo("release")'
