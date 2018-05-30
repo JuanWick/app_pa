@@ -12,6 +12,7 @@ pipeline {
         stage('api docker') {
             steps {
                 sh 'cd app_api'
+                sh 'echo ${env.BUILD_ID}'
 //                sh 'mvn dockerfile:build'
             }
         }
