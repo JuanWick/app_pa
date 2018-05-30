@@ -35,10 +35,12 @@ pipeline {
         }
         stage('docker push') {
             steps {
+                sh 'echo("push")'
             }
         }
         stage('docker deploy') {
             steps {
+                sh 'echo("deploy")'
             }
         }
     }
