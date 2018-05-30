@@ -11,7 +11,7 @@ pipeline {
         }
         stage('api docker') {
             steps {
-                sh 'cd app_api'
+                sh 'cd app_api/app_api'
                 sh 'pwd'
 //                sh 'mvn dockerfile:build'
             }
