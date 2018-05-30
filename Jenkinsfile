@@ -33,11 +33,13 @@ pipeline {
                 }
             }
         }
-//        stage('docker push') {
-//            steps {
-//                sh 'echo("push")'
-//            }
-//        }
+        stage('docker push') {
+            steps {
+                withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://registry.hub.docker.com" ]) {
+                    sh 'docker push juanwick/app_api:juanwick/app_api-$COMMIT_TAG'
+                }
+            }
+        }
 //        stage('docker deploy') {
 //            steps {
 //                sh 'echo("deploy")'
