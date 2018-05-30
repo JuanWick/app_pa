@@ -33,5 +33,13 @@ pipeline {
                 }
             }
         }
+        stage('docker push') {
+            steps {
+            }
+        }
+        stage('docker deploy') {
+            steps {
+            }
+        }
     }
 }
