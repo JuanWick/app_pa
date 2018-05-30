@@ -14,7 +14,7 @@ pipeline {
                 COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
             }
             steps {
-                sh 'mvn package -DgitHash=${COMMIT_TAG}'
+                sh 'mvn package -DgitHash=$COMMIT_TAG'
             }
         }
         stage('docker build') {
