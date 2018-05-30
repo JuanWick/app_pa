@@ -24,6 +24,7 @@
     <dependency>
       <groupId>fr.esgi</groupId>
       <artifactId>app_model</artifactId>
+      <version>0.6-SNAPSHOT</version>
     </dependency>
 
     <dependency>
