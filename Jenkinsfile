@@ -10,19 +10,19 @@ pipeline {
             }
         }
         stage('package') {
-            environment {
-                COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
-            }
             steps {
-                sh 'echo $COMMIT_TAG'
-                sh 'mvn -DgitHash=$COMMIT_TAG package'
+                sh 'mvn package'
             }
         }
         stage('docker build') {
             steps {
+                environment {
+                    COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
+                }
                 dir('/var/lib/jenkins/workspace/app_pa/app_api') {
                     sh 'pwd'
-                    sh 'mvn dockerfile:build'
+                    sh 'echo $COMMIT_TAG'
+                    sh 'mvn -DgitHash=$COMMIT_TAG dockerfile:build'
                 }
             }
         }
