@@ -12,7 +12,6 @@ pipeline {
         }
         stage('package') {
             steps {
-                sh 'echo("package")'
                 sh 'mvn package'
             }
         }
