@@ -39,8 +39,8 @@ pipeline {
             }
             steps {
                 withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://registry.hub.docker.com" ]) {
-                    sh 'docker tag app_api juanwick/app_api'
-                    sh 'docker push juanwick/app_api-$COMMIT_TAG'
+                    sh 'docker tag juanwick/app_api-$COMMIT_TAG juanwick/app_api:latest'
+                    sh 'docker push juanwick/app_api-latest'
                 }
             }
         }
