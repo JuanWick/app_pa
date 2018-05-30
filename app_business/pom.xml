@@ -31,11 +31,11 @@
       <artifactId>app_model</artifactId>
       <version>0.6-SNAPSHOT</version>
     </dependency>
-      <!--<dependency>-->
-          <!--<groupId>fr.esgi</groupId>-->
-          <!--<artifactId>app_data</artifactId>-->
-          <!--<version>0.6-SNAPSHOT</version>-->
-      <!--</dependency>-->
+      <dependency>
+          <groupId>fr.esgi</groupId>
+          <artifactId>app_data</artifactId>
+          <version>0.6-SNAPSHOT</version>
+      </dependency>
     <dependency>
       <groupId>com.google.maps</groupId>
       <artifactId>google-maps-services</artifactId>
