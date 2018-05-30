@@ -12,7 +12,7 @@ pipeline {
         stage('docker build') {
             steps {
                 dir('/var/lib/jenkins/workspace/app_pa/app_api') {
-                    sh pwd
+                    sh 'pwd'
                     sh 'mvn dockerfile:build'
                 }
             }
