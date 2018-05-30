@@ -15,10 +15,10 @@ pipeline {
             }
         }
         stage('docker build') {
+            environment {
+                COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
+            }
             steps {
-                environment {
-                    COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
-                }
                 dir('/var/lib/jenkins/workspace/app_pa/app_api') {
                     sh 'pwd'
                     sh 'echo $COMMIT_TAG'
