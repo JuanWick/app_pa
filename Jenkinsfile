@@ -10,10 +10,10 @@ pipeline {
             }
         }
         stage('docker build') {
-             environment {
-                COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
-                //BUILD_IMAGE_REPO_TAG = "juanwick/app_api:${env.BUILD_TAG}"
-            }
+//             environment {
+//                COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
+//                //BUILD_IMAGE_REPO_TAG = "juanwick/app_api:${env.BUILD_TAG}"
+//            }
             steps {
                 dir('/var/lib/jenkins/workspace/app_pa/app_api') {
 //                    sh echo("${COMMIT_TAG}")
