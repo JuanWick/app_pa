@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>app_api</artifactId>
-  <version>0.6</version>
+  <version>0.6-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>app_api</name>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>fr.esgi</groupId>
       <artifactId>app_data</artifactId>
-        <version>0.6</version>
+        <version>0.6-SNAPSHOT</version>
     </dependency>
 
     <dependency>
