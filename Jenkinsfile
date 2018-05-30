@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    tools {
+        maven 'Maven 3.5.3'
+        jdk 'jdk8'
+    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
@@ -13,19 +17,17 @@ pipeline {
         booleanParam(name: 'DOCKER_STACK_RM', defaultValue: false, description: 'Remove previous stack.  This is required if you have updated any secrets or configs as these cannot be updated. ')
     }
     stages {
-        stage('api build') {
+        stage ('Initialize') {
             steps {
-                sh "mvn build"
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
             }
         }
-        stage('api test'){
-            when{
-                expression{
-                    return params.API_RUN_TEST
-                }
-            }
-            steps{
-                sh "mvn test"
+        stage('api package') {
+            steps {
+                sh 'mvn package'
             }
         }
     }
