@@ -21,9 +21,11 @@ pipeline {
 ////                sh 'mvn release:prepare perform'
 //            }
 //        }
+        def hashTag = ''
         stage('Build image') {
             environment {
                 COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
+                hashTag = COMMIT_TAG
             }
             steps {
                 dir('/var/lib/jenkins/workspace/app_pa/app_api') {
@@ -34,6 +36,9 @@ pipeline {
             }
         }
         stage('Push image') {
+            environment {
+                COMMIT_TAG = hashTag
+            }
             steps {
                 withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://registry.hub.docker.com" ]) {
                     sh 'docker push juanwick/app_api-$COMMIT_TAG'
