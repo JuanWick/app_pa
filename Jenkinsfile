@@ -4,13 +4,13 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '2'))
     }
     stages {
-        stage('clean') {
+        stage('Clean package') {
             steps {
                 sh 'mvn clean'
 //                sh 'mvn release:clean'
             }
         }
-        stage('package') {
+        stage('Build package') {
             steps {
                 sh 'mvn package'
             }
@@ -21,7 +21,7 @@ pipeline {
 ////                sh 'mvn release:prepare perform'
 //            }
 //        }
-        stage('docker build') {
+        stage('Build image') {
             environment {
                 COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
             }
@@ -33,10 +33,10 @@ pipeline {
                 }
             }
         }
-        stage('docker push') {
+        stage('Push image') {
             steps {
                 withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://registry.hub.docker.com" ]) {
-                    sh 'docker push juanwick/app_api:juanwick/app_api-$COMMIT_TAG'
+                    sh 'docker push juanwick/app_api-$COMMIT_TAG'
                 }
             }
         }
