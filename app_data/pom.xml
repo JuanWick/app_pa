@@ -4,11 +4,11 @@
   <parent>
     <groupId>fr.esgi</groupId>
     <artifactId>app_pa</artifactId>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.6</version>
   </parent>
 
   <artifactId>app_data</artifactId>
-  <version>0.6-SNAPSHOT</version>
+  <version>0.6</version>
   <packaging>jar</packaging>
 
   <name>app_data</name>

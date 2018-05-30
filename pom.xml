@@ -14,7 +14,7 @@
   <!-- ===== Informations Maven ===== -->
   <groupId>fr.esgi</groupId>
   <artifactId>app_pa</artifactId>
-  <version>0.6-SNAPSHOT</version>
+  <version>0.6</version>
   <packaging>pom</packaging>
 
   <!-- ===== Informations générales ===== -->
@@ -59,22 +59,22 @@
       <dependency>
         <groupId>fr.esgi</groupId>
         <artifactId>app_api</artifactId>
-        <version>0.6-SNAPSHOT</version>
+        <version>0.6</version>
       </dependency>
       <dependency>
         <groupId>fr.esgi</groupId>
         <artifactId>app_business</artifactId>
-        <version>0.6-SNAPSHOT</version>
+        <version>0.6</version>
       </dependency>
       <dependency>
         <groupId>fr.esgi</groupId>
         <artifactId>app_data</artifactId>
-        <version>0.6-SNAPSHOT</version>
+        <version>0.6</version>
       </dependency>
       <dependency>
         <groupId>fr.esgi</groupId>
         <artifactId>app_model</artifactId>
-        <version>0.6-SNAPSHOT</version>
+        <version>0.6</version>
       </dependency>
       <!-- ===== Bibliothèques tierces ===== -->
       <dependency>
