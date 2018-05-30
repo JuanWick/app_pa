@@ -11,10 +11,9 @@ pipeline {
         }
         stage('api docker') {
             steps {
-                sh 'cd app_api'
-                sh 'cd app_api'
-                sh 'pwd'
-//                sh 'mvn dockerfile:build'
+                dir('/var/lib/jenkins/workspace/app_pa/app_api') {
+                    sh 'mvn dockerfile:build'
+                }
             }
         }
     }
