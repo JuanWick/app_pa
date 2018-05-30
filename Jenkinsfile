@@ -10,12 +10,12 @@ pipeline {
 //                sh 'mvn release:clean'
             }
         }
-        stage('release') {
-            steps {
-                sh 'echo("release")'
-//                sh 'mvn release:prepare perform'
-            }
-        }
+//        stage('release') {
+//            steps {
+//                sh 'echo("release")'
+////                sh 'mvn release:prepare perform'
+//            }
+//        }
         stage('docker build') {
             environment {
                 COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
@@ -28,15 +28,15 @@ pipeline {
                 }
             }
         }
-        stage('docker push') {
-            steps {
-                sh 'echo("push")'
-            }
-        }
-        stage('docker deploy') {
-            steps {
-                sh 'echo("deploy")'
-            }
-        }
+//        stage('docker push') {
+//            steps {
+//                sh 'echo("push")'
+//            }
+//        }
+//        stage('docker deploy') {
+//            steps {
+//                sh 'echo("deploy")'
+//            }
+//        }
     }
 }
