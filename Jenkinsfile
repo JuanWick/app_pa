@@ -12,7 +12,7 @@ pipeline {
         stage('api docker') {
             steps {
                 sh 'cd app_api'
-                sh 'mvn dockerfile:build'
+//                sh 'mvn dockerfile:build'
             }
         }
     }
