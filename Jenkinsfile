@@ -16,8 +16,8 @@ pipeline {
         }
         steps {
             dir('/var/lib/jenkins/workspace/app_pa/app_api') {
-                sh echo(${COMMIT_TAG})
-                sh echo(${BUILD_IMAGE_REPO_TAG})
+                sh echo("${COMMIT_TAG}")
+                sh echo("${BUILD_IMAGE_REPO_TAG}")
                 sh pwd
                 sh 'mvn dockerfile:build'
 
