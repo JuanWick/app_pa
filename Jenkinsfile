@@ -14,13 +14,14 @@ pipeline {
                 COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
             }
             steps {
+                sh 'echo $COMMIT_TAG'
                 sh 'mvn package -DgitHash=007'
             }
         }
         stage('docker build') {
             steps {
                 dir('/var/lib/jenkins/workspace/app_pa/app_api') {
-                    sh pwd
+                    sh 'pwd'
                     sh 'mvn dockerfile:build'
                 }
             }
