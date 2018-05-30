@@ -15,7 +15,7 @@ pipeline {
             }
             steps {
                 sh 'echo $COMMIT_TAG'
-                sh 'mvn package -DgitHash=007'
+                sh 'mvn package -DgitHash=$COMMIT_TAG'
             }
         }
         stage('docker build') {
