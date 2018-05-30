@@ -7,12 +7,13 @@ pipeline {
         stage('clean') {
             steps {
                 sh 'mvn clean'
-                sh 'mvn release:clean'
+//                sh 'mvn release:clean'
             }
         }
         stage('release') {
             steps {
-                sh 'mvn release:prepare perform'
+                sh 'echo("release")'
+//                sh 'mvn release:prepare perform'
             }
         }
         stage('docker build') {
