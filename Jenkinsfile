@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('api package') {
             steps {
-                echo 'hello'
+                sh 'mvn package'
             }
         }
     }
