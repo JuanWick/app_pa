@@ -9,11 +9,6 @@ pipeline {
                 sh 'mvn clean'
             }
         }
-        stage('package') {
-            steps {
-                sh 'mvn package'
-            }
-        }
         stage('release') {
             steps {
                 sh 'mvn release:clean'
