@@ -38,9 +38,10 @@ pipeline {
                 COMMIT_TAG = sh(returnStdout: true, script: 'git rev-parse HEAD').trim().take(7)
             }
             steps {
-                withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://registry.hub.docker.com" ]) {
-                    def image = docker.build("juanwick/app_api-$COMMIT_TAG", "--build-arg PACKAGE_VERSION=latest ./tmp-docker-build-context")
-                    image.push()
+                script {
+                    withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://registry.hub.docker.com" ]) {
+                        docker.build('juanwick/app_api-$COMMIT_TAG').push('latest')
+                    }
 //                    sh 'docker login -u juanwick -p ihsahn'
 //                    sh 'docker tag juanwick/app_api-$COMMIT_TAG juanwick/app_api:latest'
 //                    sh 'docker push juanwick/app_api-$COMMIT_TAG'
