@@ -27,8 +27,6 @@ pipeline {
             }
             steps {
                 dir('/var/lib/jenkins/workspace/app_pa/app_api') {
-                    sh 'pwd'
-                    sh 'echo $COMMIT_TAG'
                     sh 'mvn -DgitHash=$COMMIT_TAG dockerfile:build'
                 }
             }
@@ -39,20 +37,22 @@ pipeline {
             }
             steps {
                 script {
-                    withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://registry.hub.docker.com" ]) {
-                        sh 'docker tag juanwick/app_api-$COMMIT_TAG juanwick/app_api:latest'
-                        docker.build('juanwick/app_api-$COMMIT_TAG').push('latest')
-                    }
-//                    sh 'docker login -u juanwick -p ihsahn'
-//                    sh 'docker tag juanwick/app_api-$COMMIT_TAG juanwick/app_api:latest'
-//                    sh 'docker push juanwick/app_api-$COMMIT_TAG'
+//                    withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://registry.hub.docker.com" ]) {
+//                        sh 'docker tag juanwick/app_api-$COMMIT_TAG juanwick/app_api:latest'
+//                        docker.build().push('latest')
+//                    }
+                    sh 'docker login -u juanwick -p ihsahn'
+                    sh 'docker tag juanwick/app_api-$COMMIT_TAG juanwick/app_api:latest'
+                    sh 'docker push juanwick/app_api-$COMMIT_TAG'
                 }
             }
         }
-//        stage('docker deploy') {
-//            steps {
-//                sh 'echo("deploy")'
-//            }
-//        }
+        stage('Deploy image') {
+            steps {
+                sh 'cd /'
+                sh 'docker-compose down'
+                sh 'docker-compose up'
+            }
+        }
     }
 }
