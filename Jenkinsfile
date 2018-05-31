@@ -14,6 +14,8 @@ pipeline {
             steps {
                 sh 'cd /'
                 sh 'docker-compose down'
+                sh 'docker stop $(docker ps -a -q)'
+                sh 'docker rm $(docker ps -a -q)'
             }
         }
         stage('Build package') {
