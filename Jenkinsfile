@@ -10,6 +10,12 @@ pipeline {
 //                sh 'mvn release:clean'
             }
         }
+        stage('Stop Image') {
+            steps {
+                sh 'cd /'
+                sh 'docker-compose down'
+            }
+        }
         stage('Build package') {
             steps {
                 sh 'mvn package'
@@ -50,7 +56,6 @@ pipeline {
         stage('Deploy image') {
             steps {
                 sh 'cd /'
-                sh 'docker-compose down'
                 sh 'docker-compose up --build -d'
             }
         }
