@@ -40,6 +40,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry([ credentialsId: "docker-hub-credentials", url: "https://registry.hub.docker.com" ]) {
+                        sh 'docker tag juanwick/app_api-$COMMIT_TAG juanwick/app_api:latest'
                         docker.build('juanwick/app_api-$COMMIT_TAG').push('latest')
                     }
 //                    sh 'docker login -u juanwick -p ihsahn'
