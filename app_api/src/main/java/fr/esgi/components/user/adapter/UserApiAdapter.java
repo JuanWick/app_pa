@@ -14,10 +14,10 @@ public class UserApiAdapter {
     }
 
     public UserDto convertToDto(User user){
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setName(user.getName());
-        return userDto;
+        return UserDto.builder()
+            .firstName(user.getFirstName())
+            .name(user.getName())
+            .id(user.getId())
+            .build();
     }
 }

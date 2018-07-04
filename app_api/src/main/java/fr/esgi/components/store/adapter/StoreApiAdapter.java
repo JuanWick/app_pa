@@ -15,7 +15,7 @@ public class StoreApiAdapter {
                 .zipcode(storeDto.getZipcode())
                 .longitude(storeDto.getLongitude())
                 .latitude(storeDto.getLatitude())
-                .id(null != storeDto.getId()? storeDto.getId():null).build();
+                .id(storeDto.getId()).build();
 
         if(null != storeDto.getUser()){
             User user = new User();
@@ -26,21 +26,16 @@ public class StoreApiAdapter {
     }
 
     public StoreDto convertToDto(Store store){
-        StoreDto storeDto = new StoreDto();
-        storeDto.setAddress(store.getAddress());
-        storeDto.setCity(store.getCity());
-        storeDto.setCountry(store.getCountry());
-        storeDto.setName(store.getName());
-        storeDto.setZipcode(store.getZipcode());
-        storeDto.setLatitude(store.getLatitude());
-        storeDto.setLongitude(store.getLongitude());
-        storeDto.setId(null != store.getId()? store.getId():null);
-
-        if(null != store.getUser()){
-            UserDto userDto = new UserDto();
-            userDto.setId(store.getUser().getId());
-            storeDto.setUser(userDto);
-        }
-        return storeDto;
+       return StoreDto.builder()
+                .address(store.getAddress())
+                .city(store.getCity())
+                .country(store.getCountry())
+                .id(store.getId())
+                .latitude(store.getLatitude())
+                .longitude(store.getLongitude())
+                .name(store.getName())
+                .user(null != store.getUser()? UserDto.builder().id(store.getUser().getId()).build():null)
+                .zipcode(store.getZipcode())
+                .build();
     }
 }

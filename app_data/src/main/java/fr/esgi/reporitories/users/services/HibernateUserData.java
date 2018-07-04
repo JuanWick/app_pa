@@ -36,6 +36,7 @@ public class HibernateUserData implements UserData {
     @Override
     public User getById(int id) {
         User user = null;
+        System.out.println("dd" + userRepository);
         if(userRepository.findById(id).isPresent()){
             TUserEntity  tUserEntity = userRepository.findById(id).get();
             user = userDataAdapter.entityToModel(tUserEntity, true);
@@ -72,9 +73,7 @@ public class HibernateUserData implements UserData {
         if(userRepository.findById(id).isPresent()){
             TUserEntity userEntity = userRepository.findById(id).get();
 
-            if(null != userEntity){
             userRepository.delete(userEntity);
             }
-        }
     }
 }

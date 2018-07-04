@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class ProductDto {
-    private Integer productId;
+    public Integer productId;
 }

@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "t_role", schema = "pa_data", catalog = "pa_data")
+@Table(name = "t_role")
 public class TRoleEntity {
     private int id;
     private String name;

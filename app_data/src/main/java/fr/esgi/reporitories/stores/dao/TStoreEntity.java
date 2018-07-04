@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "t_store", schema = "pa_data", catalog = "pa_data")
+@Table(name = "t_store")
 public class TStoreEntity {
     private int id;
     private String name;

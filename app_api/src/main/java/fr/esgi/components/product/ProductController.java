@@ -58,11 +58,33 @@ public class ProductController {
     }
 
     /**
-     * Permet la recherche d'un produit dans l'ensemble des magasins
+     * Permet la recherche d'un produit dans l'ensemble des magasins en se basant sur une chaine de carectère
+     * pouvant être dans le nom ou le codebar
      * @return ProductSearchResultDto
      */
-    @GetMapping("/search")
-    public ProductSearchResultDto searchProduct(@RequestBody ProductSearchRequestDto productSearchRequestDto){
-            return null;
+    @GetMapping("/searchByValue")
+    public ProductSearchResultDto searchProductByValue(@RequestBody ProductSearchRequestDto productSearchRequestDto){
+            return productApiAdapter.convertListToProductSearchResultDto(
+                    productService.searchByValue(
+                        productData,
+                        productSearchRequestDto.getSearchValue(),
+                        productSearchRequestDto.getLatitude(),
+                        productSearchRequestDto.getLongitude(),
+                        productSearchRequestDto.getPerimeter()));
+    }
+
+    /**
+    * Permet la recherche d'un produit dans l'ensemble des magasins en se basant sur une categorie
+     * @return ProductSearchResultDto
+     */
+    @GetMapping("/searchByCategory")
+    public ProductSearchResultDto searchProductByCategory(@RequestBody ProductSearchRequestDto productSearchRequestDto){
+        return productApiAdapter.convertListToProductSearchResultDto(
+                productService.searchByCategorie(
+                        productData,
+                        productSearchRequestDto.getSearchValue(),
+                        productSearchRequestDto.getLatitude(),
+                        productSearchRequestDto.getLongitude(),
+                        productSearchRequestDto.getPerimeter()));
     }
 }

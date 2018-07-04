@@ -1,7 +1,14 @@
 package fr.esgi.components.product.adapter;
 
 import entities.Product;
+import entities.Store;
 import fr.esgi.components.product.dto.ProductCompletDto;
+import fr.esgi.components.product.dto.ProductDto;
+import fr.esgi.components.product.dto.ProductSearchResultDto;
+import fr.esgi.components.store.dto.StoreDto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductApiAdapter {
     public Product convertToModel (ProductCompletDto productCompletDto){
@@ -9,7 +16,7 @@ public class ProductApiAdapter {
                 .barreCode(productCompletDto.getBarreCode())
                 .info(productCompletDto.getInfo())
                 .name(productCompletDto.getName())
-                .id(null != productCompletDto.getId()?productCompletDto.getId():null)
+                .id(productCompletDto.getId())
                 .build();
     }
 
@@ -20,5 +27,22 @@ public class ProductApiAdapter {
                 .name(product.getName())
                 .barreCode(product.getBarreCode())
                 .build();
+    }
+
+    public ProductSearchResultDto convertListToProductSearchResultDto(List<Store> search) {
+        List<StoreDto> storeDtos = new ArrayList<>();
+
+        for(Store store : search){
+            storeDtos.add(StoreDto.builder()
+            .id(store.getId())
+            .address(store.getAddress())
+            .city(store.getCity())
+            .country(store.getCountry())
+            .latitude(store.getLatitude())
+            .longitude(store.getLongitude())
+            .name(store.getName()).build());
+        }
+
+        return ProductSearchResultDto.builder().stores(storeDtos).build();
     }
 }

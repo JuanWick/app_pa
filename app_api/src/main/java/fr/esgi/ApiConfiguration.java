@@ -25,8 +25,6 @@ package fr.esgi;
         import org.springframework.boot.autoconfigure.SpringBootApplication;
         import org.springframework.context.annotation.Bean;
         import org.springframework.context.annotation.Configuration;
-        import org.springframework.context.annotation.PropertySource;
-        import org.springframework.context.support.ReloadableResourceBundleMessageSource;
         import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
@@ -36,7 +34,7 @@ public class ApiConfiguration
 {
     public static void main( String[] args )
     {
-        SpringApplication.run(ApiConfiguration.class, args);
+        SpringApplication.run(DataConfiguration.class, args);
     }
 
     /** Services **/

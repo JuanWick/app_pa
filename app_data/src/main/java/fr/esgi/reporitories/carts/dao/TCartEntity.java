@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "t_cart", schema = "pa_data", catalog = "pa_data")
+@Table(name = "t_cart")
 public class TCartEntity implements Serializable {
     private int id;
     private Collection<TProductEntity> products;

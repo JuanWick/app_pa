@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class HibernateCartData implements CartData {
     @Autowired
     private CartRepository cartRepository;
@@ -31,7 +32,7 @@ public class HibernateCartData implements CartData {
     @Override
     public Cart save(Cart cart) {
         TCartEntity cartEntity = cartDataAdapter.modelToEntity(cart, true);
-        cartRepository.save(cartEntity);
+        cartEntity = cartRepository.save(cartEntity);
         return cartDataAdapter.entityToModel(cartEntity, true);
     }
 

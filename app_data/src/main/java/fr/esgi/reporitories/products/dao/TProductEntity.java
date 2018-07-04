@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "t_product", schema = "pa_data", catalog = "pa_data")
+@Table(name = "t_product")
 public class TProductEntity implements Serializable {
     private int id;
     private String name;
