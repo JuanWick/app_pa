@@ -34,7 +34,7 @@ public class ApiConfiguration
 {
     public static void main( String[] args )
     {
-        SpringApplication.run(DataConfiguration.class, args);
+        SpringApplication.run(ApiConfiguration.class, args);
     }
 
     /** Services **/
