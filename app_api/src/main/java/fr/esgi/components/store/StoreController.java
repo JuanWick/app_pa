@@ -6,19 +6,16 @@ import entities.Store;
 import entities.User;
 import fr.esgi.components.product.adapter.ProductApiAdapter;
 import fr.esgi.components.store.adapter.StoreApiAdapter;
-import fr.esgi.components.product.dto.ProductCompletDto;
 import fr.esgi.components.store.dto.StoreAddDto;
 import fr.esgi.components.store.dto.StoreDto;
+import fr.esgi.exception.*;
 import fr.esgi.reporitories.products.services.ProductData;
 import fr.esgi.reporitories.stores.services.StoreData;
+import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.product.ProductService;
 import fr.esgi.services.stores.StoreService;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +38,8 @@ public class StoreController {
     @Autowired
     StoreData storeData;
     @Autowired
+    UserData userData;
+    @Autowired
     StoreApiAdapter storeApiAdapter;
     @Autowired
     ProductApiAdapter productApiAdapter;
@@ -53,21 +52,29 @@ public class StoreController {
      * @return ID du magasin
      */
     @PostMapping("")
-    public Integer saveOrUpdate(@Validated @RequestBody final StoreAddDto storeAddDto) throws InterruptedException, ApiException, IOException {
+    public Integer saveOrUpdate(@Validated @RequestBody final StoreAddDto storeAddDto)  {
         User user = new User();
         user.setId(storeAddDto.getUserId());
 
         Store store = Store.builder()
-                .id(null != storeAddDto.getId()?storeAddDto.getId():null)
+                .id(storeAddDto.getId())
                 .zipcode(storeAddDto.getZipcode())
                 .name(storeAddDto.getName())
                 .country(storeAddDto.getCountry())
                 .city(storeAddDto.getCity())
                 .address(storeAddDto.getAddress())
-                .latitude(null != storeAddDto.getLatitude()?storeAddDto.getLatitude():null)
-                .longitude(null != storeAddDto.getLongitude()?storeAddDto.getLongitude():null)
+                .latitude(storeAddDto.getLatitude())
+                .longitude(storeAddDto.getLongitude())
                 .user(user).build();
-        return storeService.saveOrUpdate(storeData,store);
+        try {
+            return storeService.saveOrUpdate(storeData, userData, store);
+        } catch (UserNotFoundException u){
+            throw new UserNotFoundExceptionApi(u.getMessage());
+        } catch (InterruptedException | ApiException | IOException ex) {
+            throw new LocalizationExceptionApi(ex.getMessage());
+        } catch (StoreNotFoundException s) {
+            throw new StoreNotFoundExceptionApi(s.getMessage());
+        }
     }
 
     /**
@@ -77,13 +84,11 @@ public class StoreController {
      */
     @GetMapping("/{storeId}")
     public StoreDto getById(@PathVariable(value="storeId") int storeId) {
-        Store store = storeData.getById(storeId);
-        if(null != store){
-            return storeApiAdapter.convertToDto(store);
-        } else {
-            return null;//TODO si pas de store
+        try{
+            return storeApiAdapter.convertToDto(storeService.getById(storeData,storeId));
+        } catch (StoreNotFoundException ex){
+            throw new StoreNotFoundExceptionApi(ex.getMessage());
         }
-
     }
 
     /**
@@ -92,7 +97,11 @@ public class StoreController {
      */
     @DeleteMapping("/{storeId}")
     public void delete(@PathVariable(value="storeId") int storeId){
-        storeService.delete(storeData,storeId);
+        try{
+            storeService.delete(storeData,storeId);
+        } catch (StoreNotFoundException ex){
+            throw new StoreNotFoundExceptionApi(ex.getMessage());
+        }
     }
 
     /**
@@ -102,7 +111,13 @@ public class StoreController {
      */
     @PostMapping("/{storeId}/products/{productId}")
     public void addProduct(@PathVariable(value="storeId") int storeId,@PathVariable(value="productId") int productId){
-        storeService.addProduct(storeData, productData, storeId, productId);
+        try {
+            storeService.addProduct(storeData, productData, storeId, productId);
+        } catch (StoreNotFoundException s){
+            throw  new StoreNotFoundExceptionApi(s.getMessage());
+        } catch (ProductNotFoundException p){
+            throw new ProductNotFoundExceptionApi(p.getMessage());
+        }
     }
 
     /**
@@ -112,12 +127,17 @@ public class StoreController {
      */
     @GetMapping("/{storeId}/products")
     public List<Integer> getProductsByStoreId(@PathVariable(value="storeId") int storeId) {
-        List<Product> products = storeService.getProducts(storeData, storeId);
-        List<Integer> productIds = new ArrayList<>();
-        for(Product product : products){
-            productIds.add(product.getId());
+        try {
+            List<Product> products = storeService.getProducts(storeData, storeId);
+            List<Integer> productIds = new ArrayList<>();
+            for(Product product : products){
+                productIds.add(product.getId());
+            }
+            return productIds;
+        } catch(StoreNotFoundException s){
+            throw new StoreNotFoundExceptionApi(s.getMessage());
         }
-        return productIds;
+
     }
 
     /**
@@ -127,59 +147,27 @@ public class StoreController {
      */
     @DeleteMapping("/{storeId}/products/{productId}")
     public void removeProduct(@PathVariable(value="storeId") int storeId,@PathVariable(value="productId") int productId){
-        storeService.removeProduct(storeData, storeId, productId);
+        try{
+            storeService.removeProduct(storeData, productData, storeId, productId);
+        } catch (StoreNotFoundException s){
+            throw  new StoreNotFoundExceptionApi(s.getMessage());
+        } catch (ProductNotFoundException p){
+            throw  new ProductNotFoundExceptionApi(p.getMessage());
+        }
     }
 
     @PostMapping("/{storeId}/products")
     public void handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable(value="storeId") int storeId) {
-        if(null != storeData.getById(storeId)){
-            try {
-                List<Product> products = new ArrayList<>();
-
-                POIFSFileSystem poifsFileSystem = new POIFSFileSystem(file.getInputStream());
-                HSSFWorkbook hssfWorkbook = new HSSFWorkbook(poifsFileSystem);
-
-                HSSFSheet sheet = hssfWorkbook.getSheetAt(0);
-                /** Parcours et importation des données **/
-                for (Row row : sheet) {
-                    ProductCompletDto productDto = new ProductCompletDto();
-
-                    for (Cell cell : row) {
-                        if(0 != row.getRowNum()){
-                            if(0 == cell.getColumnIndex() ) {
-                                if(cell.getCellTypeEnum() == CellType.STRING) {
-                                    productDto.setName(cell.getStringCellValue());
-                                } else if(cell.getCellTypeEnum() == CellType.NUMERIC) {
-                                    productDto.setName(String.valueOf(cell.getNumericCellValue()));
-                                }
-                            }
-                            if(1 == cell.getColumnIndex()){
-                                if(cell.getCellTypeEnum() == CellType.STRING) {
-                                    productDto.setInfo(cell.getStringCellValue());
-                                } else if(cell.getCellTypeEnum() == CellType.NUMERIC) {
-                                    productDto.setInfo(String.valueOf(cell.getNumericCellValue()));
-                                }
-                            }
-                            if(2 == cell.getColumnIndex()){
-                                if(cell.getCellTypeEnum() == CellType.STRING) {
-                                    productDto.setBarreCode(cell.getStringCellValue());
-                                } else if(cell.getCellTypeEnum() == CellType.NUMERIC) {
-                                    productDto.setBarreCode(String.valueOf(cell.getNumericCellValue()));
-                                }
-                            }
-                        }
-                    }
-                    if(null != productDto.getName()){
-                        products.add(productApiAdapter.convertToModel(productDto));
-                    }
-                }
-
-                if(products.size()>0){
-                    storeService.addProducts(storeData,productData, storeId, products);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            POIFSFileSystem poifsFileSystem = new POIFSFileSystem(file.getInputStream());
+            if(!storeService.importProductsFromExcelFile(storeData, productData, storeId,new HSSFWorkbook(poifsFileSystem))){
+                throw new ImportFileExceptionApi("Erreur : Le fichier semble incorrect");
             }
+        } catch (IOException e) {
+            throw new IOExceptionApi(e.getMessage());
+        } catch (StoreNotFoundException s){
+            throw new StoreNotFoundExceptionApi(s.getMessage());
         }
+
     }
 }
