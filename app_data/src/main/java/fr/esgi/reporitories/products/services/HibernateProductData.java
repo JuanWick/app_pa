@@ -5,6 +5,7 @@ import entities.Store;
 import fr.esgi.reporitories.products.ProductRepository;
 import fr.esgi.reporitories.products.adapter.ProductDataAdapter;
 import fr.esgi.reporitories.products.dao.TProductEntity;
+import fr.esgi.reporitories.stores.adapter.StoreDataAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
@@ -14,6 +15,9 @@ public class HibernateProductData implements ProductData{
 
     @Autowired
     ProductDataAdapter productDataAdapter;
+
+    @Autowired
+    StoreDataAdapter storeDataAdapter;
 
     @Override
     public Product getById(int productId) {
@@ -64,12 +68,12 @@ public class HibernateProductData implements ProductData{
     }
 
     @Override
-    public List<Store> getStoresCoordinatesWithProductCategory(String categorie) {
-        return productRepository.getStoresCoordinatesWithProductCategory(categorie);
+    public List<Store> getStoresWithProductCategory(String categorie) {
+        return storeDataAdapter.entitiesToModels(productRepository.getStoresWithProductInCategory(categorie));
     }
 
     @Override
-    public List<Store> getStoresCoordiantesWithProductValue(String searchValue) {
-        return productRepository.getStoresCoordiantesWithProductValue(searchValue);
+    public List<Store> getStoresWithProductValue(String searchValue) {
+        return storeDataAdapter.entitiesToModels(productRepository.getStoresWithProductWithValue(searchValue));
     }
 }

@@ -5,6 +5,7 @@ import entities.Store;
 import fr.esgi.exception.ExistingProductException;
 import fr.esgi.exception.ProductNotFoundException;
 import fr.esgi.reporitories.products.services.ProductData;
+import fr.esgi.reporitories.stores.services.StoreData;
 import fr.esgi.services.util.GpsUtil;
 
 import java.util.ArrayList;
@@ -65,32 +66,37 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Store> searchByValue(ProductData productData, String searchValue, Double latitude, Double longitude, Double perimeter) {
+    public List<Store> searchByValue(StoreData storeData, ProductData productData, String searchValue, Double latitude, Double longitude, Double perimeter) {
         /* On récupère les stores dans le périmètre **/
-        List<Store> stores = productData.getStoresCoordiantesWithProductValue(searchValue);
+        List<Store> stores = productData.getStoresWithProductValue(searchValue);
+
 
         /* On isole ceux qui sont dans le périmètre **/
         List<Store> storesWithProduct = new ArrayList<>();
 
         for(Store store : stores){
-            if(perimeter <= GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude())){
-                storesWithProduct.add(store);
+            if(perimeter >= GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude())){
+                Store storeToAdd = storeData.getById(store.getId());
+                storeToAdd.setDistance(GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude()));
+                storesWithProduct.add(storeToAdd);
             }
         }
         return storesWithProduct;
     }
 
     @Override
-    public List<Store> searchByCategorie(ProductData productData, String categorie, Double latitude, Double longitude, Double perimeter) {
+    public List<Store> searchByCategorie(StoreData storeData, ProductData productData, String categorie, Double latitude, Double longitude, Double perimeter) {
         /* On récupère les magasins qui ont des produit de la catégorie **/
-        List<Store> stores = productData.getStoresCoordinatesWithProductCategory(categorie);
+        List<Store> stores = productData.getStoresWithProductCategory(categorie);
 
         /* On isole ceux qui sont dans le périmètre **/
         List<Store> storesWithProduct = new ArrayList<>();
 
         for(Store store : stores){
-            if(perimeter <= GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude())){
-                storesWithProduct.add(store);
+            if(perimeter >= GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude())){
+                Store storeToAdd = storeData.getById(store.getId());
+                storeToAdd.setDistance(GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude()));
+                storesWithProduct.add(storeToAdd);
             }
         }
         return storesWithProduct;

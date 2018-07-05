@@ -14,6 +14,6 @@ public interface ProductData {
 
     Product saveOrUpdate(Product product);
     void delete(int id);
-   List<Store> getStoresCoordinatesWithProductCategory(String categorie);
-   List<Store> getStoresCoordiantesWithProductValue(String searchValue);
+   List<Store> getStoresWithProductCategory(String categorie);
+   List<Store> getStoresWithProductValue(String searchValue);
 }

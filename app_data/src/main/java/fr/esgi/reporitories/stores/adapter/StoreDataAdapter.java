@@ -5,6 +5,7 @@ import entities.Store;
 import entities.User;
 import fr.esgi.reporitories.products.adapter.ProductDataAdapter;
 import fr.esgi.reporitories.products.dao.TProductEntity;
+import fr.esgi.reporitories.products.services.IStoreProjection;
 import fr.esgi.reporitories.stores.dao.TStoreEntity;
 import fr.esgi.reporitories.users.adapter.UserDataAdapter;
 import fr.esgi.reporitories.users.dao.TUserEntity;
@@ -39,7 +40,7 @@ public class StoreDataAdapter {
         .zipcode(storeEntity.getZipcode())
                 .latitude(storeEntity.getLatitude())
                 .longitude(storeEntity.getLongitude())
-        .user(userDataAdapter.entityToModel(storeEntity.getUser(), false))
+        .user(null != storeEntity.getUser() ? userDataAdapter.entityToModel(storeEntity.getUser(), false):null)
                 .build();
 
         if(all && null != storeEntity.getProducts()){
@@ -96,5 +97,21 @@ public class StoreDataAdapter {
         }
 
         return storeEntity;
+    }
+
+    public List<Store> entitiesToModels(List<IStoreProjection> entities){
+        System.out.println("entities : "+entities.size());
+        List<Store> stores = new ArrayList<>();
+
+        for(IStoreProjection entity : entities){
+            TStoreEntity tStoreEntity = new TStoreEntity();
+            tStoreEntity.setId(entity.getId());
+            tStoreEntity.setLongitude(entity.getLongitude());
+            tStoreEntity.setLatitude(entity.getLatitude());
+
+            stores.add(entityToModel(tStoreEntity,false));
+        }
+
+        return stores;
     }
 }

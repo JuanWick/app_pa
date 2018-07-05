@@ -19,6 +19,7 @@ public class Store {
     private Double latitude;
     private Double longitude;
     private User user;
+    private Double distance;
     private List<Product> products;
     private List<User> users;
 }

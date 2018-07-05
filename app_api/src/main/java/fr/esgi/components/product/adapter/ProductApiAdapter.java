@@ -40,7 +40,8 @@ public class ProductApiAdapter {
             .country(store.getCountry())
             .latitude(store.getLatitude())
             .longitude(store.getLongitude())
-            .name(store.getName()).build());
+            .name(store.getName())
+            .distance(store.getDistance()).build());
         }
 
         return ProductSearchResultDto.builder().stores(storeDtos).build();

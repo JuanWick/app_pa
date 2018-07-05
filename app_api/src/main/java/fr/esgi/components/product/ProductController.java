@@ -10,6 +10,7 @@ import fr.esgi.exception.ExistingProductExceptionApi;
 import fr.esgi.exception.ProductNotFoundException;
 import fr.esgi.exception.ProductNotFoundExceptionApi;
 import fr.esgi.reporitories.products.services.ProductData;
+import fr.esgi.reporitories.stores.services.StoreData;
 import fr.esgi.services.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +25,18 @@ public class ProductController {
     ProductData productData;
 
     private final
+    StoreData storeData;
+
+    private final
     ProductService productService;
 
     private final
     ProductApiAdapter productApiAdapter;
 
     @Autowired
-    public ProductController(ProductData productData, ProductService productService, ProductApiAdapter productApiAdapter) {
+    public ProductController(StoreData storeData, ProductData productData, ProductService productService, ProductApiAdapter productApiAdapter) {
         this.productData = productData;
+        this.storeData = storeData;
         this.productService = productService;
         this.productApiAdapter = productApiAdapter;
     }
@@ -106,10 +111,11 @@ public class ProductController {
      * pouvant être dans le nom ou le codebar
      * @return ProductSearchResultDto
      */
-    @GetMapping("/locateByValue")
+    @PostMapping("/locateByValue")
     public ProductSearchResultDto searchProductByValue(@RequestBody ProductSearchRequestDto productSearchRequestDto){
             return productApiAdapter.convertListToProductSearchResultDto(
                     productService.searchByValue(
+                        storeData,
                         productData,
                         productSearchRequestDto.getSearchValue(),
                         productSearchRequestDto.getLatitude(),
@@ -121,10 +127,11 @@ public class ProductController {
     * Permet la recherche d'un produit dans l'ensemble des magasins en se basant sur une categorie
      * @return ProductSearchResultDto
      */
-    @GetMapping("/locateByCategory")
+    @PostMapping("/locateByCategory")
     public ProductSearchResultDto searchProductByCategory(@RequestBody ProductSearchRequestDto productSearchRequestDto){
         return productApiAdapter.convertListToProductSearchResultDto(
                 productService.searchByCategorie(
+                        storeData,
                         productData,
                         productSearchRequestDto.getSearchValue(),
                         productSearchRequestDto.getLatitude(),

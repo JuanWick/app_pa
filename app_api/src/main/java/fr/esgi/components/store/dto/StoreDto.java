@@ -16,5 +16,6 @@ public class StoreDto {
     private Double latitude;
     private Double longitude;
     private UserDto user;
+    private Double distance;
 
 }
