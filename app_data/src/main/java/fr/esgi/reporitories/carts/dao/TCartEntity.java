@@ -43,7 +43,6 @@ public class TCartEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public TUserEntity getUser() {
         return user;
     }

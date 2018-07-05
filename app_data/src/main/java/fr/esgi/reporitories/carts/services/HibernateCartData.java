@@ -27,12 +27,12 @@ public class HibernateCartData implements CartData {
 
     @Override
     public Cart getById(int id) {
-        Cart cart = null;
         if(cartRepository.findById(id).isPresent()){
             TCartEntity  tCartEntity = cartRepository.findById(id).get();
-            cart = cartDataAdapter.entityToModel(tCartEntity, true);
+            return cartDataAdapter.entityToModel(tCartEntity, true);
+        } else {
+            return null;
         }
-        return cart;
     }
 
     @Override
@@ -53,7 +53,8 @@ public class HibernateCartData implements CartData {
     }
 
     @Override
-    public void deleteProduct(Integer cartId, Integer productId) {
+    public boolean deleteProduct(Integer cartId, Integer productId) {
+        boolean result = false;
         if(cartRepository.findById(cartId).isPresent()){
             TCartEntity  tCartEntity = cartRepository.findById(cartId).get();
             if(null != tCartEntity.getProducts()){
@@ -61,12 +62,15 @@ public class HibernateCartData implements CartData {
                 for(TProductEntity productEntity:tCartEntity.getProducts()){
                     if(productEntity.getId() != productId){
                         updatedProductList.add(productEntity);
+                    } else {
+                        result = true;
                     }
                 }
                 tCartEntity.setProducts(updatedProductList);
                 cartRepository.save(tCartEntity);
             }
         }
+        return result;
     }
 
 

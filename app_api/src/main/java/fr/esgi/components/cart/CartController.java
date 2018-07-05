@@ -1,11 +1,13 @@
 package fr.esgi.components.cart;
 
 import entities.Cart;
+import entities.User;
 import fr.esgi.components.cart.adapter.CartApiAdapter;
 import fr.esgi.components.cart.dto.CartDto;
 import fr.esgi.components.cart.dto.CartProductsAddDto;
-import fr.esgi.exception.UserNotFoundException;
+import fr.esgi.exception.*;
 import fr.esgi.reporitories.carts.services.CartData;
+import fr.esgi.reporitories.products.services.ProductData;
 import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.carts.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +24,19 @@ public class CartController {
     UserData userData;
 
     private final
+    ProductData productData;
+
+    private final
     CartService cartService;
 
     private final
     CartApiAdapter cartApiAdapter;
 
     @Autowired
-    public CartController(CartData cartData, UserData userData, CartService cartService, CartApiAdapter cartApiAdapter) {
+    public CartController(CartData cartData, UserData userData, ProductData productData, CartService cartService, CartApiAdapter cartApiAdapter) {
         this.cartData = cartData;
         this.userData = userData;
+        this.productData = productData;
         this.cartService = cartService;
         this.cartApiAdapter = cartApiAdapter;
     }
@@ -46,9 +52,8 @@ public class CartController {
         try {
             return cartService.createCart(userData,cartData,userId).getId();
         } catch (UserNotFoundException e) {
-            new UserNotFoundException(e.getMessage());
+            throw new UserNotFoundExceptionApi(e.getMessage());
         }
-        return null;
     }
 
     /**
@@ -58,13 +63,11 @@ public class CartController {
      */
     @GetMapping("/{cartId}")
     public CartDto getById(@PathVariable(value="cartId") int cartId) {
-        Cart cart = cartData.getById(cartId);
-        CartDto cartDto = null;
-
-        if(null != cart){
-            cartDto =  cartApiAdapter.convertToDto(cart);
+        try {
+            return cartApiAdapter.convertToDto(cartService.getById(cartData,cartId));
+        }catch (CartNotFoundException e) {
+            throw new CartNotFoundExceptionApi(e.getMessage());
         }
-        return cartDto;
     }
 
     /**
@@ -73,7 +76,11 @@ public class CartController {
      */
     @DeleteMapping("/{cartId}")
     public void delete(@PathVariable(value="cartId") int cartId){
-        cartService.delete(cartData,cartId);
+        try {
+            cartService.delete(cartData,cartId);
+        } catch (CartNotFoundException e){
+            throw new CartNotFoundExceptionApi(e.getMessage());
+        }
     }
 
     /**
@@ -82,13 +89,14 @@ public class CartController {
      */
     @PostMapping("/{cartId}/products")
     public CartDto addProducts(@PathVariable(value="cartId") int cartId,@RequestBody final CartProductsAddDto cartProductsAddDto){
-        CartDto cartDto = null;
-        Cart cart = cartService.addProducts(cartData,cartId,cartProductsAddDto.getProductsId());
-
-        if(null != cart){
-            cartDto = cartApiAdapter.convertToDto(cart);
+        try {
+            return cartApiAdapter.convertToDto(
+                    cartService.addProducts(cartData, productData, cartId, cartProductsAddDto.getProductsId()));
+        } catch(CartNotFoundException e){
+            throw new CartNotFoundExceptionApi(e.getMessage());
+        } catch (ProductNotFoundException p){
+            throw new ProductNotFoundExceptionApi(p.getMessage());
         }
-        return cartDto;
     }
 
     /**
@@ -98,6 +106,12 @@ public class CartController {
      */
     @DeleteMapping("/{cartId}/products/{productId}")
     public void deleteProduct(@PathVariable(value="cartId") int cartId,@PathVariable(value="productId") int productId){
-        cartService.deleteProduct(cartData,cartId,productId);
+        try {
+            cartService.deleteProduct(cartData, productData, cartId,productId);
+        } catch(CartNotFoundException c){
+            throw new CartNotFoundExceptionApi(c.getMessage());
+        } catch (ProductNotFoundException p){
+            throw new ProductNotFoundExceptionApi(p.getMessage());
+        }
     }
 }
