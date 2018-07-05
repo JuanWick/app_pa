@@ -15,14 +15,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(ProductData productData, Product product) throws ExistingProductException {
-        //On verifie qu'un produit de meme nom n'existe pas déjà
-        if(null != productData.getByName(product.getName())){
-            throw new ExistingProductException();
-        }
-        //On vérifie qu'un produit de meme codebarre n'existe pas déjà
-        if(null != productData.getByBarreCode(product.getBarreCode())){
-            throw new ExistingProductException();
-        }
+//        //On verifie qu'un produit de meme nom n'existe pas déjà
+//        if(null != productData.getByName(product.getName())){
+//            throw new ExistingProductException();
+//        }
+//        //On vérifie qu'un produit de meme codebarre n'existe pas déjà
+//        if(null != productData.getByBarreCode(product.getBarreCode())){
+//            throw new ExistingProductException();
+//        }
         return productData.saveOrUpdate(product);
     }
 
