@@ -31,7 +31,7 @@ public interface ProductRepository extends CrudRepository<TProductEntity, Intege
                     "FROM pa_data.t_store as store\n" +
                     "INNER JOIN pa_data.r_stores_products rsp ON rsp.store_id = store.id\n" +
                     "INNER JOIN pa_data.t_product pr ON pr.product_id = rsp.product_id\n" +
-                    "WHERE pr.name LIKE :searchValue \n" +
-                    "OR pr.barre_code LIKE :searchValue \n",nativeQuery = true)
+                    "WHERE UPPER(pr.name) LIKE UPPER(:searchValue) \n" +
+                    "OR UPPER(pr.barre_code) LIKE UPPER(:searchValue) \n",nativeQuery = true)
     List<IStoreProjection> getStoresWithProductWithValue(@Param("searchValue") String searchValue);
 }
