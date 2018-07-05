@@ -20,7 +20,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart createCart(UserData userData, CartData cartData, Integer userId) throws UserNotFoundException {
         User user = userData.getById(userId);
-
+        System.out.println("user : "+user);
         if(null != user){
             Cart cart = new Cart();
             cart.setUser(user);

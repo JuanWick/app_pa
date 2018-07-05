@@ -28,7 +28,7 @@ public class GoogleApiUtil {
 
             result = prop.getProperty("google.api");
         } catch (Exception e) {
-            System.out.println("Exception: " + e);
+            System.out.println("exception: " + e);
         } finally {
             inputStream.close();
         }
