@@ -23,8 +23,7 @@ public class CartServiceImpl implements CartService {
         if(null != user){
             Cart cart = new Cart();
             cart.setUser(user);
-            cartData.save(cart);
-            return cart;
+            return cartData.save(cart);
         } else {
             return null; //TODO gérer l'excepetion
         }
