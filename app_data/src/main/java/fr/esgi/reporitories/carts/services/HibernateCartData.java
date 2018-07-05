@@ -5,6 +5,8 @@ import fr.esgi.reporitories.carts.CartRepository;
 import fr.esgi.reporitories.carts.adapter.CartDataAdapter;
 import fr.esgi.reporitories.carts.dao.TCartEntity;
 import fr.esgi.reporitories.products.dao.TProductEntity;
+import fr.esgi.reporitories.users.UserRepository;
+import fr.esgi.reporitories.users.dao.TUserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -14,6 +16,10 @@ import java.util.List;
 public class HibernateCartData implements CartData {
     @Autowired
     private CartRepository cartRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Autowired
     private CartDataAdapter cartDataAdapter;
 
@@ -32,6 +38,8 @@ public class HibernateCartData implements CartData {
     @Override
     public Cart save(Cart cart) {
         TCartEntity cartEntity = cartDataAdapter.modelToEntity(cart, true);
+        TUserEntity userEntity = userRepository.findById(cart.getUser().getId()).get();
+        cartEntity.setUser(userEntity);
         cartEntity = cartRepository.save(cartEntity);
         return cartDataAdapter.entityToModel(cartEntity, true);
     }
