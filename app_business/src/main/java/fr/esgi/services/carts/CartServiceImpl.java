@@ -57,7 +57,18 @@ public class CartServiceImpl implements CartService {
             for(Integer id:productsId){
                 // On verifie que le produit existe en persistence
                 if(null != productData.getById(id)){
-                    newProducts.add(Product.builder().id(id).build());
+                    //On vérifie que le produit n'est pas déjà présent
+                    if(null != cart.getProducts()){
+                        boolean isPresent = false;
+                        for(Product existingProduct : cart.getProducts()){
+                            if(existingProduct.getId().equals(id)){
+                                isPresent = true;
+                            }
+                        }
+                        if(!isPresent){
+                            newProducts.add(Product.builder().id(id).build());
+                        }
+                    }
                 } else {
                     throw new ProductNotFoundException();
                 }

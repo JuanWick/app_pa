@@ -32,7 +32,6 @@ public class TCartEntity implements Serializable {
     @JoinTable(name = "r_users_carts",
             joinColumns = @JoinColumn(name = "cart_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public Collection<TUserEntity> getSharedUsers() {
         return sharedUsers;
     }
@@ -55,7 +54,6 @@ public class TCartEntity implements Serializable {
     @JoinTable(name = "r_Products_Carts",
             joinColumns = @JoinColumn(name = "cart_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public Collection<TProductEntity> getProducts() {
         return products;
     }
