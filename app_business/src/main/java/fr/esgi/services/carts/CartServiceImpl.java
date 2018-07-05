@@ -3,6 +3,7 @@ package fr.esgi.services.carts;
 import entities.Cart;
 import entities.Product;
 import entities.User;
+import fr.esgi.exception.UserNotFoundException;
 import fr.esgi.reporitories.carts.services.CartData;
 import fr.esgi.reporitories.users.services.UserData;
 
@@ -17,7 +18,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart createCart(UserData userData, CartData cartData, Integer userId) {
+    public Cart createCart(UserData userData, CartData cartData, Integer userId) throws UserNotFoundException {
         User user = userData.getById(userId);
 
         if(null != user){
@@ -25,11 +26,7 @@ public class CartServiceImpl implements CartService {
             cart.setUser(user);
             return cartData.save(cart);
         } else {
-            return null; //TODO gérer l'excepetion
-        }
-
-
-
+            throw new UserNotFoundException("Erreur : utilisateur inconnu");        }
     }
 
     @Override

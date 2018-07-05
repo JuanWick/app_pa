@@ -4,6 +4,7 @@ import entities.Cart;
 import fr.esgi.components.cart.adapter.CartApiAdapter;
 import fr.esgi.components.cart.dto.CartDto;
 import fr.esgi.components.cart.dto.CartProductsAddDto;
+import fr.esgi.exception.UserNotFoundException;
 import fr.esgi.reporitories.carts.services.CartData;
 import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.carts.CartService;
@@ -41,7 +42,13 @@ public class CartController {
      */
     @PostMapping("/{userId}")
     public Integer create(@PathVariable(value="userId") int userId){
-        return cartService.createCart(userData,cartData,userId).getId();
+
+        try {
+            return cartService.createCart(userData,cartData,userId).getId();
+        } catch (UserNotFoundException e) {
+            new UserNotFoundException(e.getMessage());
+        }
+        return null;
     }
 
     /**
