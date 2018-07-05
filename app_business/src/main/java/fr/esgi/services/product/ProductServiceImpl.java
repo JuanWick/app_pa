@@ -2,6 +2,8 @@ package fr.esgi.services.product;
 
 import entities.Product;
 import entities.Store;
+import fr.esgi.exception.ExistingProductException;
+import fr.esgi.exception.ProductNotFoundException;
 import fr.esgi.reporitories.products.services.ProductData;
 import fr.esgi.services.util.GpsUtil;
 
@@ -11,14 +13,55 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Override
-    public Product save(ProductData productData, Product product) {
-
+    public Product save(ProductData productData, Product product) throws ExistingProductException {
+        //On verifie qu'un produit de meme nom n'existe pas déjà
+        if(null != productData.getByName(product.getName())){
+            throw new ExistingProductException();
+        }
+        //On vérifie qu'un produit de meme codebarre n'existe pas déjà
+        if(null != productData.getByBarreCode(product.getBarreCode())){
+            throw new ExistingProductException();
+        }
         return productData.saveOrUpdate(product);
     }
 
     @Override
-    public void delete(ProductData productData, int productId) {
-        productData.delete(productId);
+    public Product getById(ProductData productData, Integer id) throws ProductNotFoundException {
+        Product product = productData.getById(id);
+        if(null != product){
+            return product;
+        } else {
+            throw new ProductNotFoundException();
+        }
+    }
+
+    @Override
+    public Product getByName(ProductData productData, String name) throws ProductNotFoundException {
+        Product product = productData.getByName(name);
+        if(null != product){
+            return product;
+        } else {
+            throw new ProductNotFoundException();
+        }
+    }
+
+    @Override
+    public Product getByBarreCode(ProductData productData, String barreCode) throws ProductNotFoundException {
+        Product product = productData.getByBarreCode(barreCode);
+        if(null != product){
+            return product;
+        } else {
+            throw new ProductNotFoundException();
+        }
+    }
+
+    @Override
+    public void delete(ProductData productData, int productId) throws ProductNotFoundException {
+        if(null != productData.getById(productId)){
+            productData.delete(productId);
+        } else {
+            throw new ProductNotFoundException();
+        }
     }
 
     @Override

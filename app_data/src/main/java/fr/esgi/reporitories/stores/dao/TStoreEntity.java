@@ -137,7 +137,7 @@ public class TStoreEntity {
     @JoinTable(name = "r_stores_products",
             joinColumns = @JoinColumn(name = "store_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public Collection<TProductEntity> getProducts() {
         return products;
     }

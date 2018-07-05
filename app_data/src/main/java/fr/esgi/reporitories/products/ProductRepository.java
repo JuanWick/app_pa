@@ -20,6 +20,10 @@ public interface ProductRepository extends CrudRepository<TProductEntity, Intege
                     "WHERE cat.name LIKE '%:categorie%'\n",nativeQuery = true)
     List<Store> getStoresCoordinatesWithProductCategory(@Param("categorie") String categorie);
 
+    List<TProductEntity> getTProductEntityByName(String name);
+
+    List<TProductEntity> getTProductEntityByBarreCode(String barreCode);
+
     @Query(
             value = "SELECT * \n" +
                     "FROM Store s\n" +

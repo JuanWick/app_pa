@@ -23,8 +23,29 @@ public class HibernateProductData implements ProductData{
             product = productDataAdapter.entityToModel(productRepository.findById(productId).get(),true);
         }
 
-
         return product;
+    }
+
+    @Override
+    public Product getByName(String name) {
+        List<TProductEntity> productEntities = productRepository.getTProductEntityByName(name);
+
+        if(null != productEntities && !productEntities.isEmpty()){
+           return productDataAdapter.entityToModel(productEntities.get(0),true);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Product getByBarreCode(String name) {
+        List<TProductEntity> productEntities = productRepository.getTProductEntityByBarreCode(name);
+
+        if(null != productEntities  && !productEntities.isEmpty()){
+            return productDataAdapter.entityToModel(productEntities.get(0),true);
+        }
+
+        return null;
     }
 
     @Override

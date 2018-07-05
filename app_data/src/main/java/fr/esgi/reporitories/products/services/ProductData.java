@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface ProductData {
     Product getById(int id);
+    Product getByName(String name);
+    Product getByBarreCode(String name);
+
     Product saveOrUpdate(Product product);
     void delete(int id);
    List<Store> getStoresCoordinatesWithProductCategory(String categorie);

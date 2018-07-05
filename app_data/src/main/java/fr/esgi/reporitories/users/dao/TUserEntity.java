@@ -71,7 +71,7 @@ public class TUserEntity {
     @JoinTable(name = "r_users_stores",
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "store_id",referencedColumnName = "id"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public Collection<TStoreEntity> getLoyaltyStores() {
         return loyaltyStores;
     }
@@ -81,7 +81,7 @@ public class TUserEntity {
     }
 
     @ManyToMany(mappedBy="sharedUsers")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public Collection<TCartEntity> getSharedCarts() {
         return sharedCarts;
     }
@@ -94,7 +94,7 @@ public class TUserEntity {
     @JoinTable(name = "r_users_roles",
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public Collection<TRoleEntity> getRoles() {
         return roles;
     }

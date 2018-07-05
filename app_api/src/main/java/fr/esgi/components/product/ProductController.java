@@ -5,10 +5,16 @@ import fr.esgi.components.product.adapter.ProductApiAdapter;
 import fr.esgi.components.product.dto.ProductCompletDto;
 import fr.esgi.components.product.dto.ProductSearchRequestDto;
 import fr.esgi.components.product.dto.ProductSearchResultDto;
+import fr.esgi.exception.ExistingProductException;
+import fr.esgi.exception.ExistingProductExceptionApi;
+import fr.esgi.exception.ProductNotFoundException;
+import fr.esgi.exception.ProductNotFoundExceptionApi;
 import fr.esgi.reporitories.products.services.ProductData;
 import fr.esgi.services.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/products")
@@ -32,9 +38,12 @@ public class ProductController {
 
     @PostMapping("")
     public Integer saveOrUpdate(@RequestBody ProductCompletDto productCompletDto){
-        Product product = productService.save(productData, productApiAdapter.convertToModel(productCompletDto));
-
-        return product.getId();
+        try{
+            Product product = productService.save(productData, productApiAdapter.convertToModel(productCompletDto));
+            return product.getId();
+        } catch (ExistingProductException e){
+            throw new ExistingProductExceptionApi(e.getMessage());
+        }
     }
 
     /**
@@ -44,9 +53,40 @@ public class ProductController {
      */
     @GetMapping("/{productId}")
     public ProductCompletDto getById(@PathVariable(value="productId") int productId) {
-        return productApiAdapter.convertToDto(productData.getById(productId));
+        try {
+            return productApiAdapter.convertToDto(productService.getById(productData,productId));
+        } catch (ProductNotFoundException p) {
+            throw new ProductNotFoundExceptionApi(p.getMessage());
+        }
     }
-    //Creation/update d'un produit
+
+    /**
+     * Permet de récupérer le détail d'un produit
+     * @param name nom du produit
+     * @return le détail d'un produit
+     */
+    @GetMapping("/name")
+    public ProductCompletDto getByName(@RequestParam(value="value", defaultValue="") String name) {
+        try {
+            return productApiAdapter.convertToDto(productService.getByName(productData,name));
+        } catch (ProductNotFoundException p) {
+            throw new ProductNotFoundExceptionApi(p.getMessage());
+        }
+    }
+
+    /**
+     * Permet de récupérer le détail d'un produit
+     * @param value nom du produit
+     * @return le détail d'un produit
+     */
+    @GetMapping("/barrecode")
+    public ProductCompletDto getByBarreCode(@RequestParam(value="value", defaultValue="") String value) {
+        try {
+            return productApiAdapter.convertToDto(productService.getByBarreCode(productData,value));
+        } catch (ProductNotFoundException p) {
+            throw new ProductNotFoundExceptionApi(p.getMessage());
+        }
+    }
 
     /**
      * Permet la suppression d'un produit
@@ -54,7 +94,11 @@ public class ProductController {
      */
     @DeleteMapping("/{productId}")
     public void delete(@PathVariable(value="productId") int productId){
-        productService.delete(productData,productId);
+        try{
+            productService.delete(productData,productId);
+        } catch (ProductNotFoundException p){
+            throw new ProductNotFoundExceptionApi(p.getMessage());
+        }
     }
 
     /**
@@ -62,7 +106,7 @@ public class ProductController {
      * pouvant être dans le nom ou le codebar
      * @return ProductSearchResultDto
      */
-    @GetMapping("/searchByValue")
+    @GetMapping("/locateByValue")
     public ProductSearchResultDto searchProductByValue(@RequestBody ProductSearchRequestDto productSearchRequestDto){
             return productApiAdapter.convertListToProductSearchResultDto(
                     productService.searchByValue(
@@ -77,7 +121,7 @@ public class ProductController {
     * Permet la recherche d'un produit dans l'ensemble des magasins en se basant sur une categorie
      * @return ProductSearchResultDto
      */
-    @GetMapping("/searchByCategory")
+    @GetMapping("/locateByCategory")
     public ProductSearchResultDto searchProductByCategory(@RequestBody ProductSearchRequestDto productSearchRequestDto){
         return productApiAdapter.convertListToProductSearchResultDto(
                 productService.searchByCategorie(

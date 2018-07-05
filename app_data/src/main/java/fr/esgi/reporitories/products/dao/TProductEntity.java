@@ -63,7 +63,7 @@ public class TProductEntity implements Serializable {
     }
 
     @ManyToMany(mappedBy = "products")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public Collection<TCartEntity> getCarts() {
         return carts;
     }
