@@ -21,4 +21,7 @@ public class ProductCompletDto {
     private String info;
     @Size(min = 1, max = 255, message = "error.barreCode.size")
     private String barreCode;
+    @NotNull (message = "error.price.notnull")
+    @Size(min = 1, max = 10, message = "error.price.size")
+    private Double price;
 }

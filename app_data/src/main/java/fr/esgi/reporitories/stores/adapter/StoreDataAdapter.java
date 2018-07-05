@@ -99,17 +99,24 @@ public class StoreDataAdapter {
         return storeEntity;
     }
 
-    public List<Store> entitiesToModels(List<IStoreProjection> entities){
-        System.out.println("entities : "+entities.size());
-        List<Store> stores = new ArrayList<>();
+    public List<Object[]> entitiesToModels(List<IStoreProjection> entities){
+        List<Object[]> stores = new ArrayList<>();
 
         for(IStoreProjection entity : entities){
+
             TStoreEntity tStoreEntity = new TStoreEntity();
             tStoreEntity.setId(entity.getId());
             tStoreEntity.setLongitude(entity.getLongitude());
             tStoreEntity.setLatitude(entity.getLatitude());
 
-            stores.add(entityToModel(tStoreEntity,false));
+            TProductEntity tProductEntity = new TProductEntity();
+            tProductEntity.setProductId(entity.getProduct_id());
+            tProductEntity.setPrice(entity.getPrice());
+
+            Object[] object = new Object[2];
+            object[0] = entityToModel(tStoreEntity,false);
+            object[1] = productDataAdapter.entityToModel(tProductEntity,false);
+            stores.add(object);
         }
 
         return stores;

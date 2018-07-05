@@ -6,6 +6,7 @@ import fr.esgi.components.product.dto.ProductCompletDto;
 import fr.esgi.components.product.dto.ProductDto;
 import fr.esgi.components.product.dto.ProductSearchResultDto;
 import fr.esgi.components.store.dto.StoreDto;
+import fr.esgi.components.store.dto.StoreResultDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class ProductApiAdapter {
                 .info(productCompletDto.getInfo())
                 .name(productCompletDto.getName())
                 .id(productCompletDto.getId())
+                .price(productCompletDto.getPrice())
                 .build();
     }
 
@@ -26,14 +28,17 @@ public class ProductApiAdapter {
                 .info(product.getInfo())
                 .name(product.getName())
                 .barreCode(product.getBarreCode())
+                .price(product.getPrice())
                 .build();
     }
 
-    public ProductSearchResultDto convertListToProductSearchResultDto(List<Store> search) {
-        List<StoreDto> storeDtos = new ArrayList<>();
+    public ProductSearchResultDto convertListToProductSearchResultDto(List<Object[]> search) {
+        List<StoreResultDto> storeResultDtos = new ArrayList<>();
 
-        for(Store store : search){
-            storeDtos.add(StoreDto.builder()
+        for(Object[] objects : search){
+            Store store = (Store) objects[0];
+            Product product = (Product) objects[1];
+            storeResultDtos.add(StoreResultDto.builder()
             .id(store.getId())
             .address(store.getAddress())
             .city(store.getCity())
@@ -41,9 +46,13 @@ public class ProductApiAdapter {
             .latitude(store.getLatitude())
             .longitude(store.getLongitude())
             .name(store.getName())
-            .distance(store.getDistance()).build());
+            .zipcode(store.getZipcode())
+            .distance(store.getDistance())
+            .productPrice(product.getPrice())
+            .productId(product.getId())
+            .build());
         }
 
-        return ProductSearchResultDto.builder().stores(storeDtos).build();
+        return ProductSearchResultDto.builder().stores(storeResultDtos).build();
     }
 }

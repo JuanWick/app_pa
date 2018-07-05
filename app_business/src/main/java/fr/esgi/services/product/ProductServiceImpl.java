@@ -66,37 +66,39 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Store> searchByValue(StoreData storeData, ProductData productData, String searchValue, Double latitude, Double longitude, Double perimeter) {
+    public List<Object[]> searchByValue(StoreData storeData, ProductData productData, String searchValue, Double latitude, Double longitude, Double perimeter) {
         /* On récupère les stores dans le périmètre **/
-        List<Store> stores = productData.getStoresWithProductValue(searchValue);
+        List<Object[]> stores = productData.getStoresWithProductValue(searchValue);
 
 
         /* On isole ceux qui sont dans le périmètre **/
-        List<Store> storesWithProduct = new ArrayList<>();
+        List<Object[]> storesWithProduct = new ArrayList<>();
 
-        for(Store store : stores){
-            if(perimeter >= GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude())){
-                Store storeToAdd = storeData.getById(store.getId());
-                storeToAdd.setDistance(GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude()));
-                storesWithProduct.add(storeToAdd);
+        for(Object[] store : stores){
+            if(perimeter >= GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,((Store) store[0]).getLatitude(),((Store) store[0]).getLongitude())){
+                Store storeComplete = storeData.getById(((Store) store[0]).getId());
+                storeComplete.setDistance(GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,storeComplete.getLatitude(),storeComplete.getLongitude()));
+                store[0] = storeComplete;
+                storesWithProduct.add(store);
             }
         }
         return storesWithProduct;
     }
 
     @Override
-    public List<Store> searchByCategorie(StoreData storeData, ProductData productData, String categorie, Double latitude, Double longitude, Double perimeter) {
+    public List<Object[]> searchByCategorie(StoreData storeData, ProductData productData, String categorie, Double latitude, Double longitude, Double perimeter) {
         /* On récupère les magasins qui ont des produit de la catégorie **/
-        List<Store> stores = productData.getStoresWithProductCategory(categorie);
+        List<Object[]> stores = productData.getStoresWithProductCategory(categorie);
 
         /* On isole ceux qui sont dans le périmètre **/
-        List<Store> storesWithProduct = new ArrayList<>();
+        List<Object[]> storesWithProduct = new ArrayList<>();
 
-        for(Store store : stores){
-            if(perimeter >= GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude())){
-                Store storeToAdd = storeData.getById(store.getId());
-                storeToAdd.setDistance(GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,store.getLatitude(),store.getLongitude()));
-                storesWithProduct.add(storeToAdd);
+        for(Object[] store : stores){
+            if(perimeter >= GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,((Store) store[0]).getLatitude(),((Store) store[0]).getLongitude())){
+                Store storeComplete = storeData.getById(((Store) store[0]).getId());
+                storeComplete.setDistance(GpsUtil.getDistanceBetweenCoordinates(latitude,longitude,storeComplete.getLatitude(),storeComplete.getLongitude()));
+                store[0] = storeComplete;
+                storesWithProduct.add(store);
             }
         }
         return storesWithProduct;

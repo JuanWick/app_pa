@@ -13,10 +13,10 @@ import java.util.List;
 public interface ProductRepository extends CrudRepository<TProductEntity, Integer> {
 
     @Query(
-            value = "SELECT store.* \n" +
+            value = "SELECT store.id, store.latitude, store.longitude, pr.product_id, pr.price \n" +
                     "FROM pa_data.t_store as store\n" +
                     "INNER JOIN pa_data.r_stores_products rsp ON rsp.store_id = store.id\n" +
-                    "INNER JOIN pa_data.t_product pr ON pr.id = rsp.product_id\n" +
+                    "INNER JOIN pa_data.t_product pr ON pr.product_id = rsp.product_id\n" +
                     "INNER JOIN pa_data.r_products_categories rpc ON rpc.product_id = pr.id\n" +
                     "INNER JOIN pa_data.t_category cat ON cat.id = rpc.category_id\n" +
                     "WHERE cat.name LIKE '%'+:categorie+'%'\n",nativeQuery = true)
@@ -27,10 +27,10 @@ public interface ProductRepository extends CrudRepository<TProductEntity, Intege
     List<TProductEntity> getTProductEntityByBarreCode(String barreCode);
 
     @Query(
-            value = "SELECT store.id, store.latitude, store.longitude \n" +
+            value = "SELECT store.id, store.latitude, store.longitude, pr.product_id, pr.price \n" +
                     "FROM pa_data.t_store as store\n" +
                     "INNER JOIN pa_data.r_stores_products rsp ON rsp.store_id = store.id\n" +
-                    "INNER JOIN pa_data.t_product pr ON pr.id = rsp.product_id\n" +
+                    "INNER JOIN pa_data.t_product pr ON pr.product_id = rsp.product_id\n" +
                     "WHERE pr.name LIKE :searchValue \n" +
                     "OR pr.barre_code LIKE :searchValue \n",nativeQuery = true)
     List<IStoreProjection> getStoresWithProductWithValue(@Param("searchValue") String searchValue);

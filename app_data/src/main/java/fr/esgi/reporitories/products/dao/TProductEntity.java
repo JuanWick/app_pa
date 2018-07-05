@@ -13,23 +13,24 @@ import java.util.Objects;
 @Entity
 @Table(name = "t_product")
 public class TProductEntity implements Serializable {
-    private int id;
+    private int productId;
     private String name;
     private String info;
     private String barreCode;
+    private Double price;
     private Collection<TCartEntity> carts;
     private Collection<TCategoryEntity> categories;
     private Collection<TStoreEntity> stores;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    public int getId() {
-        return id;
+    @Column(name = "product_id")
+    public int getProductId() {
+        return productId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     @Basic
@@ -40,6 +41,16 @@ public class TProductEntity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Basic
+    @Column(name = "price")
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     @Basic
@@ -74,7 +85,7 @@ public class TProductEntity implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "r_products_categories",
-            joinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "product_id",referencedColumnName = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id",referencedColumnName = "id"))
     public Collection<TCategoryEntity> getCategories() {
         return categories;
@@ -98,7 +109,7 @@ public class TProductEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TProductEntity that = (TProductEntity) o;
-        return id == that.id &&
+        return productId == that.productId &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(info, that.info) &&
                 Objects.equals(barreCode, that.barreCode);
@@ -107,6 +118,6 @@ public class TProductEntity implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, info, barreCode);
+        return Objects.hash(productId, name, info, barreCode);
     }
 }

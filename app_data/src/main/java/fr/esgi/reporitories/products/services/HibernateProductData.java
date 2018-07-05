@@ -1,7 +1,6 @@
 package fr.esgi.reporitories.products.services;
 
 import entities.Product;
-import entities.Store;
 import fr.esgi.reporitories.products.ProductRepository;
 import fr.esgi.reporitories.products.adapter.ProductDataAdapter;
 import fr.esgi.reporitories.products.dao.TProductEntity;
@@ -68,12 +67,12 @@ public class HibernateProductData implements ProductData{
     }
 
     @Override
-    public List<Store> getStoresWithProductCategory(String categorie) {
-        return storeDataAdapter.entitiesToModels(productRepository.getStoresWithProductInCategory(categorie));
+    public List<Object[]> getStoresWithProductCategory(String categorie) {
+        return storeDataAdapter.entitiesToModels(productRepository.getStoresWithProductInCategory("%"+categorie+"%"));
     }
 
     @Override
-    public List<Store> getStoresWithProductValue(String searchValue) {
-        return storeDataAdapter.entitiesToModels(productRepository.getStoresWithProductWithValue(searchValue));
+    public List<Object[]> getStoresWithProductValue(String searchValue) {
+        return storeDataAdapter.entitiesToModels(productRepository.getStoresWithProductWithValue("%"+searchValue+"%"));
     }
 }

@@ -32,10 +32,11 @@ public class ProductDataAdapter {
 
     public Product entityToModel(TProductEntity productEntity,boolean all){
         Product product = Product.builder()
-                .id(productEntity.getId())
+                .id(productEntity.getProductId())
                 .barreCode(productEntity.getBarreCode())
                 .info(productEntity.getInfo())
-                .name(productEntity.getName()).build();
+                .name(productEntity.getName())
+                .price(productEntity.getPrice()).build();
 
         if(all && null != productEntity.getCarts()){
             List<Cart> carts = new ArrayList<>();
@@ -70,11 +71,12 @@ public class ProductDataAdapter {
     public TProductEntity modelToEntity(Product product, boolean all){
         TProductEntity productEntity = new TProductEntity();
         if(null != product.getId()){
-            productEntity.setId(product.getId());
+            productEntity.setProductId(product.getId());
         }
         productEntity.setBarreCode(product.getBarreCode());
         productEntity.setInfo(product.getInfo());
         productEntity.setName(product.getName());
+        productEntity.setPrice(product.getPrice());
         if(all && null != product.getCarts()){
             ArrayList cartEntities = new ArrayList();
             for(Cart cart : product.getCarts()){

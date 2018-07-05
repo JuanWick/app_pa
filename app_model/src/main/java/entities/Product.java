@@ -12,6 +12,7 @@ public class Product {
     private String name;
     private String info;
     private String barreCode;
+    private Double price;
     private List<Cart> carts;
     private List<Category> categories;
     private List<Store> stores;

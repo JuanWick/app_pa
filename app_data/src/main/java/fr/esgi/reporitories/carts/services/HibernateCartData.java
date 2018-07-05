@@ -60,7 +60,7 @@ public class HibernateCartData implements CartData {
             if(null != tCartEntity.getProducts()){
                 List<TProductEntity> updatedProductList = new ArrayList<>();
                 for(TProductEntity productEntity:tCartEntity.getProducts()){
-                    if(productEntity.getId() != productId){
+                    if(productEntity.getProductId() != productId){
                         updatedProductList.add(productEntity);
                     } else {
                         result = true;

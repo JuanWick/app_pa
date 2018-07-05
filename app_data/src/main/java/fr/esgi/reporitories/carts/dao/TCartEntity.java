@@ -53,7 +53,7 @@ public class TCartEntity implements Serializable {
     @ManyToMany
     @JoinTable(name = "r_Products_Carts",
             joinColumns = @JoinColumn(name = "cart_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "product_id",referencedColumnName = "product_id"))
     public Collection<TProductEntity> getProducts() {
         return products;
     }
