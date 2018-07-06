@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 6000)
 @RequestMapping("/products")
 public class ProductController {
 

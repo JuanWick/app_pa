@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 6000)
 @RequestMapping("/stores")
 public class StoreController {
 
