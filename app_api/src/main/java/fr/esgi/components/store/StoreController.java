@@ -17,6 +17,7 @@ import fr.esgi.services.stores.StoreService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,6 +54,7 @@ public class StoreController {
      * @return ID du magasin
      */
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public Integer saveOrUpdate(@Validated @RequestBody final StoreAddDto storeAddDto)  {
         User user = new User();
         user.setId(storeAddDto.getUserId());
@@ -84,6 +86,7 @@ public class StoreController {
      * @return les détails du magasin
      */
     @GetMapping("/{storeId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public StoreDto getById(@PathVariable(value="storeId") int storeId) {
         try{
             return storeApiAdapter.convertToDto(storeService.getById(storeData,storeId));
@@ -97,6 +100,7 @@ public class StoreController {
      * @param storeId ID du magasin à supprimer
      */
     @DeleteMapping("/{storeId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public void delete(@PathVariable(value="storeId") int storeId){
         try{
             storeService.delete(storeData,storeId);
@@ -111,6 +115,7 @@ public class StoreController {
      * @param productId id d'un produit
      */
     @PostMapping("/{storeId}/products/{productId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public void addProduct(@PathVariable(value="storeId") int storeId,@PathVariable(value="productId") int productId){
         try {
             storeService.addProduct(storeData, productData, storeId, productId);
@@ -127,6 +132,7 @@ public class StoreController {
      * @return Une liste des id des produits du magasin
      */
     @GetMapping("/{storeId}/products")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public List<Integer> getProductsByStoreId(@PathVariable(value="storeId") int storeId) {
         try {
             List<Product> products = storeService.getProducts(storeData, storeId);
@@ -147,6 +153,7 @@ public class StoreController {
      * @param productId id d'un produit
      */
     @DeleteMapping("/{storeId}/products/{productId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public void removeProduct(@PathVariable(value="storeId") int storeId,@PathVariable(value="productId") int productId){
         try{
             storeService.removeProduct(storeData, productData, storeId, productId);
@@ -158,6 +165,7 @@ public class StoreController {
     }
 
     @PostMapping("/{storeId}/products")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public void handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable(value="storeId") int storeId) {
         try {
             POIFSFileSystem poifsFileSystem = new POIFSFileSystem(file.getInputStream());

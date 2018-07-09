@@ -1,5 +1,13 @@
 package fr.esgi;
 
+        import fr.esgi.components.security.CustomUserDetailsService;
+        import fr.esgi.components.security.adapter.UserPrincipalAdapter;
+        import fr.esgi.components.security.strategy.AuthenticatorStrategy;
+        import fr.esgi.components.security.strategy.SpringAuthenticatorStrategy;
+        import fr.esgi.reporitories.users.services.HibernateUserAuthenticatorData;
+        import fr.esgi.reporitories.users.services.UserAuthenticatorData;
+        import fr.esgi.services.authentication.UserAuthenticationService;
+        import fr.esgi.services.authentication.UserAuthenticationServiceImpl;
         import fr.esgi.components.cart.adapter.CartApiAdapter;
         import fr.esgi.components.product.adapter.ProductApiAdapter;
         import fr.esgi.components.store.adapter.StoreApiAdapter;
@@ -52,6 +60,15 @@ public class ApiConfiguration
     @Bean
     public ProductService ProductService(){ return new ProductServiceImpl(); }
 
+    @Bean
+    public CustomUserDetailsService CustomUserDetailsService(){return new CustomUserDetailsService(); }
+
+    @Bean
+    public UserAuthenticationService UserAuthenticationService(){return new UserAuthenticationServiceImpl(); }
+
+    @Bean
+    public AuthenticatorStrategy AuthenticatorStrategy(){return new SpringAuthenticatorStrategy();}
+
     /** Data **/
     @Bean
     public StoreData StoreData() {return new HibernateStoreData();}
@@ -64,6 +81,9 @@ public class ApiConfiguration
 
     @Bean
     public ProductData ProductData() {return new HibernateProductData();}
+
+    @Bean
+    public UserAuthenticatorData UserAuthenticationData() {return new HibernateUserAuthenticatorData();}
 
     /** Dto **/
     @Bean
@@ -80,5 +100,8 @@ public class ApiConfiguration
 
     @Bean
     public ProductApiAdapter ProductApiAdapter(){return new ProductApiAdapter();}
+
+    @Bean
+    public UserPrincipalAdapter UserPrincipalAdapter(){return new UserPrincipalAdapter();}
 
 }

@@ -11,6 +11,7 @@ import fr.esgi.reporitories.products.services.ProductData;
 import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.carts.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,6 +49,7 @@ public class CartController {
      * @return ID du panier crée
      */
     @PostMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public Integer create(@PathVariable(value="userId") int userId){
 
         try {
@@ -63,6 +65,7 @@ public class CartController {
      * @return ID de l'utilisateur possédant le panier et liste des ID des produits
      */
     @GetMapping("/{cartId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public CartDto getById(@PathVariable(value="cartId") int cartId) {
         try {
             return cartApiAdapter.convertToDto(cartService.getById(cartData,cartId));
@@ -76,6 +79,7 @@ public class CartController {
      * @param cartId, id du panier
      */
     @DeleteMapping("/{cartId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public void delete(@PathVariable(value="cartId") int cartId){
         try {
             cartService.delete(cartData,cartId);
@@ -89,6 +93,7 @@ public class CartController {
      * @param cartProductsAddDto, liste des produits à ajouter au Panier
      */
     @PostMapping("/{cartId}/products")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public CartDto addProducts(@PathVariable(value="cartId") int cartId,@RequestBody final CartProductsAddDto cartProductsAddDto){
         try {
             return cartApiAdapter.convertToDto(
@@ -106,6 +111,7 @@ public class CartController {
      * @param productId, id du produit à supprimer
      */
     @DeleteMapping("/{cartId}/products/{productId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public void deleteProduct(@PathVariable(value="cartId") int cartId,@PathVariable(value="productId") int productId){
         try {
             cartService.deleteProduct(cartData, productData, cartId,productId);

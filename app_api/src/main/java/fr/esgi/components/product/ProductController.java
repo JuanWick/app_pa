@@ -13,6 +13,7 @@ import fr.esgi.reporitories.products.services.ProductData;
 import fr.esgi.reporitories.stores.services.StoreData;
 import fr.esgi.services.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -43,6 +44,7 @@ public class ProductController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public Integer saveOrUpdate(@RequestBody ProductCompletDto productCompletDto){
         try{
             Product product = productService.save(productData, productApiAdapter.convertToModel(productCompletDto));
@@ -58,6 +60,7 @@ public class ProductController {
      * @return le détail d'un produit
      */
     @GetMapping("/{productId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public ProductCompletDto getById(@PathVariable(value="productId") int productId) {
         try {
             return productApiAdapter.convertToDto(productService.getById(productData,productId));
@@ -72,6 +75,7 @@ public class ProductController {
      * @return le détail d'un produit
      */
     @GetMapping("/name")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public ProductCompletDto getByName(@RequestParam(value="value", defaultValue="") String name) {
         try {
             return productApiAdapter.convertToDto(productService.getByName(productData,name));
@@ -86,6 +90,7 @@ public class ProductController {
      * @return le détail d'un produit
      */
     @GetMapping("/barrecode")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public ProductCompletDto getByBarreCode(@RequestParam(value="value", defaultValue="") String value) {
         try {
             return productApiAdapter.convertToDto(productService.getByBarreCode(productData,value));
@@ -99,6 +104,7 @@ public class ProductController {
      * @param productId, id du produit
      */
     @DeleteMapping("/{productId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public void delete(@PathVariable(value="productId") int productId){
         try{
             productService.delete(productData,productId);
@@ -113,6 +119,7 @@ public class ProductController {
      * @return ProductSearchResultDto
      */
     @PostMapping("/locateByValue")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public ProductSearchResultDto searchProductByValue(@RequestBody ProductSearchRequestDto productSearchRequestDto){
             return productApiAdapter.convertListToProductSearchResultDto(
                     productService.searchByValue(
@@ -129,6 +136,7 @@ public class ProductController {
      * @return ProductSearchResultDto
      */
     @PostMapping("/locateByCategory")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public ProductSearchResultDto searchProductByCategory(@RequestBody ProductSearchRequestDto productSearchRequestDto){
         return productApiAdapter.convertListToProductSearchResultDto(
                 productService.searchByCategorie(

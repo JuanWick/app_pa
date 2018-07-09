@@ -9,6 +9,7 @@ import fr.esgi.components.user.dto.UserDto;
 import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class UserController {
      * @return UserDto
      */
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public UserDto saveOrUpdate(@RequestBody final UserDto userDto){
         User user = userApiAdapter.convertToModel(userDto);
         return userApiAdapter.convertToDto(userData.save(user));
@@ -56,6 +58,7 @@ public class UserController {
      * @return UserDto
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
     public UserDto getById(@PathVariable(value="id") int id) {
         User user = userData.getById(id);
         UserDto userDto = null;
@@ -71,6 +74,7 @@ public class UserController {
      * @param userId, id de l'utilisateur
      */
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public void delete(@PathVariable(value="userId") int userId){
         userService.delete(userData,userId);
     }
@@ -80,6 +84,7 @@ public class UserController {
      * @return une liste de roles
      */
     @GetMapping("/roles")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<RoleDto> getRoles() {
         List<Role> roles = userData.getRoles();
         List<RoleDto> roleDtos = new ArrayList<>();
@@ -95,6 +100,7 @@ public class UserController {
      * @return la liste des ids des roles de l'utilisateur
      */
     @GetMapping("/{userId}/roles")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<Integer> getRolesByUserId(@PathVariable(value = "userId") int userId) {
         User user = userData.getById(userId);
         List<Role> roles;
@@ -116,6 +122,7 @@ public class UserController {
      * @param roleId id du role à ajouter à l'utilisateur
      */
     @PostMapping("/{userId}/roles/{roleId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void assignRole(@PathVariable(value="userId") int userId, @PathVariable(value="roleId") int roleId){
         User user = userData.getById(userId);
 

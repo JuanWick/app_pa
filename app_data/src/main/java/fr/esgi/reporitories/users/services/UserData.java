@@ -11,5 +11,6 @@ public interface UserData {
     User save(User user);
     List<Role> getRoles();
     User update(User user);
+    Role getRoleById(int id);
     void delete(int id);
 }

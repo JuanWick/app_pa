@@ -94,6 +94,7 @@ public class TUserEntity {
     @JoinTable(name = "r_users_roles",
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
+
 //    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     public Collection<TRoleEntity> getRoles() {
         return roles;

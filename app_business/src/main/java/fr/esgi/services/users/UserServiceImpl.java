@@ -2,6 +2,7 @@ package fr.esgi.services.users;
 
 import entities.Role;
 import entities.User;
+import fr.esgi.exception.RoleNotFoundException;
 import fr.esgi.reporitories.users.services.UserData;
 
 import java.util.List;
@@ -10,8 +11,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer create(UserData userData, User user, Integer roleId) {
-        Role role = new Role();
-        role.setId(roleId);
+        Role role = userData.getRoleById(roleId);
         user.getRoles().add(role);
         user = userData.save(user);
 
@@ -31,6 +31,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Role> getRoles(UserData userData) {
         return userData.getRoles();
+    }
+
+    @Override
+    public Role getRoleById(UserData userData, int id) throws RoleNotFoundException {
+        Role role = userData.getRoleById(id);
+        if(null == role){throw new RoleNotFoundException();
+        }
+        return role;
     }
 
     @Override

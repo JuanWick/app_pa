@@ -36,7 +36,6 @@ public class HibernateUserData implements UserData {
     @Override
     public User getById(int id) {
         User user = null;
-        System.out.println("dd" + userRepository);
         if(userRepository.findById(id).isPresent()){
             TUserEntity  tUserEntity = userRepository.findById(id).get();
             user = userDataAdapter.entityToModel(tUserEntity, true);
@@ -65,6 +64,14 @@ public class HibernateUserData implements UserData {
 
     @Override
     public User update(User user) {
+        return null;
+    }
+
+    @Override
+    public Role getRoleById(int id) {
+        if(roleRepository.existsById(id)){
+            return roleDataAdapter.entityToModel(roleRepository.findById(id).get());
+        }
         return null;
     }
 

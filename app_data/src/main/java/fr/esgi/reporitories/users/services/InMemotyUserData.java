@@ -53,6 +53,11 @@ public class InMemotyUserData implements UserData{
     }
 
     @Override
+    public Role getRoleById(int id) {
+        return null;
+    }
+
+    @Override
     public void delete(int id) {
 
     }
