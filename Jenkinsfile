@@ -19,8 +19,10 @@ pipeline {
             }
         }
         stage('Build package') {
-            steps {
-                sh 'mvn package'
+        timeout(time: 5000, unit: 'SECONDS'){
+                steps {
+                    sh 'mvn package'
+                }
             }
         }
 //        stage('release') {
