@@ -15,7 +15,7 @@ public interface UserAuthenticationService {
 
     boolean existsByEmail(UserAuthenticatorData userAuthenticatorData, String username);
 
-    void signIn(UserData userData,UserAuthenticatorData userAuthenticatorData, User user, Integer roleid, UserAuthenticator userAuthenticator) throws EmailAlreadyExistException, UserAlreadyExistException;
+    Integer signIn(UserData userData,UserAuthenticatorData userAuthenticatorData, User user, Integer roleid, UserAuthenticator userAuthenticator) throws EmailAlreadyExistException, UserAlreadyExistException;
 
     UserAuthenticator findByUserNameOrEmail(UserData userData, UserAuthenticatorData userAuthenticatorData, String s);
 

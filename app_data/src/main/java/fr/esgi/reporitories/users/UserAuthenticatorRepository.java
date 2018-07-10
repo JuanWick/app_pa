@@ -13,6 +13,7 @@ import java.util.List;
 public interface UserAuthenticatorRepository extends CrudRepository<TUserAuthenticator, Integer> {
     TUserAuthenticator findByEmail(String email);
     TUserAuthenticator findByLogin(String login);
+    TUserAuthenticator findByUser_Id(Integer id);
 
     @Query(
             value = "SELECT DISTINCT r.* FROM pa_data.t_role r\n" +

@@ -46,6 +46,7 @@ public class HibernateUserData implements UserData {
     @Override
     public User save(User user) {
         TUserEntity userEntity = userRepository.save(userDataAdapter.modelToEntity(user, true));
+
         return userDataAdapter.entityToModel(userEntity, true);
     }
 

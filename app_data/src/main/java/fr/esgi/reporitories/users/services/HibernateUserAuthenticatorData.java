@@ -55,6 +55,15 @@ public class HibernateUserAuthenticatorData implements UserAuthenticatorData{
     }
 
     @Override
+    public UserAuthenticator findByUserId(Integer userid) {
+        if(null != userAuthenticatorRepository.findByUser_Id(userid)){
+            return userAuthenticatorDataAdapter.entityToModel(userAuthenticatorRepository.findByUser_Id(userid));
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public List<String> getRolesByUserAuthenticator(Integer userId) {
         List<IRole> results = userAuthenticatorRepository.getRolesByUserAuthenticator(userId);
         List<String> roles = new ArrayList<>();

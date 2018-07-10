@@ -26,7 +26,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     }
 
     @Override
-    public void signIn(UserData userData, UserAuthenticatorData userAuthenticatorData, User user, Integer roleId, UserAuthenticator userAuthenticator) throws EmailAlreadyExistException, UserAlreadyExistException, fr.esgi.exception.RoleNotFoundException {
+    public Integer signIn(UserData userData, UserAuthenticatorData userAuthenticatorData, User user, Integer roleId, UserAuthenticator userAuthenticator) throws EmailAlreadyExistException, UserAlreadyExistException, fr.esgi.exception.RoleNotFoundException {
 
         if(existsByUsername(userAuthenticatorData, userAuthenticator.getLogin())) {
             throw new UserAlreadyExistException();
@@ -40,13 +40,13 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
             Role role = userData.getRoleById(roleId);
             user.getRoles().add(role);
 
-
         user = userData.save(user);
 
         //On enregistre l'authentificateur
         userAuthenticator.setUser(user);
 
         userAuthenticatorData.save(userAuthenticator);
+        return user.getId();
     }
 
     @Override

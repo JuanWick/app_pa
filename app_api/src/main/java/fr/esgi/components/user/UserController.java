@@ -2,10 +2,15 @@ package fr.esgi.components.user;
 
 import entities.Role;
 import entities.User;
+import entities.UserAuthenticator;
 import fr.esgi.components.user.adapter.RoleApiAdapter;
 import fr.esgi.components.user.adapter.UserApiAdapter;
 import fr.esgi.components.user.dto.RoleDto;
+import fr.esgi.components.user.dto.UserDetailsDto;
 import fr.esgi.components.user.dto.UserDto;
+import fr.esgi.exception.UserNotFoundException;
+import fr.esgi.exception.UserNotFoundExceptionApi;
+import fr.esgi.reporitories.users.services.UserAuthenticatorData;
 import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,9 @@ public class UserController {
     UserData userData;
 
     private final
+    UserAuthenticatorData userAuthenticatorData;
+
+    private final
     UserService userService;
 
     private final
@@ -33,11 +41,12 @@ public class UserController {
     RoleApiAdapter roleApiAdapter;
 
     @Autowired
-    public UserController(UserData userData, UserService userService, UserApiAdapter userApiAdapter, RoleApiAdapter roleApiAdapter) {
+    public UserController(UserAuthenticatorData userAuthenticatorData, UserData userData, UserService userService, UserApiAdapter userApiAdapter, RoleApiAdapter roleApiAdapter) {
         this.userData = userData;
         this.userService = userService;
         this.userApiAdapter = userApiAdapter;
         this.roleApiAdapter = roleApiAdapter;
+        this.userAuthenticatorData = userAuthenticatorData;
     }
 
     /**
@@ -59,14 +68,13 @@ public class UserController {
      */
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
-    public UserDto getById(@PathVariable(value="id") int id) {
-        User user = userData.getById(id);
-        UserDto userDto = null;
-
-        if(null != user){
-            userDto =  userApiAdapter.convertToDto(user);
+    public UserDetailsDto getById(@PathVariable(value="id") int id) {
+        try{
+            Object[] objects = userService.getById(userData,userAuthenticatorData,id);
+            return userApiAdapter.convertToUserDetailsDto((User) objects[0], (UserAuthenticator) objects[1]);
+        } catch (UserNotFoundException u){
+            throw new UserNotFoundExceptionApi(u.getMessage());
         }
-        return userDto;
     }
 
     /**

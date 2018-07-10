@@ -1,8 +1,9 @@
-package fr.esgi.components.security;
+package fr.esgi.components.user;
 
 import entities.User;
 import entities.UserAuthenticator;
-import fr.esgi.components.security.dto.ApiResponse;
+import fr.esgi.components.security.JwtTokenProvider;
+import fr.esgi.components.security.dto.RegisterResponse;
 import fr.esgi.components.security.dto.JwtAuthenticationResponse;
 import fr.esgi.components.security.dto.LoginRequest;
 import fr.esgi.components.security.dto.SignUpRequest;
@@ -13,7 +14,6 @@ import fr.esgi.services.authentication.UserAuthenticationService;
 import fr.esgi.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -74,15 +74,16 @@ public class AuthController {
         // Creating user's account
         User user = new User();
         user.setFirstName(signUpRequest.getFirstname());
-        user.setName(signUpRequest.getName());
+        user.setName(signUpRequest.getName().toUpperCase());
 
         UserAuthenticator userAuthenticator = new UserAuthenticator();
         userAuthenticator.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         userAuthenticator.setLogin(signUpRequest.getUsername());
         userAuthenticator.setEmail(signUpRequest.getEmail());
 
+        Integer userId = null;
         try{
-            userAuthenticationService.signIn(userData, userAuthenticatorData, user,  signUpRequest.getRoleId(), userAuthenticator);
+            userId = userAuthenticationService.signIn(userData, userAuthenticatorData, user,  signUpRequest.getRoleId(), userAuthenticator);
         } catch (UserAlreadyExistException us) {
             throw new UserAlreadyExistExceptionApi(us.getMessage());
         } catch (EmailAlreadyExistException em) {
@@ -95,6 +96,6 @@ public class AuthController {
                 .fromCurrentContextPath().path("/api/users/{username}")
                 .buildAndExpand(userAuthenticator.getLogin()).toUri();
 
-        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+        return ResponseEntity.created(location).body(new RegisterResponse(true, userId));
     }
 }
