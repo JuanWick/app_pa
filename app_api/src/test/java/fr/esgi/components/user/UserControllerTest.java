@@ -36,6 +36,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+@Ignore
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
