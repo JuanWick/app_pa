@@ -7,6 +7,8 @@ import fr.esgi.components.security.dto.RegisterResponse;
 import fr.esgi.components.security.dto.JwtAuthenticationResponse;
 import fr.esgi.components.security.dto.LoginRequest;
 import fr.esgi.components.security.dto.SignUpRequest;
+import fr.esgi.components.user.dto.SignInDto;
+import fr.esgi.components.user.dto.SignUpDto;
 import fr.esgi.exception.*;
 import fr.esgi.reporitories.users.services.UserAuthenticatorData;
 import fr.esgi.reporitories.users.services.UserData;
@@ -55,7 +57,7 @@ public class AuthController {
     JwtTokenProvider tokenProvider;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public SignInDto authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getUsernameOrEmail(),
@@ -65,12 +67,12 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String jwt = tokenProvider.generateToken(authentication);
-            return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+            return SignInDto.builder().accessToken(jwt).tokenType("Bearer").build();
     }
 
     @PostMapping("/signup")
     @Transactional
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public SignUpDto registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         // Creating user's account
         User user = new User();
         user.setFirstName(signUpRequest.getFirstname());
@@ -96,6 +98,6 @@ public class AuthController {
                 .fromCurrentContextPath().path("/api/users/{username}")
                 .buildAndExpand(userAuthenticator.getLogin()).toUri();
 
-        return ResponseEntity.created(location).body(new RegisterResponse(true, userId));
+        return SignUpDto.builder().sucess(true).userId(userId).build();
     }
 }
