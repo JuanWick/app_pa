@@ -12,19 +12,6 @@ public class InMemotyUserData implements UserData{
 
     public InMemotyUserData() {
         users = new ArrayList<>();
-
-        User user1 = new User();
-        user1.setId(1);
-        user1.setFirstName("Bob");
-        user1.setName("EPONGE");
-
-        User user2 = new User();
-        user2.setId(2);
-        user2.setFirstName("Bart");
-        user2.setName("SIMPSON");
-
-        users.add(user1);
-        users.add(user2);
     }
 
     @Override

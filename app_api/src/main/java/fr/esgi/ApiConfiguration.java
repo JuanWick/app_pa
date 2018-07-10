@@ -128,8 +128,8 @@ public class ApiConfiguration
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("name")
-                .version("1")
+                .title("app_api")
+                .version("1.0")
                 .build();
 
     }
