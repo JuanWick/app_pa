@@ -16,11 +16,6 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         return userAuthenticatorData.save(userAuthenticator);    }
 
     @Override
-    public UserAuthenticator findByUserName(UserAuthenticatorData userAuthenticatorData, String username) {
-        return userAuthenticatorData.findByUsername(username);
-    }
-
-    @Override
     public boolean existsByUsername(UserAuthenticatorData userAuthenticatorData, String username) {
         return null != userAuthenticatorData.findByUsername(username);
     }

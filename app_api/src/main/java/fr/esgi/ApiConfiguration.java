@@ -33,7 +33,17 @@ package fr.esgi;
         import org.springframework.boot.autoconfigure.SpringBootApplication;
         import org.springframework.context.annotation.Bean;
         import org.springframework.context.annotation.Configuration;
+        import springfox.documentation.builders.ApiInfoBuilder;
+        import springfox.documentation.schema.AlternateTypeRule;
+        import springfox.documentation.service.ApiInfo;
+        import springfox.documentation.spring.web.plugins.Docket;
         import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+        import java.awt.*;
+
+        import static springfox.documentation.builders.PathSelectors.any;
+        import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
+        import static springfox.documentation.spi.DocumentationType.SWAGGER_2;
 
 @SpringBootApplication
 @Configuration
@@ -103,5 +113,25 @@ public class ApiConfiguration
 
     @Bean
     public UserPrincipalAdapter UserPrincipalAdapter(){return new UserPrincipalAdapter();}
+
+    /** SWAGGER **/
+
+    @Bean
+    public Docket swaggerDocumentation(){
+       return new Docket(SWAGGER_2)
+               .apiInfo(apiInfo())
+               .select()
+               .apis(basePackage("fr.esgi.components"))
+               .paths(any())
+               .build();
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("name")
+                .version("1")
+                .build();
+
+    }
 
 }

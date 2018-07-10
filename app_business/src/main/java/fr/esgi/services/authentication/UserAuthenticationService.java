@@ -11,8 +11,6 @@ public interface UserAuthenticationService {
 
     UserAuthenticator save(UserAuthenticatorData userAuthenticatorData, UserAuthenticator userAuthenticator);
 
-    UserAuthenticator findByUserName(UserAuthenticatorData userAuthenticatorData, String id);
-
     boolean existsByUsername(UserAuthenticatorData userAuthenticatorData, String username);
 
     boolean existsByEmail(UserAuthenticatorData userAuthenticatorData, String username);

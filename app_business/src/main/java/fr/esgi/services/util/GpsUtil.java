@@ -2,11 +2,11 @@ package fr.esgi.services.util;
 
  public class GpsUtil {
 
-    private static Double degreToRadian(double valueToConvert) {
+    private  Double degreToRadian(double valueToConvert) {
         return Math.PI * valueToConvert / 180;
     }
 
-    public static Double getDistanceBetweenCoordinates(Double lat1, Double long1, Double lat2, Double long2) {
+    public  Double getDistanceBetweenCoordinates(Double lat1, Double long1, Double lat2, Double long2) {
 
         if(null == lat1 || null == long1 || null == lat2 || null == long2){ return -1.0; }
 
