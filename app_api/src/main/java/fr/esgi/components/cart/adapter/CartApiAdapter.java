@@ -4,6 +4,7 @@ import entities.Cart;
 import entities.Product;
 import entities.User;
 import fr.esgi.components.cart.dto.CartDto;
+import fr.esgi.components.product.dto.ProductCompletDto;
 import fr.esgi.components.product.dto.ProductDto;
 import fr.esgi.components.cart.dto.SharedDto;
 
@@ -21,8 +22,8 @@ public class CartApiAdapter {
 
         List<Product> products = new ArrayList<>();
         if(null != cartDto.getProducts()){
-            for(ProductDto productDto: cartDto.getProducts()){
-                Product product = Product.builder().id(productDto.getProductId()).build();
+            for(ProductCompletDto productDto: cartDto.getProducts()){
+                Product product = Product.builder().id(productDto.getId()).build();
                 products.add(product);
             }
         }
@@ -45,10 +46,17 @@ public class CartApiAdapter {
         CartDto cartDto = new CartDto();
         cartDto.setUserId(cart.getUser().getId());
 
-        List<ProductDto> productsDto = new ArrayList<>();
+        List<ProductCompletDto> productsDto = new ArrayList<>();
         if(null != cart.getProducts()){
             for(Product product:cart.getProducts()){
-                ProductDto productDto = ProductDto.builder().productId(product.getId()).build();
+                ProductCompletDto productDto = ProductCompletDto.builder()
+                        .barreCode(product.getBarreCode())
+                .price(product.getPrice())
+                .barreCode(product.getBarreCode())
+                .id(product.getId())
+                .info(product.getInfo())
+                .name(product.getName())
+                .build();
                 productsDto.add(productDto);
             }
         }
