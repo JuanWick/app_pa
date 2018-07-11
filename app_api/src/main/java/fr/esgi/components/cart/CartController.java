@@ -1,15 +1,18 @@
 package fr.esgi.components.cart;
 
 import entities.Cart;
-import entities.User;
 import fr.esgi.components.cart.adapter.CartApiAdapter;
+import fr.esgi.components.cart.dto.CartAskDetailsDto;
+import fr.esgi.components.cart.dto.CartDetailsDto;
 import fr.esgi.components.cart.dto.CartDto;
 import fr.esgi.components.cart.dto.CartProductsAddDto;
 import fr.esgi.exception.*;
 import fr.esgi.reporitories.carts.services.CartData;
 import fr.esgi.reporitories.products.services.ProductData;
+import fr.esgi.reporitories.stores.services.StoreData;
 import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.carts.CartService;
+import fr.esgi.services.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,20 +29,29 @@ public class CartController {
     UserData userData;
 
     private final
+    StoreData storeData;
+
+    private final
     ProductData productData;
 
     private final
     CartService cartService;
 
     private final
+    ProductService productService;
+
+
+    private final
     CartApiAdapter cartApiAdapter;
 
     @Autowired
-    public CartController(CartData cartData, UserData userData, ProductData productData, CartService cartService, CartApiAdapter cartApiAdapter) {
+    public CartController(CartData cartData, UserData userData, StoreData storeData, ProductData productData, CartService cartService, ProductService productService, CartApiAdapter cartApiAdapter) {
         this.cartData = cartData;
         this.userData = userData;
+        this.storeData = storeData;
         this.productData = productData;
         this.cartService = cartService;
+        this.productService = productService;
         this.cartApiAdapter = cartApiAdapter;
     }
 
@@ -71,6 +83,29 @@ public class CartController {
             return cartApiAdapter.convertToDto(cartService.getById(cartData,cartId));
         }catch (CartNotFoundException e) {
             throw new CartNotFoundExceptionApi(e.getMessage());
+        }
+    }
+
+    @PostMapping("/details")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
+    public CartDetailsDto getCartDetails(@RequestBody CartAskDetailsDto cartAskDetailsDto){
+        try {
+            CartDto cartDto = cartApiAdapter.convertToDto(cartService.getById(cartData, cartAskDetailsDto.getCartId()));
+            return cartApiAdapter.convertToCartDetailsDto(
+                    cartService.getByIdWithSearch(
+                            cartData,
+                            storeData,
+                            productData,
+                            productService,
+                            cartAskDetailsDto.getCartId(),
+                            cartAskDetailsDto.getLatitude(),
+                            cartAskDetailsDto.getLongitude(),
+                            cartAskDetailsDto.getPerimeter()),
+                    cartAskDetailsDto.getCartId(),
+                    cartDto.getSharedusers()
+            );
+        } catch (CartNotFoundException c){
+          throw new CartNotFoundExceptionApi(c.getMessage());
         }
     }
 

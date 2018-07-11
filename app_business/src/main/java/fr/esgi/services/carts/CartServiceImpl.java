@@ -8,10 +8,14 @@ import fr.esgi.exception.ProductNotFoundException;
 import fr.esgi.exception.UserNotFoundException;
 import fr.esgi.reporitories.carts.services.CartData;
 import fr.esgi.reporitories.products.services.ProductData;
+import fr.esgi.reporitories.stores.services.StoreData;
 import fr.esgi.reporitories.users.services.UserData;
+import fr.esgi.services.product.ProductService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CartServiceImpl implements CartService {
 
@@ -27,6 +31,17 @@ public class CartServiceImpl implements CartService {
             return cart;
         } else {
             throw new CartNotFoundException();        }
+    }
+
+    @Override
+    public Map<Product,  List<Object[]>> getByIdWithSearch(CartData cartData, StoreData storeData, ProductData productData, ProductService productService, Integer cartId, Double latitude, Double longitude, Double perimeter) {
+        Map<Product,  List<Object[]>> results = new HashMap<>();
+        Cart cart = getById(cartData, cartId);
+        for(Product product : cart.getProducts()){
+            List<Object[]> productResults = productService.searchByValue(storeData,productData,product.getName(),latitude,longitude,perimeter);
+        results.put(product, productResults);
+        }
+        return results;
     }
 
     @Override

@@ -15,6 +15,5 @@ public interface ProductService {
     Product getByBarreCode(ProductData productData, String barreCode) throws ProductNotFoundException;
     void delete(ProductData productData, int productId) throws ProductNotFoundException;
     List<Object[]> searchByValue(StoreData storeData, ProductData productData, String searchValue, Double latitude, Double longitude, Double perimeter);
-
     List<Object[]> searchByCategorie(StoreData storeData, ProductData productData, String categorie, Double latitude, Double longitude, Double perimeter);
 }

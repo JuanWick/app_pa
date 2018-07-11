@@ -3,15 +3,26 @@ package fr.esgi.components.cart.adapter;
 import entities.Cart;
 import entities.Product;
 import entities.User;
+import fr.esgi.components.cart.dto.CartDetailsDto;
 import fr.esgi.components.cart.dto.CartDto;
+import fr.esgi.components.product.adapter.ProductApiAdapter;
 import fr.esgi.components.product.dto.ProductCompletDto;
+import fr.esgi.components.product.dto.ProductCompletWithSearchResultDto;
 import fr.esgi.components.product.dto.ProductDto;
 import fr.esgi.components.cart.dto.SharedDto;
+import fr.esgi.components.product.dto.ProductSearchResultDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+@Component
 public class CartApiAdapter {
+
+    @Autowired
+    ProductApiAdapter productApiAdapter;
 
     public Cart convertToModel (CartDto cartDto){
         Cart cart = new Cart();
@@ -73,5 +84,29 @@ public class CartApiAdapter {
         cartDto.setProducts(productsDto);
         cartDto.setSharedusers(sharedusers);
        return cartDto;
+    }
+
+    public CartDetailsDto convertToCartDetailsDto(Map<Product, List<Object[]>> byIdWithSearch, Integer cartId, List<SharedDto> sharedDtos) {
+        List<ProductCompletWithSearchResultDto> products = new ArrayList<>();
+
+        for (Map.Entry<Product,List<Object[]>> e : byIdWithSearch.entrySet()){
+            ProductCompletWithSearchResultDto productCompletWithSearchResultDto =
+                    ProductCompletWithSearchResultDto.builder()
+                    .barreCode(e.getKey().getBarreCode())
+                    .id(e.getKey().getId())
+                    .info(e.getKey().getInfo())
+                    .name(e.getKey().getName())
+                    .price(e.getKey().getPrice())
+                    .searchResults(productApiAdapter.convertListToProductSearchResultDto(e.getValue()))
+                    .build();
+            products.add(productCompletWithSearchResultDto);
+        }
+
+
+        return CartDetailsDto.builder()
+                .products(products)
+                .cartId(cartId)
+                .sharedusers(sharedDtos)
+                .build();
     }
 }
