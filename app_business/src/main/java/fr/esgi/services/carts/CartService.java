@@ -17,6 +17,7 @@ import java.util.Map;
 public interface CartService {
     Cart save(CartData cartData, Cart cart);
     Cart getById(CartData cartData, Integer cartId) throws CartNotFoundException;
+    List<Cart> getByUserid(CartData cartData, Integer userId) throws CartNotFoundException;
     Map<Product,  List<Object[]>> getByIdWithSearch(CartData cartData, StoreData storeData, ProductData productData, ProductService productService, Integer cartId, Double latitude, Double longitude, Double perimeter);
     Cart createCart(UserData userData, CartData cartData, Integer userId) throws UserNotFoundException;
     void delete(CartData cartData, Integer cartId) throws CartNotFoundException;

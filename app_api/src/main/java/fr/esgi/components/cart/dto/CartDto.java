@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class CartDto {
+    private Integer cartId;
     private Integer userId;
     private List<ProductCompletDto> products;
     private List<SharedDto> sharedusers;

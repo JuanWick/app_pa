@@ -27,6 +27,10 @@ public class CartApiAdapter {
     public Cart convertToModel (CartDto cartDto){
         Cart cart = new Cart();
 
+        if(null != cartDto.getCartId()){
+            cart.setId(cartDto.getCartId());
+        }
+
         User user = new User();
         user.setId(cartDto.getUserId());
         cart.setUser(user);
@@ -55,6 +59,7 @@ public class CartApiAdapter {
 
     public CartDto convertToDto(Cart cart){
         CartDto cartDto = new CartDto();
+        cartDto.setCartId(cart.getId());
         cartDto.setUserId(cart.getUser().getId());
 
         List<ProductCompletDto> productsDto = new ArrayList<>();
@@ -108,5 +113,15 @@ public class CartApiAdapter {
                 .cartId(cartId)
                 .sharedusers(sharedDtos)
                 .build();
+    }
+
+    public List<CartDto> convertModelsToDtos(List<Cart> carts) {
+        List<CartDto> cartDtos = new ArrayList<>();
+
+        for(Cart cart : carts){
+            cartDtos.add(convertToDto(cart));
+        }
+
+        return cartDtos;
     }
 }

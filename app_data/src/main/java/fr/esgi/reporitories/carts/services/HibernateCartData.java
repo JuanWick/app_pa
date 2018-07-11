@@ -36,6 +36,11 @@ public class HibernateCartData implements CartData {
     }
 
     @Override
+    public List<Cart> getbyUserId(Integer userId) {
+        return cartDataAdapter.entitiesToModels(cartRepository.getAllByUser_Id(userId));
+    }
+
+    @Override
     public Cart save(Cart cart) {
         TCartEntity cartEntity = cartDataAdapter.modelToEntity(cart, true);
         TUserEntity userEntity = userRepository.findById(cart.getUser().getId()).get();

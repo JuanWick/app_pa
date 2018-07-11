@@ -34,6 +34,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public List<Cart> getByUserid(CartData cartData, Integer userId) throws CartNotFoundException {
+        List<Cart> carts = cartData.getbyUserId(userId);
+        if(null != carts && !carts.isEmpty()){
+            return carts;
+        } else {
+            throw new CartNotFoundException("Erreur : pas de panier");        }
+    }
+
+    @Override
     public Map<Product,  List<Object[]>> getByIdWithSearch(CartData cartData, StoreData storeData, ProductData productData, ProductService productService, Integer cartId, Double latitude, Double longitude, Double perimeter) {
         Map<Product,  List<Object[]>> results = new HashMap<>();
         Cart cart = getById(cartData, cartId);

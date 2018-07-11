@@ -68,4 +68,13 @@ public class CartDataAdapter {
         }
         return cartEntity;
     }
+
+    public List<Cart> entitiesToModels(List<TCartEntity> allByUser_id) {
+        List<Cart> carts = new ArrayList<>();
+
+        for(TCartEntity cartEntity:allByUser_id){
+            carts.add(entityToModel(cartEntity,true));
+        }
+        return carts;
+    }
 }

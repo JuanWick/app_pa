@@ -3,15 +3,21 @@ package fr.esgi.components.user;
 import entities.Role;
 import entities.User;
 import entities.UserAuthenticator;
+import fr.esgi.components.cart.adapter.CartApiAdapter;
+import fr.esgi.components.cart.dto.CartDto;
 import fr.esgi.components.user.adapter.RoleApiAdapter;
 import fr.esgi.components.user.adapter.UserApiAdapter;
 import fr.esgi.components.user.dto.RoleDto;
 import fr.esgi.components.user.dto.UserDetailsDto;
 import fr.esgi.components.user.dto.UserDto;
+import fr.esgi.exception.CartNotFoundException;
+import fr.esgi.exception.CartNotFoundExceptionApi;
 import fr.esgi.exception.UserNotFoundException;
 import fr.esgi.exception.UserNotFoundExceptionApi;
+import fr.esgi.reporitories.carts.services.CartData;
 import fr.esgi.reporitories.users.services.UserAuthenticatorData;
 import fr.esgi.reporitories.users.services.UserData;
+import fr.esgi.services.carts.CartService;
 import fr.esgi.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,10 +35,16 @@ public class UserController {
     UserData userData;
 
     private final
+    CartData cartData;
+
+    private final
     UserAuthenticatorData userAuthenticatorData;
 
     private final
     UserService userService;
+
+    private final
+    CartService cartService;
 
     private final
     UserApiAdapter userApiAdapter;
@@ -40,13 +52,19 @@ public class UserController {
     private final
     RoleApiAdapter roleApiAdapter;
 
+    private final
+    CartApiAdapter cartApiAdapter;
+
     @Autowired
-    public UserController(UserAuthenticatorData userAuthenticatorData, UserData userData, UserService userService, UserApiAdapter userApiAdapter, RoleApiAdapter roleApiAdapter) {
+    public UserController(UserAuthenticatorData userAuthenticatorData, UserData userData, CartData cartData, UserService userService, CartService cartService, UserApiAdapter userApiAdapter, RoleApiAdapter roleApiAdapter, CartApiAdapter cartApiAdapter) {
         this.userData = userData;
+        this.cartData = cartData;
         this.userService = userService;
+        this.cartService = cartService;
         this.userApiAdapter = userApiAdapter;
         this.roleApiAdapter = roleApiAdapter;
         this.userAuthenticatorData = userAuthenticatorData;
+        this.cartApiAdapter = cartApiAdapter;
     }
 
     /**
@@ -85,6 +103,20 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public void delete(@PathVariable(value="userId") int userId){
         userService.delete(userData,userId);
+    }
+
+    /**
+     * Permet la récupération de l'ensemble des rôles disponible aux utilisateurs
+     * @return une liste de roles
+     */
+    @GetMapping("/{userId}/carts")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER','MANAGER')")
+    public List<CartDto> getCarts(@PathVariable(value="userId") int userId) {
+        try {
+            return cartApiAdapter.convertModelsToDtos(cartService.getByUserid(cartData, userId));
+        } catch (CartNotFoundException c){
+            throw new CartNotFoundExceptionApi(c.getMessage());
+        }
     }
 
     /**
