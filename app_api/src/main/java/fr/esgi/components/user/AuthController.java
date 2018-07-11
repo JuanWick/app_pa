@@ -14,6 +14,7 @@ import fr.esgi.services.authentication.UserAuthenticationService;
 import fr.esgi.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -124,4 +125,21 @@ public class AuthController {
 
     }
 
+    @PostMapping("/reinit")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @Transactional
+    public void reInitUserPassword(@RequestBody SignInDto signInDto) {
+        try {
+            UserAuthenticator userAuthenticator = userAuthenticationService.findByUserNameOrEmail(
+                    userData,
+                    userAuthenticatorData,
+                    signInDto.getUserNameOrEmail());
+            userAuthenticator.setPassword(passwordEncoder.encode(signInDto.getPassword()));
+
+            userAuthenticationService.save(userAuthenticatorData, userAuthenticator);
+
+        } catch(UserNotFoundException u){
+            throw new UserNotFoundExceptionApi(u.getMessage());
+        }
+    }
 }
