@@ -1,4 +1,4 @@
-package fr.esgi.components.security;
+package fr.esgi.components.security.strategy.jwt;
 
 
 import org.slf4j.Logger;

@@ -1,5 +1,6 @@
 package fr.esgi.components.security.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

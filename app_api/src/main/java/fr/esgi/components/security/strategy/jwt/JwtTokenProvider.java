@@ -1,4 +1,4 @@
-package fr.esgi.components.security;
+package fr.esgi.components.security.strategy.jwt;
 
 import fr.esgi.components.security.dto.UserPrincipal;
 import io.jsonwebtoken.*;

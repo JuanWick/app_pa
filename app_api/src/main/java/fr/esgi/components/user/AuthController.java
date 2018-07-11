@@ -2,11 +2,9 @@ package fr.esgi.components.user;
 
 import entities.User;
 import entities.UserAuthenticator;
-import fr.esgi.components.security.JwtTokenProvider;
-import fr.esgi.components.security.dto.JwtAuthenticationResponse;
-import fr.esgi.components.security.dto.LoginRequest;
-import fr.esgi.components.security.dto.RegisterResponse;
-import fr.esgi.components.security.dto.SignUpRequest;
+import fr.esgi.components.security.strategy.jwt.JwtAuthenticationFilter;
+import fr.esgi.components.security.strategy.jwt.JwtTokenProvider;
+import fr.esgi.components.security.dto.*;
 import fr.esgi.components.user.dto.PasswordRequest;
 import fr.esgi.components.user.dto.SignInDto;
 import fr.esgi.exception.*;
@@ -22,14 +20,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -55,6 +52,9 @@ public class AuthController {
 
     @Autowired
     JwtTokenProvider tokenProvider;
+
+    @Autowired
+    JwtAuthenticationFilter authenticationFilter;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -102,19 +102,26 @@ public class AuthController {
     }
 
     @PostMapping("/changePassword")
-    public SignInDto changeUserPassword(@Valid @RequestBody PasswordRequest passwordRequest) {
-//        UserAuthenticator user = userAuthenticatorData.findById(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//
-//
-//
-//
-//        user.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
-//
-//
-//
-//
-//        String jwt = tokenProvider.generateToken(authentication);
-        return null;
+    public ResponseEntity<?> changeUserPassword(@Valid @RequestBody PasswordRequest passwordRequest) {
+
+        try {
+            UserAuthenticator userAuthenticator = userAuthenticationService.findByUserNameOrEmail(
+                    userData,
+                    userAuthenticatorData,
+                    SecurityContextHolder.getContext().getAuthentication().getName());
+            userAuthenticator.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
+
+            userAuthenticationService.save(userAuthenticatorData, userAuthenticator);
+
+            LoginRequest loginRequest = new LoginRequest();
+            loginRequest.setUsernameOrEmail(userAuthenticator.getLogin());
+            loginRequest.setPassword(passwordRequest.getPassword());
+
+            return authenticateUser(loginRequest);
+        } catch(UserNotFoundException u){
+            throw new UserNotFoundExceptionApi(u.getMessage());
+        }
+
     }
 
 }
