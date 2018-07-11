@@ -30,6 +30,8 @@ public class UserDataAdapter {
         user.setFirstName(userEntity.getFirstName());
         user.setId(userEntity.getId());
         user.setName(userEntity.getName());
+        user.setRgpdAccepted(userEntity.getRgpdAccepted());
+        user.setRgpdAcceptedDate(userEntity.getRgpdAcceptedDate());
 
         if(all && null != userEntity.getCarts()){
             List<Cart> carts = new ArrayList<>();
@@ -56,6 +58,8 @@ public class UserDataAdapter {
         }
         userEntity.setFirstName(user.getFirstName());
         userEntity.setName(user.getName());
+        userEntity.setRgpdAccepted(user.isRgpdAccepted());
+        userEntity.setRgpdAcceptedDate(user.getRgpdAcceptedDate());
 
         if(all && null != user.getCarts()){
             List<TCartEntity> carts = new ArrayList<>();

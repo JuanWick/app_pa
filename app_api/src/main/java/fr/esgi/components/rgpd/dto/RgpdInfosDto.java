@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,6 +20,8 @@ public class RgpdInfosDto {
     private String login;
     private String email;
     private String role;
+    private boolean rgpdAccepted;
+    private Date rgpdAcceptedDate;
     private String latitude;
     private String longitude;
     private String password;

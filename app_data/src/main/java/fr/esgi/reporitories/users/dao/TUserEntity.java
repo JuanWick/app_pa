@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +15,8 @@ public class TUserEntity {
     private int id;
     private String name;
     private String firstName;
+    private boolean rgpdAccepted;
+    private Date rgpdAcceptedDate;
     private Collection<TStoreEntity> loyaltyStores;
     private Collection<TCartEntity> sharedCarts;
     private Collection<TRoleEntity> roles;
@@ -29,6 +32,27 @@ public class TUserEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "rgpdAccepted")
+    public boolean getRgpdAccepted() {
+        return rgpdAccepted;
+    }
+
+    public void setRgpdAccepted(boolean rgpdAccepted) {
+        this.rgpdAccepted = rgpdAccepted;
+    }
+
+    @Basic
+    @Column(name = "rgpdAcceptedDate")
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getRgpdAcceptedDate() {
+        return rgpdAcceptedDate;
+    }
+
+    public void setRgpdAcceptedDate(Date rgpdAcceptedDate) {
+        this.rgpdAcceptedDate = rgpdAcceptedDate;
     }
 
     @Basic

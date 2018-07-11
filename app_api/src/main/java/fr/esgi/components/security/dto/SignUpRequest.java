@@ -1,14 +1,11 @@
 package fr.esgi.components.security.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-@Builder
 public class SignUpRequest {
     @NotNull
     @Size(min = 1, max = 255 , message = "error.firstname.size")
@@ -32,4 +29,7 @@ public class SignUpRequest {
 
     @NotNull
     private Integer roleId;
+
+    @NotNull
+    private boolean acceptedRgpd;
 }

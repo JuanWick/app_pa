@@ -1,15 +1,13 @@
 package fr.esgi.components.rgpd;
 
-import fr.esgi.components.cart.dto.CartDto;
-import fr.esgi.components.product.dto.ProductCompletDto;
 import fr.esgi.components.rgpd.dto.*;
-import fr.esgi.components.store.dto.StoreDto;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -70,6 +68,8 @@ public class RgpdController {
                 .role("")
                 .longitude("")
                 .latitude("")
+                .rgpdAccepted(true)
+                .rgpdAcceptedDate(new Date())
                 .ownedCarts(cartDtos)
                 .loyaltyStores(loyaltyStores)
                 .sharedCarts(sharedCarts)

@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.security.Principal;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -75,9 +76,14 @@ public class AuthController {
     @Transactional
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         // Creating user's account
+        if(!signUpRequest.isAcceptedRgpd()){
+            throw new RgpdDeclinedExceptionApi("Erreur : RGPD declined");
+        }
         User user = new User();
         user.setFirstName(signUpRequest.getFirstname());
         user.setName(signUpRequest.getName().toUpperCase());
+        user.setRgpdAccepted(true);
+        user.setRgpdAcceptedDate(new Date());
 
         UserAuthenticator userAuthenticator = new UserAuthenticator();
         userAuthenticator.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
