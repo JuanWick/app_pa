@@ -102,8 +102,8 @@ public class ProductServiceTest extends TestCase {
     public void test_should_return_products_by_value(){
         productService = new ProductServiceImpl();
 
-        Product productOk = Product.builder().name("test").build();
-        Product productNoK = Product.builder().name("NOK").build();
+        Product productOk = Product.builder().id(1).name("test").build();
+        Product productNoK = Product.builder().id(2).name("NOK").build();
 
         Store store1 = Store.builder()
                 .id(1)
@@ -156,6 +156,8 @@ public class ProductServiceTest extends TestCase {
         Mockito.when(storeData.getById(2)).thenReturn(store2);
         Mockito.when(storeData.getById(3)).thenReturn(store3);
         Mockito.when(storeData.getById(4)).thenReturn(store4);
+        Mockito.when(productData.getById(1)).thenReturn(productOk);
+        Mockito.when(productData.getById(2)).thenReturn(productNoK);
 
         List<Object[]> results = productService.searchByValue(storeData,productData,"test",48.85661400000001,2.3522219000000177,50.0);
 
@@ -175,8 +177,8 @@ public class ProductServiceTest extends TestCase {
         ArrayList<Category> nokList = new ArrayList<>();
         nokList.add(nok);
 
-        Product productOk = Product.builder().categories(okList).build();
-        Product productNoK = Product.builder().categories(nokList).build();
+        Product productOk = Product.builder().id(1).categories(okList).build();
+        Product productNoK = Product.builder().id(2).categories(nokList).build();
 
         Store store1 = Store.builder()
                 .id(1)
