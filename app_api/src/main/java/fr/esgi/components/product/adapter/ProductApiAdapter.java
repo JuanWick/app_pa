@@ -48,8 +48,7 @@ public class ProductApiAdapter {
             .name(store.getName())
             .zipcode(store.getZipcode())
             .distance(store.getDistance())
-            .productPrice(product.getPrice())
-            .productId(product.getId())
+            .product(convertToDto(product))
             .build());
         }
 

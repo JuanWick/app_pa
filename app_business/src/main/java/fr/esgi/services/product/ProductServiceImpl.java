@@ -78,6 +78,8 @@ public class ProductServiceImpl implements ProductService {
                 Store storeComplete = storeData.getById(((Store) store[0]).getId());
                 storeComplete.setDistance(gpsUtil.getDistanceBetweenCoordinates(latitude,longitude,storeComplete.getLatitude(),storeComplete.getLongitude()));
                 store[0] = storeComplete;
+                Product product = productData.getById(((Product) store[1]).getId());
+                store[1] = product;
                 storesWithProduct.add(store);
             }
         }
@@ -97,6 +99,8 @@ public class ProductServiceImpl implements ProductService {
                 Store storeComplete = storeData.getById(((Store) store[0]).getId());
                 storeComplete.setDistance(gpsUtil.getDistanceBetweenCoordinates(latitude,longitude,storeComplete.getLatitude(),storeComplete.getLongitude()));
                 store[0] = storeComplete;
+                Product product = productData.getById(((Product) store[1]).getId());
+                store[1] = product;
                 storesWithProduct.add(store);
             }
         }

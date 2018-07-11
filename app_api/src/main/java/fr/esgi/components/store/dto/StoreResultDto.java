@@ -1,5 +1,6 @@
 package fr.esgi.components.store.dto;
 
+import fr.esgi.components.product.dto.ProductCompletDto;
 import fr.esgi.components.user.dto.UserDto;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,5 @@ public class StoreResultDto {
     private Double longitude;
     private UserDto user;
     private Double distance;
-    private Integer productId;
-    private Double productPrice;
+    private ProductCompletDto product;
 }

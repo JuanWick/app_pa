@@ -5,5 +5,4 @@ public interface IStoreProjection {
      Double getLatitude();
      Double getLongitude();
      int getProduct_id();
-     Double getPrice();
 }

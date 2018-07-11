@@ -111,7 +111,6 @@ public class StoreDataAdapter {
 
             TProductEntity tProductEntity = new TProductEntity();
             tProductEntity.setProductId(entity.getProduct_id());
-            tProductEntity.setPrice(entity.getPrice());
 
             Object[] object = new Object[2];
             object[0] = entityToModel(tStoreEntity,false);

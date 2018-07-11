@@ -13,7 +13,7 @@ import java.util.List;
 public interface ProductRepository extends CrudRepository<TProductEntity, Integer> {
 
     @Query(
-            value = "SELECT store.id, store.latitude, store.longitude, pr.product_id, pr.price \n" +
+            value = "SELECT store.id, store.latitude, store.longitude, pr.product_id \n" +
                     "FROM pa_data.t_store as store\n" +
                     "INNER JOIN pa_data.r_stores_products rsp ON rsp.store_id = store.id\n" +
                     "INNER JOIN pa_data.t_product pr ON pr.product_id = rsp.product_id\n" +
@@ -27,7 +27,7 @@ public interface ProductRepository extends CrudRepository<TProductEntity, Intege
     List<TProductEntity> getTProductEntityByBarreCode(String barreCode);
 
     @Query(
-            value = "SELECT store.id, store.latitude, store.longitude, pr.product_id, pr.price \n" +
+            value = "SELECT store.id, store.latitude, store.longitude, pr.product_id \n" +
                     "FROM pa_data.t_store as store\n" +
                     "INNER JOIN pa_data.r_stores_products rsp ON rsp.store_id = store.id\n" +
                     "INNER JOIN pa_data.t_product pr ON pr.product_id = rsp.product_id\n" +

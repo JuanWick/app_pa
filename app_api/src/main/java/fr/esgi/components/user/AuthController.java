@@ -100,4 +100,6 @@ public class AuthController {
 
         return SignUpDto.builder().sucess(true).userId(userId).build();
     }
+
+    //TODO change password
 }
