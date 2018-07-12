@@ -79,13 +79,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Object[]> searchByCategorie(StoreData storeData, ProductData productData, String categorie, Double latitude, Double longitude, Double perimeter) {
-        /* On récupère les magasins qui ont des produit de la catégorie **/
-        List<Object[]> stores = productData.getStoresWithProductCategory(categorie);
-        GpsUtil gpsUtil = new GpsUtil();
         /* On isole ceux qui sont dans le périmètre **/
         List<Object[]> storesWithProduct = new ArrayList<>();
 
-        EvaluateDistance(storeData, productData, latitude, longitude, perimeter, stores, gpsUtil, storesWithProduct);
+        /* On récupère les magasins qui ont des produit de la catégorie **/
+        if(null!=categorie && !categorie.isEmpty()){
+            List<Object[]> stores = productData.getStoresWithProductCategory(categorie.trim());
+            GpsUtil gpsUtil = new GpsUtil();
+
+            EvaluateDistance(storeData, productData, latitude, longitude, perimeter, stores, gpsUtil, storesWithProduct);
+        }
         return storesWithProduct;
     }
 
@@ -148,13 +151,55 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void addCategoryToProduct(ProductData productData, int productId, int categoryId) {
+    public void addCategoryToProduct(ProductData productData, int productId, int categoryId) throws ProductNotFoundException {
+        if(null != productData.getById(productId)){
+            if(null != productData.getCategoryById(categoryId)){
+                Product product = productData.getById(productId);
+                List<Category> categories = new ArrayList<>();
 
+                boolean exist = false;
+                for(Category category : product.getCategories()){
+                    if(category.getId().equals(categoryId)){
+                        exist = true;
+                    }
+                }
+                if(!exist){
+                    Category category = productData.getCategoryById(categoryId);
+                    product.getCategories().add(category);
+                    productData.saveOrUpdate(product);
+                }
+            } else {
+                throw new CategoryNotFoundException();
+            }
+        } else {
+            throw new ProductNotFoundException();
+        }
     }
 
     @Override
     public void removeCategoryToProduct(ProductData productData, int productId, int categoryId) {
-        
+        if(null != productData.getById(productId)){
+            if(null != productData.getCategoryById(categoryId)){
+                Product product = productData.getById(productId);
+                List<Category> categories = new ArrayList<>();
+
+                boolean exist = false;
+                for(Category category : product.getCategories()){
+                    if(category.getId().equals(categoryId)){
+                        exist = true;
+                    }
+                }
+                if(exist){
+                    Category category = productData.getCategoryById(categoryId);
+                    product.getCategories().remove(category);
+                    productData.saveOrUpdate(product);
+                }
+            } else {
+                throw new CategoryNotFoundException();
+            }
+        } else {
+            throw new ProductNotFoundException();
+        }
     }
 
 }

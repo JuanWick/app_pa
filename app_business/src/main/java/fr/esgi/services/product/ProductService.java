@@ -20,7 +20,7 @@ public interface ProductService {
     Integer saveCategory(ProductData productData, Category category) throws CategoryAlreadyExistException, CategoryCreationException;
     Category getCategoryById(ProductData productData, Integer id) throws CategoryNotFoundException;
     void deleteCategory(ProductData productData, Integer categoryId) throws CategoryNotFoundException, CategoryUsedException;
-    void addCategoryToProduct(ProductData productData, int productId, int categoryId);
+    void addCategoryToProduct(ProductData productData, int productId, int categoryId) throws ProductNotFoundException;
     void removeCategoryToProduct(ProductData productData, int productId, int categoryId);
 
 }

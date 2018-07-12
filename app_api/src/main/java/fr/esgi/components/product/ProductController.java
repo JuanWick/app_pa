@@ -5,10 +5,7 @@ import fr.esgi.components.product.adapter.ProductApiAdapter;
 import fr.esgi.components.product.dto.ProductCompletDto;
 import fr.esgi.components.product.dto.ProductSearchRequestDto;
 import fr.esgi.components.product.dto.ProductSearchResultDto;
-import fr.esgi.exception.ExistingProductException;
-import fr.esgi.exception.ExistingProductExceptionApi;
-import fr.esgi.exception.ProductNotFoundException;
-import fr.esgi.exception.ProductNotFoundExceptionApi;
+import fr.esgi.exception.*;
 import fr.esgi.reporitories.products.services.ProductData;
 import fr.esgi.reporitories.stores.services.StoreData;
 import fr.esgi.services.product.ProductService;
@@ -146,5 +143,30 @@ public class ProductController {
                         productSearchRequestDto.getLatitude(),
                         productSearchRequestDto.getLongitude(),
                         productSearchRequestDto.getPerimeter()));
+    }
+
+
+    @GetMapping("/{productId}/category/{categoryId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+    public void addCategoryById(@PathVariable(value="productId") int productId, @PathVariable(value="categoryId") int categoryId) {
+        try {
+            productService.addCategoryToProduct(productData,productId,categoryId);
+        } catch (ProductNotFoundException p) {
+            throw new ProductNotFoundExceptionApi(p.getMessage());
+        } catch (CategoryNotFoundException c) {
+            throw new CategoryNotFoundExceptionApi(c.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{productId}/category/{categoryId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+    public void deleteCategoryById(@PathVariable(value="productId") int productId, @PathVariable(value="categoryId") int categoryId) {
+        try {
+            productService.removeCategoryToProduct(productData,productId,categoryId);
+        } catch (ProductNotFoundException p) {
+            throw new ProductNotFoundExceptionApi(p.getMessage());
+        } catch (CategoryNotFoundException c) {
+            throw new CategoryNotFoundExceptionApi(c.getMessage());
+        }
     }
 }

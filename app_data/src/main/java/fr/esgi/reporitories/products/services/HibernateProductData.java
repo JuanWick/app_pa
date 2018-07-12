@@ -78,10 +78,9 @@ public class HibernateProductData implements ProductData{
     }
 
     @Override
-    public List<Object[]> getStoresWithProductCategory(String categorie) {
-        return storeDataAdapter.entitiesProjectionToModels(productRepository.getStoresWithProductInCategory("%"+categorie+"%"));
+    public List<Object[]> getStoresWithProductCategory(String category) {
+        return storeDataAdapter.entitiesProjectionToModels(productRepository.getStoresWithProductInCategory("%"+category+"%"));
     }
-
     @Override
     public List<Object[]> getStoresWithProductValue(String searchValue) {
         return storeDataAdapter.entitiesProjectionToModels(productRepository.getStoresWithProductWithValue("%"+searchValue+"%"));

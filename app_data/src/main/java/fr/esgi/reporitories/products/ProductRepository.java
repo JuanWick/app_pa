@@ -18,10 +18,10 @@ public interface ProductRepository extends CrudRepository<TProductEntity, Intege
                     "FROM pa_data.t_store as store\n" +
                     "INNER JOIN pa_data.r_stores_products rsp ON rsp.store_id = store.id\n" +
                     "INNER JOIN pa_data.t_product pr ON pr.product_id = rsp.product_id\n" +
-                    "INNER JOIN pa_data.r_products_categories rpc ON rpc.product_id = pr.id\n" +
+                    "INNER JOIN pa_data.r_products_categories rpc ON rpc.product_id = pr.product_id\n" +
                     "INNER JOIN pa_data.t_category cat ON cat.id = rpc.category_id\n" +
-                    "WHERE cat.name LIKE '%'+:categorie+'%'\n",nativeQuery = true)
-    List<IStoreProjection> getStoresWithProductInCategory(@Param("categorie") String categorie);
+                    "WHERE UPPER(cat.name) LIKE UPPER(:category)\n",nativeQuery = true)
+    List<IStoreProjection> getStoresWithProductInCategory(@Param("category") String category);
 
     List<TProductEntity> getTProductEntityByName(String name);
 
