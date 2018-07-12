@@ -6,8 +6,10 @@ import lombok.Data;
 public class JwtAuthenticationResponse {
     private String accessToken;
     private String tokenType = "Bearer";
+    private Integer id;
 
-    public JwtAuthenticationResponse(String accessToken) {
+    public JwtAuthenticationResponse(String accessToken,Integer userId) {
         this.accessToken = accessToken;
+        this.id = userId;
     }
 }

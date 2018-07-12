@@ -1,6 +1,7 @@
 package fr.esgi.reporitories.products;
 
 import entities.Store;
+import fr.esgi.reporitories.products.dao.TCategoryEntity;
 import fr.esgi.reporitories.products.dao.TProductEntity;
 import fr.esgi.reporitories.products.services.IStoreProjection;
 import fr.esgi.reporitories.stores.dao.TStoreEntity;
@@ -25,6 +26,8 @@ public interface ProductRepository extends CrudRepository<TProductEntity, Intege
     List<TProductEntity> getTProductEntityByName(String name);
 
     List<TProductEntity> getTProductEntityByBarreCode(String barreCode);
+
+    List<TProductEntity> getTProductEntityByCategoriesContains(TCategoryEntity categoryEntity);
 
     @Query(
             value = "SELECT store.id, store.latitude, store.longitude, pr.product_id \n" +

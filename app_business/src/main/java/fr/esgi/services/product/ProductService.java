@@ -1,8 +1,8 @@
 package fr.esgi.services.product;
 
+import entities.Category;
 import entities.Product;
-import fr.esgi.exception.ExistingProductException;
-import fr.esgi.exception.ProductNotFoundException;
+import fr.esgi.exception.*;
 import fr.esgi.reporitories.products.services.ProductData;
 import fr.esgi.reporitories.stores.services.StoreData;
 
@@ -16,4 +16,8 @@ public interface ProductService {
     void delete(ProductData productData, int productId) throws ProductNotFoundException;
     List<Object[]> searchByValue(StoreData storeData, ProductData productData, String searchValue, Double latitude, Double longitude, Double perimeter);
     List<Object[]> searchByCategorie(StoreData storeData, ProductData productData, String categorie, Double latitude, Double longitude, Double perimeter);
+    List<Category> getAllCategorie(ProductData productData);
+    Integer saveCategory(ProductData productData, Category category) throws CategoryAlreadyExistException, CategoryCreationException;
+    Category getCategoryById(ProductData productData, Integer id) throws CategoryNotFoundException;
+    void deleteCategory(ProductData productData, Integer categoryId) throws CategoryNotFoundException, CategoryUsedException;
 }

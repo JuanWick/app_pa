@@ -14,6 +14,7 @@ import fr.esgi.reporitories.users.adapter.UserDataAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ProductDataAdapter {
@@ -106,4 +107,12 @@ public class ProductDataAdapter {
     }
 
 
+    public Collection<? extends Product> entitiesToModels(List<TProductEntity> tProductEntityByCategoriesContains) {
+        List<Product> products = new ArrayList<>();
+        for(TProductEntity tProductEntity:tProductEntityByCategoriesContains){
+            products.add(entityToModel(tProductEntity,false));
+        }
+
+        return products;
+    }
 }

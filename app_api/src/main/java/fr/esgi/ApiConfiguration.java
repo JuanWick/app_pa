@@ -1,10 +1,12 @@
 package fr.esgi;
 
+        import fr.esgi.components.category.adapter.CategoryApiAdapter;
         import fr.esgi.components.rgpd.adapter.RgpdAdapter;
         import fr.esgi.components.security.CustomUserDetailsService;
         import fr.esgi.components.security.adapter.UserPrincipalAdapter;
         import fr.esgi.components.security.strategy.AuthenticatorStrategy;
         import fr.esgi.components.security.strategy.SpringAuthenticatorStrategy;
+        import fr.esgi.reporitories.products.adapter.CategoryDataAdapter;
         import fr.esgi.reporitories.users.services.HibernateUserAuthenticatorData;
         import fr.esgi.reporitories.users.services.UserAuthenticatorData;
         import fr.esgi.services.authentication.UserAuthenticationService;
@@ -114,6 +116,9 @@ public class ApiConfiguration
 
     @Bean
     public UserPrincipalAdapter UserPrincipalAdapter(){return new UserPrincipalAdapter();}
+
+    @Bean
+    public CategoryApiAdapter CategoryApiAdapter(){return new CategoryApiAdapter();}
 
     @Bean
     public RgpdAdapter RgpdAdapter(){return new RgpdAdapter();}
