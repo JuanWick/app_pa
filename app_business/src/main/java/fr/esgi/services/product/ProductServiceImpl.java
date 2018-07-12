@@ -147,4 +147,14 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Override
+    public void addCategoryToProduct(ProductData productData, int productId, int categoryId) {
+
+    }
+
+    @Override
+    public void removeCategoryToProduct(ProductData productData, int productId, int categoryId) {
+        
+    }
+
 }
