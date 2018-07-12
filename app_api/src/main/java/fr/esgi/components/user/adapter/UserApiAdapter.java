@@ -30,6 +30,8 @@ public class UserApiAdapter {
                 .id(user.getId())
                 .mail(userAuthenticator.getEmail())
                 .username(userAuthenticator.getLogin())
+                .rgpdAccepted(user.isRgpdAccepted())
+                .rgpdAcceptedDate(user.getRgpdAcceptedDate())
                 .build();
     }
 }

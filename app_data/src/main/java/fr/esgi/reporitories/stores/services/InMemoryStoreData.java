@@ -15,6 +15,11 @@ public class InMemoryStoreData implements StoreData {
     }
 
     @Override
+    public List<Store> getByUserId(Integer userId) {
+        return null;
+    }
+
+    @Override
     public Store saveOrUpdate(Store store) {
         return null;
     }

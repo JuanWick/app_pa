@@ -5,6 +5,9 @@ import entities.User;
 import fr.esgi.components.store.dto.StoreDto;
 import fr.esgi.components.user.dto.UserDto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StoreApiAdapter {
     public Store convertToModel (StoreDto storeDto){
         Store store = Store.builder()
@@ -37,5 +40,14 @@ public class StoreApiAdapter {
                 .user(null != store.getUser()? UserDto.builder().id(store.getUser().getId()).build():null)
                 .zipcode(store.getZipcode())
                 .build();
+    }
+
+    public List<StoreDto> convertModelsToDto(List<Store> byUserId) {
+        List<StoreDto> stores = new ArrayList<>();
+
+        for(Store store:byUserId){
+            stores.add(convertToDto(store));
+        }
+        return stores;
     }
 }

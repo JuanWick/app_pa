@@ -99,7 +99,7 @@ public class StoreDataAdapter {
         return storeEntity;
     }
 
-    public List<Object[]> entitiesToModels(List<IStoreProjection> entities){
+    public List<Object[]> entitiesProjectionToModels(List<IStoreProjection> entities){
         List<Object[]> stores = new ArrayList<>();
 
         for(IStoreProjection entity : entities){
@@ -116,6 +116,15 @@ public class StoreDataAdapter {
             object[0] = entityToModel(tStoreEntity,false);
             object[1] = productDataAdapter.entityToModel(tProductEntity,false);
             stores.add(object);
+        }
+
+        return stores;
+    }
+    public List<Store> entitiesToModels(List<TStoreEntity> entities){
+        List<Store> stores = new ArrayList<>();
+
+        for(TStoreEntity entity : entities){
+            stores.add(entityToModel(entity,false));
         }
 
         return stores;

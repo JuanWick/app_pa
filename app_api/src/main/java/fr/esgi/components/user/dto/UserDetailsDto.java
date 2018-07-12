@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Data
 @Builder
@@ -14,4 +15,6 @@ public class UserDetailsDto {
     private String firstName;
     private String mail;
     private String username;
+    private boolean rgpdAccepted;
+    private Date rgpdAcceptedDate;
 }

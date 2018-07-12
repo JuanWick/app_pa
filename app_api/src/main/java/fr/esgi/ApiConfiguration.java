@@ -1,5 +1,6 @@
 package fr.esgi;
 
+        import fr.esgi.components.rgpd.adapter.RgpdAdapter;
         import fr.esgi.components.security.CustomUserDetailsService;
         import fr.esgi.components.security.adapter.UserPrincipalAdapter;
         import fr.esgi.components.security.strategy.AuthenticatorStrategy;
@@ -114,8 +115,10 @@ public class ApiConfiguration
     @Bean
     public UserPrincipalAdapter UserPrincipalAdapter(){return new UserPrincipalAdapter();}
 
-    /** SWAGGER **/
+    @Bean
+    public RgpdAdapter RgpdAdapter(){return new RgpdAdapter();}
 
+    /** SWAGGER **/
     @Bean
     public Docket swaggerDocumentation(){
        return new Docket(SWAGGER_2)

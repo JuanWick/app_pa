@@ -30,6 +30,11 @@ public class HibernateStoreData implements StoreData {
     }
 
     @Override
+    public List<Store> getByUserId(Integer userId) {
+        return storeDataAdapter.entitiesToModels(storeRepository.getByUser_Id(userId));
+    }
+
+    @Override
     public Store saveOrUpdate(Store store) {
         TStoreEntity storeEntity = storeDataAdapter.modelToEntity(store,true);
         return storeDataAdapter.entityToModel(storeRepository.save(storeEntity),true);

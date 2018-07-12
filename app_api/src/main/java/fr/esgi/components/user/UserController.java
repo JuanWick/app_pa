@@ -5,19 +5,20 @@ import entities.User;
 import entities.UserAuthenticator;
 import fr.esgi.components.cart.adapter.CartApiAdapter;
 import fr.esgi.components.cart.dto.CartDto;
+import fr.esgi.components.store.adapter.StoreApiAdapter;
+import fr.esgi.components.store.dto.StoreDto;
 import fr.esgi.components.user.adapter.RoleApiAdapter;
 import fr.esgi.components.user.adapter.UserApiAdapter;
 import fr.esgi.components.user.dto.RoleDto;
 import fr.esgi.components.user.dto.UserDetailsDto;
 import fr.esgi.components.user.dto.UserDto;
-import fr.esgi.exception.CartNotFoundException;
-import fr.esgi.exception.CartNotFoundExceptionApi;
-import fr.esgi.exception.UserNotFoundException;
-import fr.esgi.exception.UserNotFoundExceptionApi;
+import fr.esgi.exception.*;
 import fr.esgi.reporitories.carts.services.CartData;
+import fr.esgi.reporitories.stores.services.StoreData;
 import fr.esgi.reporitories.users.services.UserAuthenticatorData;
 import fr.esgi.reporitories.users.services.UserData;
 import fr.esgi.services.carts.CartService;
+import fr.esgi.services.stores.StoreService;
 import fr.esgi.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +39,9 @@ public class UserController {
     CartData cartData;
 
     private final
+    StoreData storeData;
+
+    private final
     UserAuthenticatorData userAuthenticatorData;
 
     private final
@@ -45,6 +49,9 @@ public class UserController {
 
     private final
     CartService cartService;
+
+    private final
+    StoreService storeService;
 
     private final
     UserApiAdapter userApiAdapter;
@@ -55,16 +62,22 @@ public class UserController {
     private final
     CartApiAdapter cartApiAdapter;
 
+    private final
+    StoreApiAdapter storeApiAdapter;
+
     @Autowired
-    public UserController(UserAuthenticatorData userAuthenticatorData, UserData userData, CartData cartData, UserService userService, CartService cartService, UserApiAdapter userApiAdapter, RoleApiAdapter roleApiAdapter, CartApiAdapter cartApiAdapter) {
+    public UserController(UserAuthenticatorData userAuthenticatorData, UserData userData, CartData cartData, StoreData storeData, UserService userService, CartService cartService, StoreService storeService, UserApiAdapter userApiAdapter, RoleApiAdapter roleApiAdapter, CartApiAdapter cartApiAdapter, StoreApiAdapter storeApiAdapter) {
         this.userData = userData;
         this.cartData = cartData;
+        this.storeData = storeData;
         this.userService = userService;
         this.cartService = cartService;
+        this.storeService = storeService;
         this.userApiAdapter = userApiAdapter;
         this.roleApiAdapter = roleApiAdapter;
         this.userAuthenticatorData = userAuthenticatorData;
         this.cartApiAdapter = cartApiAdapter;
+        this.storeApiAdapter = storeApiAdapter;
     }
 
     /**
@@ -180,4 +193,18 @@ public class UserController {
         }
     }
 
+    /**
+     * Permet la récupération de la liste de magasin par userId
+     * @param userId ID du utilisateur
+     * @return la liste en detail des magasins
+     */
+    @GetMapping("/stores/{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+    public List<StoreDto> getStores(@PathVariable(value="userId") int userId) {
+        try{
+            return storeApiAdapter.convertModelsToDto(storeService.getByUserId(storeData,userId));
+        } catch (StoreNotFoundException ex){
+            throw new StoreNotFoundExceptionApi(ex.getMessage());
+        }
+    }
 }

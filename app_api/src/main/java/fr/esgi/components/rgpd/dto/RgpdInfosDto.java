@@ -1,10 +1,5 @@
 package fr.esgi.components.rgpd.dto;
 
-import entities.Cart;
-import entities.Role;
-import entities.Store;
-import fr.esgi.components.cart.dto.CartDto;
-import fr.esgi.components.store.dto.StoreDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -27,6 +22,5 @@ public class RgpdInfosDto {
     private String password;
     private List<CartRgpdDto> ownedCarts = new ArrayList<>();
     private List<StoreRgpdDto> ownedStores = new ArrayList<>();
-    private List<StoreRgpdDto> loyaltyStores = new ArrayList<>();
     private List<CartRgpdDto> sharedCarts = new ArrayList<>();
 }

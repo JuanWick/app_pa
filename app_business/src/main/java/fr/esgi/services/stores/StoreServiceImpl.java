@@ -1,11 +1,8 @@
 package fr.esgi.services.stores;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.errors.ApiException;
-import com.google.maps.errors.NotFoundException;
 import com.google.maps.model.GeocodingResult;
 import entities.Product;
 import entities.Store;
@@ -22,10 +19,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -220,5 +213,10 @@ public class StoreServiceImpl implements StoreService {
             addProducts(storeData, productData, storeId, products);
         }
         return sucess;
+    }
+
+    @Override
+    public List<Store> getByUserId(StoreData storeData, int userId) {
+        return storeData.getByUserId(userId);
     }
 }

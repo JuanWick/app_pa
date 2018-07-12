@@ -30,4 +30,6 @@ public interface StoreService {
     Store getById(StoreData storeData, int id);
 
     boolean importProductsFromExcelFile(StoreData storeData,  ProductData productData, int storeId, HSSFWorkbook hssfWorkbook );
+
+    List<Store> getByUserId(StoreData storeData, int userId);
 }
