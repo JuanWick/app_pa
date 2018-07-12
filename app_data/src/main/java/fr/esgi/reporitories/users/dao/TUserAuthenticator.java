@@ -1,5 +1,7 @@
 package fr.esgi.reporitories.users.dao;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -70,6 +72,7 @@ import java.util.Objects;
 
         @ManyToOne
         @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+        @Cascade(org.hibernate.annotations.CascadeType.DELETE)
         public TUserEntity getUser() {
             return user;
         }

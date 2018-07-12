@@ -148,9 +148,10 @@ public class RgpdController {
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public RgpdInfosDto getUsedInfos(@PathVariable(value="userId") int userId) {
        try {
+           System.out.println("uuserinfo deb");
 
         Object[] userInfos = userService.getById(userData,userAuthenticatorData,userId);
-
+           System.out.println("uuserinfo " +userInfos);
         User user = (User) userInfos[0];
         UserAuthenticator userAuthenticator = (UserAuthenticator) userInfos[1];
 
